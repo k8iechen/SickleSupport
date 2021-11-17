@@ -1,5 +1,6 @@
 import React from "react";
 import {StyleSheet, Text, View, Image} from 'react-native';
+import Colors from '../constants/Colors';
 
 function TabBarItem({
     focused,
@@ -10,6 +11,7 @@ function TabBarItem({
     label: string
     icon;
 }) {
+
     return (
         <View style={{
             display: 'flex',
@@ -30,11 +32,11 @@ function TabBarItem({
                     position: "absolute",
                     width: 20,
                     height: 20,
-                    tintColor: focused ? '#957DD6' : '#9B9B9B',
+                    tintColor: focused ? Colors.primaryColor : Colors.textColor,
                 }}
                 />
             </View>
-            <Text style={{color: '#9B9B9B', fontSize: 12, top: 3}}>{label}</Text>
+            <Text style={{color: Colors.textColor, fontSize: 12, top: 3}}>{label}</Text>
         </View>
     )
 }
@@ -42,7 +44,7 @@ function TabBarItem({
 const styles = StyleSheet.create({
     overlay: {
         position: "absolute",
-        backgroundColor: "#957DD6",
+        backgroundColor: Colors.primaryColor,
         opacity: 0.07,
         width: 50,
         height: 50,

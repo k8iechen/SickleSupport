@@ -1,5 +1,6 @@
 import React from "react";
 import {View, TouchableOpacity} from 'react-native';
+import Colors from '../constants/Colors';
 
 function CustomTabBarButton({
     children,
@@ -13,7 +14,7 @@ function CustomTabBarButton({
             style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowColor: "#D8CAFF",
+                shadowColor: Colors.primaryShadowColor,
                 shadowOffset: {
                     width: 0,
                     height: 8,
@@ -31,7 +32,7 @@ function CustomTabBarButton({
                 width: 56,
                 height: 56,
                 borderRadius: 18,
-                backgroundColor: "#957DD6"
+                backgroundColor: Colors.primaryColor
             }}>
                 {children}
             </View>
