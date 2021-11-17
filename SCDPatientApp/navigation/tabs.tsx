@@ -7,6 +7,8 @@ import HistoryScreen from '../screens/HistoryScreen';
 import PainCrisisFormScreen from '../screens/PainCrisisFormScreen';
 import ResourcesScreen from '../screens/ResourcesScreen';
 import PassportScreen from '../screens/PassportScreen';
+import TabBarItem from '../components/TabBarItem';
+import CustomTabBarButton from '../components/CustomTabBarComponent';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,54 +31,33 @@ const Tabs = () => {
               }}
         >
             <Screen name="Home" component={HomeScreen} options={{
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/home.png")} label="Home" />
+            }}/>
+            <Screen name="History" component={HistoryScreen} options={{
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/history.png")} label="History" />
+            }}/>
+            <Screen name="+" component={PainCrisisFormScreen} options={{
                 tabBarIcon: ({focused}) => {
                     return (
-                    <View style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        paddingTop: 20
-                        }}>
-                        <View style={{
-                            height: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            <View style={[styles.overlay]}/>
-                            <Image
-                            source={require('../assets/icons/home.png')}
-                            resizeMode='contain'
-                            style={{
-                                position: "absolute",
-                                width: 20,
-                                height: 20,
-                                tintColor: focused ? '#957DD6' : '#9B9B9B',
-                            }}
-                            />
-                        </View>
-                        <Text style={{color: '#9B9B9B', fontSize: 12, top: 3}}>Home</Text>
-                    </View>
-                )
-                }
-            }
-            }/>
-            <Screen name="History" component={HistoryScreen} />
-            <Screen name="+" component={PainCrisisFormScreen} />
-            <Screen name="Resources" component={ResourcesScreen} />
-            <Screen name="Passport" component={PassportScreen} />
+                    <Image
+                        source={require("../assets/icons/plus.png")}
+                        resizeMode="contain"
+                        style={{
+                        width: 30,
+                        height: 30,
+                    }} />
+                    )
+                },
+                tabBarButton: (props) => <CustomTabBarButton {... props} />
+            }}/>
+            <Screen name="Resources" component={ResourcesScreen} options={{
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/resources.png")} label="Resources" />
+            }}/>
+            <Screen name="Passport" component={PassportScreen} options={{
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/passport.png")} label="Passport" />
+            }}/>
         </Navigator>
     )
 }
-
-const styles = StyleSheet.create({
-    overlay: {
-        position: "absolute",
-        backgroundColor: "#957DD6",
-        opacity: 0.07,
-        width: 50,
-        height: 50,
-        borderRadius: 14,
-    }
-})
 
 export default Tabs;
