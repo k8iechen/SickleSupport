@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useContext } from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { observer } from "mobx-react-lite";
 
 import { AuthContext } from "../contexts/AuthContext";
 import Colors from "../constants/Colors";
@@ -29,29 +30,27 @@ import {
 } from "../models/types";
 import LinkingConfiguration from "./LinkingConfiguration";
 
-export default function Navigation({
-  colorScheme,
-}: {
-  colorScheme: ColorSchemeName;
-}) {
-  const user = useContext(AuthContext);
+const Navigation = observer(
+  ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
+    const authStore = useContext(AuthContext);
 
-  return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
-      {user?.name ? (
-        <RootNavigator />
-      ) : user === undefined ? (
-        <></>
-      ) : (
-        <OnboardingNavigator />
-      )}
-      <StatusBar style="auto" />
-    </NavigationContainer>
-  );
-}
+    return (
+      <NavigationContainer
+        linking={LinkingConfiguration}
+        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      >
+        {authStore.patient?.name ? (
+          <RootNavigator />
+        ) : authStore.patient === undefined ? (
+          <></>
+        ) : (
+          <OnboardingNavigator />
+        )}
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    );
+  }
+);
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -60,11 +59,11 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function OnboardingNavigator() {
-  const user = useContext(AuthContext);
+  const authStore = useContext(AuthContext);
 
   return (
     <Stack.Navigator
-      initialRouteName={user === null ? "Welcome" : "Onboarding"}
+      initialRouteName={authStore.patient === null ? "Welcome" : "Onboarding"}
       screenOptions={{
         headerShown: false,
       }}
@@ -148,3 +147,5 @@ function RootNavigator() {
 // }) {
 //   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 // }
+
+export default Navigation;
