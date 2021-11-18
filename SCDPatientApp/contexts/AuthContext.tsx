@@ -1,6 +1,4 @@
 import React from "react";
-import { TUser } from "../models/User";
+import AuthStore, { IAuthStore } from "../stores/auth.store";
 
-export const AuthContext = React.createContext<TUser | null | undefined>(
-  undefined
-);
+export const AuthContext = React.createContext<IAuthStore>(AuthStore());

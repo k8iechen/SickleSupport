@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { NativeBaseProvider } from "native-base";
+import { observer } from "mobx-react-lite";
 
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
@@ -8,7 +9,7 @@ import Navigation from "./navigation";
 
 import { AuthProvider } from "./providers/AuthProvider";
 
-export default function App() {
+const App = observer(() => {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -24,4 +25,6 @@ export default function App() {
       </NativeBaseProvider>
     );
   }
-}
+});
+
+export default App;
