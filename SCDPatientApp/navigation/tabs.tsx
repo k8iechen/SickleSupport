@@ -10,12 +10,33 @@ import ResourcesScreen from "../screens/ResourcesScreen";
 import PassportScreen from "../screens/PassportScreen";
 import TabBarItem from "../components/TabBarItem";
 import CustomTabBarButton from "../components/CustomTabBarComponent";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../models/navigation";
+import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
   const { Navigator, Screen } = Tab;
 
+  const Stack = createNativeStackNavigator<RootStackParamList>();
+
+  function HomeNavigator() {
+    return (
+      <Stack.Navigator
+        initialRouteName="Root"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Root" component={HomeScreen} />
+        <Stack.Screen
+          name="DailyDiaryFormScreen"
+          component={DailyDiaryFormScreen}
+        />
+      </Stack.Navigator>
+    );
+  }
   return (
     <Navigator
       screenOptions={{
@@ -34,7 +55,7 @@ const Tabs = () => {
     >
       <Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarItem
