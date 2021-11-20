@@ -4,14 +4,12 @@ import { NativeBaseProvider } from "native-base";
 import { observer } from "mobx-react-lite";
 
 import useCachedResources from "./hooks/useCachedResources";
-import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
 import { AuthProvider } from "./providers/AuthProvider";
 
 const App = observer(() => {
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
     return null;
@@ -19,7 +17,7 @@ const App = observer(() => {
     return (
       <NativeBaseProvider>
         <AuthProvider>
-          <Navigation colorScheme={colorScheme} />
+          <Navigation />
         </AuthProvider>
         <StatusBar style="auto" />
       </NativeBaseProvider>

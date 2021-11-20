@@ -3,7 +3,7 @@ import { Text, Image } from "react-native";
 import { Button, Input, Stack, Center, ScrollView } from "native-base";
 import { observer } from "mobx-react-lite";
 
-import { RootStackScreenProps } from "../models/types";
+import { RootStackScreenProps } from "../models/navigation";
 import { TPatient, Age, Gender } from "../models/Patient";
 import { AuthContext } from "../contexts/AuthContext";
 import ButtonRadio from "../components/ButtonRadio";
