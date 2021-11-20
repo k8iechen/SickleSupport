@@ -16,7 +16,9 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Onboarding: undefined;
+  DailyDiaryFormScreen: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
+  NotFound: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, View, StyleSheet } from "react-native";
-
+import { Button } from "native-base";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { RootTabScreenProps } from "../models/navigation";
 
@@ -12,6 +12,9 @@ export default function HomeScreen({
       <Text style={styles.title}>Aowkin Home Screen</Text>
       <View style={styles.separator} />
       <EditScreenInfo path="/screens/HomeScreen.tsx" />
+      <Button onPress={() => navigation.navigate("DailyDiaryFormScreen")}>
+        (Temp) Daily Diary Form
+      </Button>
     </View>
   );
 }
