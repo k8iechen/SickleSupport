@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import color from "../constants/Colors";
+import Colors from "../constants/Colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -19,17 +19,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 28,
     lineHeight: 38,
-    color: color.title,
+    color: Colors.title,
   },
 
-  backImage: {
-    position: "absolute",
-    left: "16.67%",
-    right: "16.67%",
-    top: "17.59%",
-    bottom: "17.59%",
-    color: color.backButtonArrow,
-  },
+  // backImage: {
+  //   color: Colors.backButtonArrow,
+  // },
 
   backButton: {
     position: "absolute",
@@ -37,8 +32,10 @@ const styles = StyleSheet.create({
     height: 48,
     left: 28,
     top: 49,
-    backgroundColor: color.backButtonBackground,
+    backgroundColor: Colors.backButtonBackground,
     borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

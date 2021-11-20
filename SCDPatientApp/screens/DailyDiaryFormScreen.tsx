@@ -15,10 +15,7 @@ const DailyDiaryFormScreen = observer(
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Image
-            style={styles.backImage}
-            source={require("../assets/icons/back.png")}
-          />
+          <Image source={require("../assets/icons/back.png")} />
         </TouchableOpacity>
       </View>
     );
