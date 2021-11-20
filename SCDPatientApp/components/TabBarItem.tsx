@@ -13,7 +13,7 @@ function TabBarItem({
 }) {
 
     return (
-        <View style={{
+<View style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -32,11 +32,11 @@ function TabBarItem({
                     position: "absolute",
                     width: 20,
                     height: 20,
-                    tintColor: focused ? Colors.primaryColor : Colors.textColor,
+                    tintColor: focused ? Colors.primary : Colors.text,
                 }}
                 />
             </View>
-            <Text style={{color: Colors.textColor, fontSize: 12, top: 3}}>{label}</Text>
+            <Text style={{color: Colors.text, fontSize: 12, top: 3}}>{label}</Text>
         </View>
     )
 }
@@ -44,7 +44,7 @@ function TabBarItem({
 const styles = StyleSheet.create({
     overlay: {
         position: "absolute",
-        backgroundColor: Colors.primaryColor,
+        backgroundColor: Colors.primary,
         opacity: 0.07,
         width: 50,
         height: 50,

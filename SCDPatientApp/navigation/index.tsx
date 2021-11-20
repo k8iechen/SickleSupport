@@ -5,36 +5,37 @@
  */
 import {
   NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
+  DefaultTheme
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useContext } from "react";
-import { ColorSchemeName, Pressable } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { observer } from "mobx-react-lite";
 
 import { AuthContext } from "../contexts/AuthContext";
-import useColorScheme from "../hooks/useColorScheme";
 import WelcomeAuthScreen from "../screens/WelcomeAuthScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
 import {
   RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../models/types";
+} from "../models/navigation";
 import LinkingConfiguration from "./LinkingConfiguration";
 
 import Tabs from "./tabs";
 
 const Navigation = observer(
-  ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
+  () => {
     const authStore = useContext(AuthContext);
 
     return (
       <NavigationContainer
         linking={LinkingConfiguration}
-        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        theme={{
+          ...DefaultTheme,
+          colors: {
+            ...DefaultTheme.colors,
+            background: "#fff"
+          },
+        }}
       >
         {authStore.patient?.name ? (
           <Tabs />

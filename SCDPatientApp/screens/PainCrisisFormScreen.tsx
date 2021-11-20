@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootTabScreenProps } from '../models/navigation';
 
-export default function PainCrisisFormScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function PainCrisisFormScreen({ navigation }: RootTabScreenProps<'PainCrisisFormScreen'>) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Aowkin Pain Crisis Form Screen</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.separator} />
       <EditScreenInfo path="/screens/PainCrisisFormScreen.tsx" />
-    </View>
+</View>
   );
 }
 

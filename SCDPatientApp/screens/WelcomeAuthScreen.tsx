@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 
 import { auth } from "../firebase";
 import { FirestoreError } from "firebase/firestore";
-import { RootStackScreenProps } from "../models/types";
+import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/WelcomeAuthScreen.styles";
 import { AuthContext } from "../contexts/AuthContext";
 

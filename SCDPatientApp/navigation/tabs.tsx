@@ -31,10 +31,12 @@ const Tabs = () => {
               }}
         >
             <Screen name="Home" component={HomeScreen} options={{
-                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/home.png")} label="Home" />
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/home.png")} label="Home" />,
+                headerShown: false,
             }}/>
             <Screen name="History" component={HistoryScreen} options={{
-                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/history.png")} label="History" />
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/history.png")} label="History" />,
+                headerShown: false,
             }}/>
             <Screen name="+" component={PainCrisisFormScreen} options={{
                 tabBarIcon: ({focused}) => {
@@ -48,13 +50,16 @@ const Tabs = () => {
                     }} />
                     )
                 },
-                tabBarButton: (props) => <CustomTabBarButton {... props} />
+                tabBarButton: (props) => <CustomTabBarButton {... props} />,
+                headerShown: false,
             }}/>
             <Screen name="Resources" component={ResourcesScreen} options={{
-                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/resources.png")} label="Resources" />
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/resources.png")} label="Resources" />,
+                headerShown: false,
             }}/>
             <Screen name="Passport" component={PassportScreen} options={{
-                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/passport.png")} label="Passport" />
+                tabBarIcon: ({focused}) => <TabBarItem focused={focused} icon={require("../assets/icons/passport.png")} label="Passport" />,
+                headerShown: false,
             }}/>
         </Navigator>
     )

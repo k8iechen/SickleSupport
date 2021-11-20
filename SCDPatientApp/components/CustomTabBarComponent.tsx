@@ -14,7 +14,7 @@ function CustomTabBarButton({
             style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowColor: Colors.primaryShadowColor,
+                shadowColor: Colors.primaryShadow,
                 shadowOffset: {
                     width: 0,
                     height: 8,
@@ -32,7 +32,7 @@ function CustomTabBarButton({
                 width: 56,
                 height: 56,
                 borderRadius: 18,
-                backgroundColor: Colors.primaryColor
+                backgroundColor: Colors.primary
             }}>
                 {children}
             </View>
