@@ -1,14 +1,13 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
 import Colors from "../constants/Colors";
 
 function CustomTabBarButton({
   children,
   onPress,
 }: {
-  children: BottomTabBarButtonProps;
-  onPress: () => void;
+  children: React.ReactNode;
+  onPress?: (e: any) => void;
 }) {
   return (
     <TouchableOpacity
