@@ -1,5 +1,6 @@
 import React from 'react';
 import {Image} from 'react-native';
+import {BottomTabBarButtonProps} from '@react-navigation/bottom-tabs'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -27,6 +28,7 @@ const Tabs = () => {
                     backgroundColor: "#ffffff",
                     height: 90,
                     borderTopWidth: 0,
+                    elevation: 0
                   },
               }}
         >
@@ -50,7 +52,7 @@ const Tabs = () => {
                     }} />
                     )
                 },
-                tabBarButton: (props) => <CustomTabBarButton {... props} />,
+                tabBarButton: (props: BottomTabBarButtonProps) => <CustomTabBarButton {... props} />,
                 headerShown: false,
             }}/>
             <Screen name="Resources" component={ResourcesScreen} options={{
