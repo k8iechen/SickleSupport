@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
 
   buttonRadioText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "500",
     fontSize: 14,

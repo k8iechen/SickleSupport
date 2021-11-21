@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Button,
+} from "react-native";
 import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";

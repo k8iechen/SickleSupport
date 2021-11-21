@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
 
   tagLine: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: 20,
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: 32,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
 
   questionText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "500",
     fontSize: 14,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
 
   buttonRadioText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "500",
     fontSize: 14,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
 
   saveText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 14,

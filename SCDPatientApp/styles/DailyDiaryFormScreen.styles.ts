@@ -37,6 +37,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
+  form: {
+    color: Colors.primary
+  }
 });
 
 export default styles;

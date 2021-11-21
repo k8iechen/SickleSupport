@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
 
   tagLine: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: 20,
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "bold",
     fontSize: 32,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 16,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
 
   guestText: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "500",
     fontSize: 14,
