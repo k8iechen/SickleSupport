@@ -60,13 +60,24 @@ const styles = StyleSheet.create({
 
   sleepSlider: {
     width: "100%",
-    marginLeft: 15,
-    marginRight: 15,
+    justifyContent: "center",
+    marginTop: 5,
   },
 
   sleepSliderText: {
     color: Colors.cardText,
   },
+
+  cardHeader: {
+    marginTop: 5,
+    alignItems: "center",
+  },
+
+  sleepText: {
+    fontSize: 18,
+    marginTop: 5,
+    color: Colors.selection
+  }
 });
 
 export default styles;

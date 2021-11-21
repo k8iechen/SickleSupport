@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/DailyDiaryFormScreen.styles";
+import Colors from "../constants/Colors";
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
@@ -24,29 +25,32 @@ const DailyDiaryFormScreen = observer(
           <Text style={styles.title}>Daily Diary Entry</Text>
           <VStack space={10} style={styles.form}>
             <Box rounded="lg" style={styles.card}>
-              <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
-              <HStack space={3} alignItems="center" style={styles.sleepSlider}>
+              <HStack space={2} style={styles.cardHeader}>
+                <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
+                <Text style={[styles.cardText, styles.sleepText]}>8h 30</Text>
+              </HStack>
+              <HStack space={3} style={styles.sleepSlider}>
                 <Text style={[styles.cardText, styles.sleepSliderText]}>-</Text>
                 <Slider
                   style={{
-                    width: "80%",
+                    width: "75%",
+                    zIndex: 1,
                   }}
                   defaultValue={70}
-                  colorScheme="cyan"
                   onChange={(v) => {
                     setOnChangeValue(Math.floor(v));
                   }}
                   onChangeEnd={(v) => {
                     v && setOnChangeEndValue(Math.floor(v));
                   }}
-                  size="md"
+                  size="lg"
                 >
-                  <Slider.Track>
-                    <Slider.FilledTrack />
+                  <Slider.Track bg={"#c1d9f7"}>
+                    <Slider.FilledTrack bg={Colors.selection} />
                   </Slider.Track>
-                  <Slider.Thumb />
+                  <Slider.Thumb bg={Colors.selection} />
                 </Slider>
-                <Text style={styles.cardText}>+</Text>
+                <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
               </HStack>
             </Box>
           </VStack>
