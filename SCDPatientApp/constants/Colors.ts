@@ -6,7 +6,7 @@ const Colors = {
   title: "#0A0909",
   backButtonBackground: "#F8F8F6",
   backButtonArrow: "#9B9B9B",
-  completeDiaryOutline: "#545D69",
+  darkGrey: "#545D69",
 };
 
 export default Colors;
