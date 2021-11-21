@@ -14,10 +14,8 @@ export default function HomeScreen({
       <View style={styles.separator} />
       <Button
         size="sm"
-        style={{
-          borderColor: Colors.completeDiaryOutline,
-          borderRadius: 6,
-        }}
+        colorScheme="light"
+        style={styles.diaryButton}
         variant="outline"
         onPress={() => navigation.navigate("DailyDiaryFormScreen")}
       >
@@ -42,5 +40,9 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+  },
+  diaryButton: {
+    borderColor: Colors.darkGrey,
+    borderRadius: 6,
   },
 });
