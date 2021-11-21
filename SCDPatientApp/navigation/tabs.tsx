@@ -52,6 +52,7 @@ const Tabs = () => {
           elevation: 0,
         },
       }}
+      backBehavior="history"
     >
       <Screen
         name="Home"
@@ -101,6 +102,9 @@ const Tabs = () => {
             <CustomTabBarButton {...props} />
           ),
           headerShown: false,
+          tabBarStyle: {
+            display: "none",
+          },
         }}
       />
       <Screen

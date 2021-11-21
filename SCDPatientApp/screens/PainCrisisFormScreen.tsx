@@ -1,34 +1,22 @@
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 
-import EditScreenInfo from "../components/EditScreenInfo";
 import { RootTabScreenProps } from "../models/navigation";
+import styles from "../styles/PainCrisisFormScreen.styles";
 
-export default function PainCrisisFormScreen({
+export default function HomeScreen({
   navigation,
-}: RootTabScreenProps<"PainCrisisFormScreen">) {
+}: RootTabScreenProps<"HomeScreen">) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Aowkin Pain Crisis Form Screen</Text>
-      <View style={styles.separator} />
-      <EditScreenInfo path="/screens/PainCrisisFormScreen.tsx" />
+      <Text style={styles.title}>Pain Episode Entry</Text>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Image source={require("../assets/icons/back.png")} />
+      </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
