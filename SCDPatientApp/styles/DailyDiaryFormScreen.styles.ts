@@ -45,7 +45,28 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     margin: 10,
-  }
+  },
+
+  cardText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 24,
+  },
+
+  cardTitle: {
+    marginLeft: 17,
+    marginTop: 5,
+  },
+
+  sleepSlider: {
+    width: "100%",
+    marginLeft: 15,
+    marginRight: 15,
+  },
+
+  sleepSliderText: {
+    color: Colors.cardText,
+  },
 });
 
 export default styles;
