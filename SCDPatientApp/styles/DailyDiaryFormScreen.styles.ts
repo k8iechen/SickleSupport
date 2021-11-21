@@ -3,17 +3,15 @@ import Colors from "../constants/Colors";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     paddingTop: 36,
   },
 
   title: {
-    position: "absolute",
     width: 233,
     height: 38,
-    left: 28,
-    top: 115,
+    marginLeft: 28,
+    marginTop: 18,
     fontFamily: "Poppins-SemiBold",
     fontStyle: "normal",
     fontWeight: "600",
@@ -27,11 +25,10 @@ const styles = StyleSheet.create({
   // },
 
   backButton: {
-    position: "absolute",
     width: 48,
     height: 48,
-    left: 28,
-    top: 49,
+    marginLeft: 28,
+    marginTop: 49,
     backgroundColor: Colors.backButtonBackground,
     borderRadius: 14,
     justifyContent: "center",
@@ -39,7 +36,15 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    color: Colors.primary
+    marginTop: 10,
+    backgroundColor: "#EDECF4",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+
+  card: {
+    backgroundColor: "#fff",
+    margin: 10,
   }
 });
 
