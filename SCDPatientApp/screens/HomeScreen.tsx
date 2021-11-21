@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 import { Button } from "native-base";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { RootTabScreenProps } from "../models/navigation";
+import Colors from "../constants/Colors";
 
 export default function HomeScreen({
   navigation,
@@ -11,10 +12,16 @@ export default function HomeScreen({
     <View style={styles.container}>
       <Text style={styles.title}>Aowkin Home Screen</Text>
       <View style={styles.separator} />
-      <EditScreenInfo path="/screens/HomeScreen.tsx" />
-      <Button onPress={() => navigation.navigate("DailyDiaryFormScreen")}>
-        (Temp) Daily Diary Form
+      <Button
+        size="sm"
+        colorScheme="light"
+        style={styles.diaryButton}
+        variant="outline"
+        onPress={() => navigation.navigate("DailyDiaryFormScreen")}
+      >
+        <Text>Complete Diary Entry</Text>
       </Button>
+      <EditScreenInfo path="/screens/HomeScreen.tsx" />
     </View>
   );
 }
@@ -33,5 +40,9 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: "80%",
+  },
+  diaryButton: {
+    borderColor: Colors.darkGrey,
+    borderRadius: 6,
   },
 });
