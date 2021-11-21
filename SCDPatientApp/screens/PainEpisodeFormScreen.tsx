@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 
 import { RootTabScreenProps } from "../models/navigation";
-import styles from "../styles/PainCrisisFormScreen.styles";
+import styles from "../styles/PainEpisodeFormScreen.styles";
 
 export default function HomeScreen({
   navigation,

@@ -17,7 +17,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           HomeScreen: "home",
           HistoryScreen: "history",
-          PainCrisisFormScreen: "+",
+          PainEpisodeFormScreen: "+",
           ResourcesScreen: "resources",
           PassportScreen: "passport",
         },

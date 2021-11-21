@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
 import HistoryScreen from "../screens/HistoryScreen";
-import PainCrisisFormScreen from "../screens/PainCrisisFormScreen";
+import PainEpisodeFormScreen from "../screens/PainEpisodeFormScreen";
 import ResourcesScreen from "../screens/ResourcesScreen";
 import PassportScreen from "../screens/PassportScreen";
 import TabBarItem from "../components/TabBarItem";
@@ -84,7 +84,7 @@ const Tabs = () => {
       />
       <Screen
         name="+"
-        component={PainCrisisFormScreen}
+        component={PainEpisodeFormScreen}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
