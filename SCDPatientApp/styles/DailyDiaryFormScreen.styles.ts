@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     height: 38,
     left: 28,
     top: 115,
-    fontFamily: "Poppins",
+    fontFamily: "Poppins-SemiBold",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 28,
