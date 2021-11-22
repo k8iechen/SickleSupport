@@ -17,8 +17,6 @@ const DiaryStore = (): IDiaryStore => {
       entry: TDiaryEntry
     ): Promise<void> => {
       try {
-        console.log("logging patient");
-        console.log(patient);
         const patientId = patient?.uid?.toString();
         if (patientId) {
           await addDoc(collection(db, "patients", patientId, "diaries"), entry);
