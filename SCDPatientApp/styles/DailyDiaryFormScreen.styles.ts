@@ -67,6 +67,15 @@ const styles = StyleSheet.create({
   sleepSliderText: {
     color: Colors.cardText,
   },
+
+  saveButton: {
+    marginLeft: 28,
+    marginRight: 28,
+    marginTop: 13,
+    marginBottom: 13,
+    height: 56,
+    color: Colors.successGreen,
+  },
 });
 
 export default styles;

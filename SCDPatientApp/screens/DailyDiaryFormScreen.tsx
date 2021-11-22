@@ -1,15 +1,49 @@
 import * as React from "react";
 import { Text, Image, TouchableOpacity } from "react-native";
-import { Slider, VStack, ScrollView, Box, HStack } from "native-base";
+import {
+  Slider,
+  VStack,
+  ScrollView,
+  Box,
+  HStack,
+  Button,
+  View,
+  Center,
+} from "native-base";
 import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/DailyDiaryFormScreen.styles";
+import SaveButton from "../components/SaveButton";
+import { db } from "../firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { TDiaryEntry } from "../models/DiaryEntry";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
     const [onChangeValue, setOnChangeValue] = React.useState(70);
     const [onChangeEndValue, setOnChangeEndValue] = React.useState(70);
+    const authStore = useContext(AuthContext);
+
+    const handleSave = async () => {
+      try {
+        const entry: TDiaryEntry = {
+          created_at: serverTimestamp(),
+          updated_at: serverTimestamp(),
+        };
+
+        const patientId = authStore.patient?.uid?.toString();
+        if (patientId) {
+          await addDoc(collection(db, "patients", patientId, "diaries"), entry);
+        } else {
+          throw "Error: there is no patient in the auth context";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     return (
       <ScrollView style={styles.container}>
@@ -51,6 +85,9 @@ const DailyDiaryFormScreen = observer(
             </Box>
           </VStack>
         </VStack>
+        <Center>
+          <SaveButton onPress={handleSave} />
+        </Center>
       </ScrollView>
     );
   }
