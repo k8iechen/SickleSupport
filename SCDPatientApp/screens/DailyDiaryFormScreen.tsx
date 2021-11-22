@@ -7,9 +7,14 @@ import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/DailyDiaryFormScreen.styles";
 import Colors from "../constants/Colors";
 import Scale from "../components/Scale";
+import PictureScale from "../components/PictureScale";
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
+    const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
+    const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
+    const [selectedMoodRating, setSelectedMoodRating] = React.useState("");
+
     const [onChangeValue, setOnChangeValue] = React.useState(70);
     const [onChangeEndValue, setOnChangeEndValue] = React.useState(70);
 
@@ -61,16 +66,19 @@ const DailyDiaryFormScreen = observer(
                 </Slider>
                 <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
               </HStack>
-              <Scale data={["Awful", "Poor", "OK", "Good", "Great"]} />
+              <Scale
+                data={["Awful", "Poor", "OK", "Good", "Great"]}
+                selectedButton={selectedStressRating}
+                setSelectedButton={setSelectedStressRating}
+              />
             </Box>
-
             <Box
               rounded="lg"
               style={[
                 styles.card,
                 {
                   marginTop: 10,
-                  marginBottom: 19,
+                  marginBottom: 10,
                 },
               ]}
             >
@@ -80,6 +88,33 @@ const DailyDiaryFormScreen = observer(
               <Scale
                 data={["Lowest", "Low", "Medium", "High", "Highest"]}
                 reverse={true}
+                selectedButton={selectedSleepRating}
+                setSelectedButton={setSelectedSleepRating}
+              />
+            </Box>
+            <Box
+              rounded="lg"
+              style={[
+                styles.card,
+                {
+                  marginBottom: 19,
+                },
+              ]}
+            >
+              <HStack space={2} style={styles.cardHeader}>
+                <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
+              </HStack>
+              <PictureScale
+                data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
+                pictureData={[
+                  require("../assets/images/stress_face.png"),
+                  require("../assets/images/sad_face.png"),
+                  require("../assets/images/calm_face.png"),
+                  require("../assets/images/happy_face.png"),
+                  require("../assets/images/excited_face.png"),
+                ]}
+                selectedButton={selectedMoodRating}
+                setSelectedButton={setSelectedMoodRating}
               />
             </Box>
           </VStack>

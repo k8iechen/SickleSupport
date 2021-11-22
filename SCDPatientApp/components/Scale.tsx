@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
 
-function Scale({ data, reverse }) {
-  const [selectedButton, setSelectedButton] = React.useState(-1);
-
+function Scale({ data, reverse, selectedButton, setSelectedButton }) {
   const baseScaleItems = [
     {
       header: 1,
@@ -62,6 +60,7 @@ function Scale({ data, reverse }) {
     <HStack space={3} style={styles.scale}>
       {scaleItems.map((scaleItem) => (
         <ScaleButton
+          key={scaleItem.header}
           headerText={scaleItem.header}
           headerColor={scaleItem.color}
           selectedColor={scaleItem.selectColor}
