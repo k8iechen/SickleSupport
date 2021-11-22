@@ -47,7 +47,9 @@ function Scale() {
           selectedColor={scaleItem.selectColor}
           mainText={scaleItem.text}
           isSelected={selectedButton == scaleItem.header}
-          siblingSelected={selectedButton != -1}
+          siblingSelected={
+            selectedButton != -1 && selectedButton != scaleItem.header
+          }
           onPress={() => {
             if (selectedButton == scaleItem.header) {
               setSelectedButton(-1);
@@ -78,19 +80,19 @@ function ScaleButton({
   return (
     <TouchableOpacity
       activeOpacity={1}
-      style={[
-        styles.scaleButton,
-        {
+      style={styles.scaleButton}
+      onPress={onPress}
+    >
+      <Center
+        style={{
           backgroundColor: isSelected ? selectedColor : "#F1F3F6",
           borderColor: headerColor,
+          borderRadius: 3,
           borderWidth: isSelected ? 1 : 0,
           borderStyle: "solid",
           opacity: siblingSelected ? 0.5 : 1,
-        },
-      ]}
-      onPress={onPress}
-    >
-      <Center>
+        }}
+      >
         <Text
           style={[
             styles.scaleButtonHeader,
@@ -117,7 +119,6 @@ const styles = StyleSheet.create({
   },
 
   scaleButton: {
-    borderRadius: 3,
     width: 55,
     height: 55,
   },
@@ -133,15 +134,12 @@ const styles = StyleSheet.create({
 
   scaleButtonText: {
     fontFamily: "Poppins-Bold",
-    // fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
     color: "#1D335A",
     marginTop: -3,
     marginBottom: 10,
     fontSize: 12,
-    // marginLeft: 10,
-    // marginRight: 10,
   },
 });
 
