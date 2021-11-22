@@ -1,0 +1,37 @@
+import { db } from "../firebase";
+import { TPatient } from "../models/Patient";
+import { TDiaryEntry } from "../models/DiaryEntry";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+
+export interface IDiaryStore {
+  addDiaryEntry: (
+    patient: TPatient | null | undefined,
+    entry: TDiaryEntry
+  ) => Promise<void>;
+}
+
+const DiaryStore = (): IDiaryStore => {
+  const store: IDiaryStore = {
+    addDiaryEntry: async (
+      patient: TPatient | null | undefined,
+      entry: TDiaryEntry
+    ): Promise<void> => {
+      try {
+        console.log("logging patient");
+        console.log(patient);
+        const patientId = patient?.uid?.toString();
+        if (patientId) {
+          await addDoc(collection(db, "patients", patientId, "diaries"), entry);
+        } else {
+          throw "Error: there is no patient in the auth context";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  };
+
+  return store;
+};
+
+export default DiaryStore;

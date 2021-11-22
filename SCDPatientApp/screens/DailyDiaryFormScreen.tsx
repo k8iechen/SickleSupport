@@ -20,29 +20,21 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { TDiaryEntry } from "../models/DiaryEntry";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
+import DiaryStore from "../stores/dairy.store";
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
     const [onChangeValue, setOnChangeValue] = React.useState(70);
     const [onChangeEndValue, setOnChangeEndValue] = React.useState(70);
     const authStore = useContext(AuthContext);
+    const diaryStore = DiaryStore();
 
     const handleSave = async () => {
-      try {
-        const entry: TDiaryEntry = {
-          created_at: serverTimestamp(),
-          updated_at: serverTimestamp(),
-        };
-
-        const patientId = authStore.patient?.uid?.toString();
-        if (patientId) {
-          await addDoc(collection(db, "patients", patientId, "diaries"), entry);
-        } else {
-          throw "Error: there is no patient in the auth context";
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      const entry: TDiaryEntry = {
+        created_at: serverTimestamp(),
+        updated_at: serverTimestamp(),
+      };
+      await diaryStore.addDiaryEntry(authStore.patient, entry);
     };
 
     return (
