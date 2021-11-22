@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, Image, TouchableOpacity } from "react-native";
-import { Slider, VStack, ScrollView, Box, HStack } from "native-base";
+import { Slider, VStack, ScrollView, Box, HStack, Button } from "native-base";
 import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";
@@ -118,6 +118,9 @@ const DailyDiaryFormScreen = observer(
               />
             </Box>
           </VStack>
+          <Button success>
+            <Text>Save</Text>
+          </Button>
         </VStack>
       </ScrollView>
     );

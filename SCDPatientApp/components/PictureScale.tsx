@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   scale: {
     width: "100%",
     justifyContent: "center",
-    marginTop: 12,
+    marginTop: 5,
     marginBottom: 30,
   },
 
