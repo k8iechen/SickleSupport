@@ -36,6 +36,8 @@ const scaleItems = [
 ];
 
 function Scale() {
+  const [selectedButton, setSelectedButton] = React.useState(-1);
+
   return (
     <HStack space={3} style={styles.scale}>
       {scaleItems.map((scaleItem) => (
@@ -44,7 +46,15 @@ function Scale() {
           headerColor={scaleItem.color}
           selectedColor={scaleItem.selectColor}
           mainText={scaleItem.text}
-          isSelected={false}
+          isSelected={selectedButton == scaleItem.header}
+          siblingSelected={selectedButton != -1}
+          onPress={() => {
+            if (selectedButton == scaleItem.header) {
+              setSelectedButton(-1);
+            } else {
+              setSelectedButton(scaleItem.header);
+            }
+          }}
         />
       ))}
     </HStack>
@@ -58,6 +68,7 @@ function ScaleButton({
   selectedColor,
   mainText,
   isSelected,
+  siblingSelected,
   onPress,
 }: {
   children;
@@ -74,6 +85,7 @@ function ScaleButton({
           borderColor: headerColor,
           borderWidth: isSelected ? 1 : 0,
           borderStyle: "solid",
+          opacity: siblingSelected ? 0.5 : 1,
         },
       ]}
       onPress={onPress}
