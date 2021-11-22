@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/DailyDiaryFormScreen.styles";
 import Colors from "../constants/Colors";
+import Scale from "../components/Scale";
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
@@ -52,6 +53,7 @@ const DailyDiaryFormScreen = observer(
                 </Slider>
                 <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
               </HStack>
+              <Scale />
             </Box>
           </VStack>
         </VStack>

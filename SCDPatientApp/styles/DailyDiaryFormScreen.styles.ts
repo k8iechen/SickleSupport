@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 5,
     color: Colors.selection
-  }
+  },
+
 });
 
 export default styles;
