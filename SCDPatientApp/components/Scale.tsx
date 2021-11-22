@@ -2,41 +2,61 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
 
-const scaleItems = [
-  {
-    header: 1,
-    text: "Awful",
-    color: "#EF8D8A",
-    selectColor: "#FBE7E7",
-  },
-  {
-    header: 2,
-    text: "Poor",
-    color: "#F4B482",
-    selectColor: "#FCEFE6",
-  },
-  {
-    header: 3,
-    text: "OK",
-    color: "#F7D948",
-    selectColor: "#FEF7D1",
-  },
-  {
-    header: 4,
-    text: "Good",
-    color: "#82D098",
-    selectColor: "#E3F5E9",
-  },
-  {
-    header: 5,
-    text: "Great",
-    color: "#60B4AF",
-    selectColor: "#DDEFEF",
-  },
-];
-
-function Scale() {
+function Scale({ data, reverse }) {
   const [selectedButton, setSelectedButton] = React.useState(-1);
+
+  const baseScaleItems = [
+    {
+      header: 1,
+      text: "",
+      color: "#EF8D8A",
+      selectColor: "#FBE7E7",
+    },
+    {
+      header: 2,
+      text: "",
+      color: "#F4B482",
+      selectColor: "#FCEFE6",
+    },
+    {
+      header: 3,
+      text: "",
+      color: "#F7D948",
+      selectColor: "#FEF7D1",
+    },
+    {
+      header: 4,
+      text: "",
+      color: "#82D098",
+      selectColor: "#E3F5E9",
+    },
+    {
+      header: 5,
+      text: "",
+      color: "#60B4AF",
+      selectColor: "#DDEFEF",
+    },
+  ];
+  const scaleItems = baseScaleItems.map((base, idx) => {
+    if (reverse) {
+      var tmpColor = base.color;
+      var tmpSelectColor = base.selectColor;
+      if (idx == 0) {
+        base.color = baseScaleItems[4].color;
+        base.selectColor = baseScaleItems[4].selectColor;
+        baseScaleItems[4].color = tmpColor;
+        baseScaleItems[4].selectColor = tmpSelectColor;
+      }
+      if (idx == 1) {
+        base.color = baseScaleItems[3].color;
+        base.selectColor = baseScaleItems[3].selectColor;
+        baseScaleItems[3].color = tmpColor;
+        baseScaleItems[3].selectColor = tmpSelectColor;
+      }
+    }
+    base.text = data[idx];
+    return base;
+  });
 
   return (
     <HStack space={3} style={styles.scale}>
@@ -114,13 +134,13 @@ const styles = StyleSheet.create({
   scale: {
     width: "100%",
     justifyContent: "center",
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 12,
+    marginBottom: 20,
   },
 
   scaleButton: {
-    width: 55,
-    height: 55,
+    width: 57,
+    height: 57,
   },
 
   scaleButtonHeader: {

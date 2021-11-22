@@ -24,8 +24,16 @@ const DailyDiaryFormScreen = observer(
             <Image source={require("../assets/icons/back.png")} />
           </TouchableOpacity>
           <Text style={styles.title}>Daily Diary Entry</Text>
-          <VStack space={10} style={styles.form}>
-            <Box rounded="lg" style={styles.card}>
+          <VStack style={styles.form}>
+            <Box
+              rounded="lg"
+              style={[
+                styles.card,
+                {
+                  marginTop: 16,
+                },
+              ]}
+            >
               <HStack space={2} style={styles.cardHeader}>
                 <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
                 <Text style={[styles.cardText, styles.sleepText]}>8h 30</Text>
@@ -53,7 +61,26 @@ const DailyDiaryFormScreen = observer(
                 </Slider>
                 <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
               </HStack>
-              <Scale />
+              <Scale data={["Awful", "Poor", "OK", "Good", "Great"]} />
+            </Box>
+
+            <Box
+              rounded="lg"
+              style={[
+                styles.card,
+                {
+                  marginTop: 10,
+                  marginBottom: 19,
+                },
+              ]}
+            >
+              <HStack space={2} style={styles.cardHeader}>
+                <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
+              </HStack>
+              <Scale
+                data={["Lowest", "Low", "Medium", "High", "Highest"]}
+                reverse={true}
+              />
             </Box>
           </VStack>
         </VStack>
