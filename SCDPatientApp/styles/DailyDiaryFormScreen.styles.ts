@@ -55,6 +55,10 @@ const styles = StyleSheet.create({
 
   bottomCard: {
     marginBottom: 16,
+    marginTop: 5,
+    // marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
 
   cardText: {
@@ -86,6 +90,8 @@ const styles = StyleSheet.create({
     width: "100%",
     marginLeft: 15,
     marginRight: 15,
+    justifyContent: "center",
+    marginTop: 5,
   },
 
   sleepSliderText: {
@@ -99,6 +105,16 @@ const styles = StyleSheet.create({
     marginBottom: 13,
     height: 56,
     color: Colors.successGreen,
+  },
+  cardHeader: {
+    marginTop: 5,
+    alignItems: "center",
+  },
+
+  sleepText: {
+    fontSize: 18,
+    marginTop: 5,
+    color: Colors.selection,
   },
 });
 

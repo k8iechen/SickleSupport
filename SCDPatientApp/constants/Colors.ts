@@ -10,6 +10,8 @@ const Colors = {
   successGreen: "#5DB075",
   unselected: "#F1F3F6",
   darkColor: "#3B4256",
+  selection: "#6A6DCD",
+  success: "#5DB075",
 };
 
 export default Colors;

@@ -56,5 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     color: Colors.darkGrey,
+    borderColor: Colors.darkGrey,
+    borderRadius: 6,
   },
 });
