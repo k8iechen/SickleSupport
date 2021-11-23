@@ -12,6 +12,7 @@ const Colors = {
   darkColor: "#3B4256",
   selection: "#6A6DCD",
   success: "#5DB075",
+  white: "#FFFFFF",
 };
 
 export default Colors;

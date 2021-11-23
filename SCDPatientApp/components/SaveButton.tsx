@@ -8,7 +8,7 @@ type TSaveButtonProps = {
 
 const SaveButton = ({ onPress }: TSaveButtonProps) => {
   return (
-    <Button style={styles.saveButton} onPress={() => onPress()}>
+    <Button style={styles.saveButton} onPress={onPress}>
       <Text style={styles.saveText}>Save</Text>
     </Button>
   );

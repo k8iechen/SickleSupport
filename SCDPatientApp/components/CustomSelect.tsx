@@ -46,6 +46,7 @@ const CustomSelect = ({
         textInputProps={{ editable: false }}
         searchInputPlaceholderText={selectText}
         searchIcon={false}
+        tagRemoveIconColor={Colors.darkColor}
         searchInputStyle={{
           color: Colors.darkGrey,
           fontFamily: "Poppins-Regular",
@@ -59,7 +60,6 @@ const CustomSelect = ({
           borderColor: Colors.darkColor,
         }}
         styleInputGroup={{
-          marginBottom: 20,
           marginRight: 10,
           marginTop: 20,
           backgroundColor: Colors.unselected,
@@ -76,7 +76,6 @@ const CustomSelect = ({
           backgroundColor: Colors.unselected,
           borderColor: Colors.backButtonArrow,
         }}
-        styleTextDropdown={{}}
         styleTextDropdownSelected={{
           backgroundColor: Colors.unselected,
           borderColor: Colors.backButtonArrow,

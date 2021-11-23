@@ -20,10 +20,6 @@ const styles = StyleSheet.create({
     color: Colors.title,
   },
 
-  // backImage: {
-  //   color: Colors.backButtonArrow,
-  // },
-
   backButton: {
     width: 48,
     height: 48,
@@ -44,19 +40,6 @@ const styles = StyleSheet.create({
 
   card: {
     backgroundColor: "#fff",
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
-  },
-
-  topCard: {
-    marginTop: 16,
-  },
-
-  bottomCard: {
-    marginBottom: 16,
-    marginTop: 5,
-    // marginBottom: 5,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -88,8 +71,6 @@ const styles = StyleSheet.create({
 
   sleepSlider: {
     width: "100%",
-    marginLeft: 15,
-    marginRight: 15,
     justifyContent: "center",
     marginTop: 5,
   },

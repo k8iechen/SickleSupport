@@ -7,7 +7,7 @@ export interface IDiaryStore {
   addDiaryEntry: (
     patient: TPatient | null | undefined,
     entry: TDiaryEntry
-  ) => Promise<void>;
+  ) => Promise<boolean>;
 }
 
 const DiaryStore = (): IDiaryStore => {
@@ -15,16 +15,18 @@ const DiaryStore = (): IDiaryStore => {
     addDiaryEntry: async (
       patient: TPatient | null | undefined,
       entry: TDiaryEntry
-    ): Promise<void> => {
+    ): Promise<boolean> => {
       try {
         const patientId = patient?.uid?.toString();
         if (patientId) {
           await addDoc(collection(db, "patients", patientId, "diaries"), entry);
+          return true;
         } else {
           throw "Error: there is no patient in the auth context";
         }
       } catch (error) {
         console.log(error);
+        return false;
       }
     },
   };
