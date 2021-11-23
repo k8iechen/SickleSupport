@@ -8,7 +8,7 @@ interface TCustomSelectOption {
   name: string;
 }
 
-// TODO: investigate the error related to nesting this within a scoll view
+// TODO: investigate how to handle nesting of lists
 const CustomSelect = ({
   single = false,
   selectText,

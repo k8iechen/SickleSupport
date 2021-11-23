@@ -1,17 +1,17 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
 
-// TODO: all field are required
 export type TDiaryEntry = {
+  uid?: string;
   created_at: FieldValue;
   updated_at: FieldValue;
-  sleepHours: string;
-  sleepRating: number;
-  mood: string;
+  sleep_time: number;
+  sleep_rating: number;
+  mood: number;
   stress: number;
   medication_compliance: boolean;
   medications: string[];
   pain: boolean;
-  painType: string;
+  pain_type: string;
   vision_impaired: boolean;
   priapism_episode: boolean;
   fever: boolean;

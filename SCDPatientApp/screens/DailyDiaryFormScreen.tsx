@@ -24,6 +24,7 @@ import Colors from "../constants/Colors";
 import Scale from "../components/Scale";
 import PictureScale from "../components/PictureScale";
 import ToggleButton from "react-native-toggle-element";
+import { Moods } from "../constants/Moods";
 
 const diaryMedicationTypes = [
   {
@@ -86,6 +87,10 @@ const DailyDiaryFormScreen = observer(
       return timeText;
     }
 
+    const sleepToMins = () => {
+      return Math.floor(sleepHours / 2) * 60 + (sleepHours % 2 == 0 ? 0 : 30);
+    };
+
     const toggleMedicineTaken = (newvalue) => {
       setMedicationCompliance(newvalue);
       setMedications([]);
@@ -111,14 +116,14 @@ const DailyDiaryFormScreen = observer(
       const entry: TDiaryEntry = {
         created_at: serverTimestamp(),
         updated_at: serverTimestamp(),
-        sleepRating: selectedSleepRating,
-        sleepHours: getTimeText(),
-        mood: selectedMoodRating,
+        sleep_rating: selectedSleepRating,
+        sleep_time: sleepToMins(),
+        mood: Moods.indexOf(selectedMoodRating),
         stress: selectedStressRating,
         medication_compliance: medicationCompliance,
         medications: medications,
         pain: painExperienced,
-        painType: painType[0],
+        pain_type: painType[0],
         vision_impaired: visionImpaired,
         priapism_episode: priapism,
         fever: fever,
@@ -238,7 +243,7 @@ const DailyDiaryFormScreen = observer(
               <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
             </HStack>
             <PictureScale
-              data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
+              data={Moods}
               pictureData={[
                 require("../assets/images/stress_face.png"),
                 require("../assets/images/sad_face.png"),
