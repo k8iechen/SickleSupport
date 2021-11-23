@@ -7,6 +7,7 @@ const Colors = {
   backButtonBackground: "#F8F8F6",
   backButtonArrow: "#9B9B9B",
   selection: "#6A6DCD",
+  darkGrey: "#545D69",
 };
 
 export default Colors;
