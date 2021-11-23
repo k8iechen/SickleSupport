@@ -15,6 +15,7 @@ const DailyDiaryFormScreen = observer(
     const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
     const [selectedMoodRating, setSelectedMoodRating] = React.useState("");
     const [sleepTime, setSleepTime] = React.useState(0);
+    const [scrollEnabled, setScrollEnabled] = React.useState(true);
 
     function getTimeText() {
       if (sleepTime == 0) {
@@ -28,7 +29,7 @@ const DailyDiaryFormScreen = observer(
     }
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
         <VStack>
           <TouchableOpacity
             activeOpacity={0.5}
@@ -73,7 +74,11 @@ const DailyDiaryFormScreen = observer(
                   }}
                   value={sleepTime}
                   onChange={(v) => {
+                    setScrollEnabled(false);
                     setSleepTime(Math.floor(v));
+                  }}
+                  onChangeEnd={(v) => {
+                    setScrollEnabled(true);
                   }}
                   minValue={0}
                   maxValue={48}
