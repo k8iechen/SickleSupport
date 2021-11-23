@@ -14,9 +14,18 @@ const DailyDiaryFormScreen = observer(
     const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
     const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
     const [selectedMoodRating, setSelectedMoodRating] = React.useState("");
+    const [sleepTime, setSleepTime] = React.useState(0);
 
-    const [onChangeValue, setOnChangeValue] = React.useState(70);
-    const [onChangeEndValue, setOnChangeEndValue] = React.useState(70);
+    function getTimeText() {
+      if (sleepTime == 0) {
+        return sleepTime + "h";
+      }
+      var timeText = Math.floor(sleepTime / 2) + "h";
+      if (sleepTime % 2 != 0) {
+        timeText += " 30";
+      }
+      return timeText;
+    }
 
     return (
       <ScrollView style={styles.container}>
@@ -41,22 +50,33 @@ const DailyDiaryFormScreen = observer(
             >
               <HStack space={2} style={styles.cardHeader}>
                 <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
-                <Text style={[styles.cardText, styles.sleepText]}>8h 30</Text>
+                <Text style={[styles.cardText, styles.sleepText]}>
+                  {getTimeText()}
+                </Text>
               </HStack>
               <HStack space={3} style={styles.sleepSlider}>
-                <Text style={[styles.cardText, styles.sleepSliderText]}>-</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (sleepTime > 0) {
+                      setSleepTime(sleepTime - 1);
+                    }
+                  }}
+                >
+                  <Text style={[styles.cardText, styles.sleepSliderText]}>
+                    -
+                  </Text>
+                </TouchableOpacity>
                 <Slider
                   style={{
                     width: "75%",
                     zIndex: 1,
                   }}
-                  defaultValue={70}
+                  value={sleepTime}
                   onChange={(v) => {
-                    setOnChangeValue(Math.floor(v));
+                    setSleepTime(Math.floor(v));
                   }}
-                  onChangeEnd={(v) => {
-                    v && setOnChangeEndValue(Math.floor(v));
-                  }}
+                  minValue={0}
+                  maxValue={48}
                   size="lg"
                 >
                   <Slider.Track bg={"#c1d9f7"}>
@@ -64,7 +84,17 @@ const DailyDiaryFormScreen = observer(
                   </Slider.Track>
                   <Slider.Thumb bg={Colors.selection} />
                 </Slider>
-                <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (sleepTime < 48) {
+                      setSleepTime(sleepTime + 1);
+                    }
+                  }}
+                >
+                  <Text style={[styles.cardText, styles.sleepSliderText]}>
+                    +
+                  </Text>
+                </TouchableOpacity>
               </HStack>
               <Scale
                 data={["Awful", "Poor", "OK", "Good", "Great"]}

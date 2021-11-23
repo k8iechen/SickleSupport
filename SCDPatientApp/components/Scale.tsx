@@ -2,7 +2,17 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
 
-function Scale({ data, reverse, selectedButton, setSelectedButton }) {
+function Scale({
+  data,
+  reverse,
+  selectedButton,
+  setSelectedButton,
+}: {
+  data: Array<string>;
+  reverse: string;
+  selectedButton: Number;
+  setSelectedButton;
+}) {
   const baseScaleItems = [
     {
       header: 1,
@@ -93,7 +103,12 @@ function ScaleButton({
   onPress,
 }: {
   children;
-  isSelected?: boolean;
+  headerText: string;
+  headerColor: string;
+  selectedColor: string;
+  mainText: string;
+  isSelected: boolean;
+  siblingSelected: boolean;
   onPress: () => void;
 }) {
   return (

@@ -7,6 +7,11 @@ function PictureScale({
   data,
   selectedButton,
   setSelectedButton,
+}: {
+  pictureData: Array<any>;
+  data: Array<String>;
+  selectedButton: string;
+  setSelectedButton;
 }) {
   const scaleItems = [];
   data.forEach((item, idx) => {
@@ -50,7 +55,10 @@ function PictureScaleButton({
   onPress,
 }: {
   children;
-  isSelected?: boolean;
+  headerPicture;
+  mainText: string;
+  isSelected: boolean;
+  siblingSelected: boolean;
   onPress: () => void;
 }) {
   return (
