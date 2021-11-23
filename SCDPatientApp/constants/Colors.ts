@@ -8,6 +8,7 @@ const Colors = {
   backButtonArrow: "#9B9B9B",
   selection: "#6A6DCD",
   darkGrey: "#545D69",
+  success: "#5DB075"
 };
 
 export default Colors;

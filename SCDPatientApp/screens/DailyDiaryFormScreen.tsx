@@ -1,6 +1,15 @@
 import * as React from "react";
 import { Text, Image, TouchableOpacity } from "react-native";
-import { Slider, VStack, ScrollView, Box, HStack, Button } from "native-base";
+import {
+  Slider,
+  VStack,
+  ScrollView,
+  Box,
+  HStack,
+  Button,
+  Center,
+  View,
+} from "native-base";
 import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";
@@ -8,6 +17,7 @@ import styles from "../styles/DailyDiaryFormScreen.styles";
 import Colors from "../constants/Colors";
 import Scale from "../components/Scale";
 import PictureScale from "../components/PictureScale";
+import ToggleButton from "react-native-toggle-element";
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
@@ -16,6 +26,7 @@ const DailyDiaryFormScreen = observer(
     const [selectedMoodRating, setSelectedMoodRating] = React.useState("");
     const [sleepTime, setSleepTime] = React.useState(0);
     const [scrollEnabled, setScrollEnabled] = React.useState(true);
+    const [toggleValue, setToggleValue] = React.useState(false);
 
     function getTimeText() {
       if (sleepTime == 0) {
@@ -139,6 +150,61 @@ const DailyDiaryFormScreen = observer(
               <HStack space={2} style={styles.cardHeader}>
                 <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
               </HStack>
+              <Center>
+                <ToggleButton
+                  value={toggleValue}
+                  onPress={(newState) => setToggleValue(newState)}
+                  trackBar={{
+                    activeBackgroundColor: "#F6F6F6",
+                    inActiveBackgroundColor: "#F6F6F6",
+                    borderActiveColor: "#E8E8E8",
+                    borderInActiveColor: "#E8E8E8",
+                    borderWidth: 1,
+                    width: 250,
+                  }}
+                  thumbButton={{
+                    width: 125,
+                    activeBackgroundColor: "#ffffff",
+                    inActiveBackgroundColor: "#ffffff",
+                  }}
+                  leftComponent={
+                    <View
+                      style={{
+                        width: 125,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: toggleValue ? "#BDBDBD" : Colors.selection,
+                        }}
+                      >
+                        No
+                      </Text>
+                    </View>
+                  }
+                  rightComponent={
+                    <View
+                      style={{
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: toggleValue ? Colors.success : "#BDBDBD",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    </View>
+                  }
+                />
+              </Center>
               <PictureScale
                 data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
                 pictureData={[
