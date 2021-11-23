@@ -60,7 +60,7 @@ const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
     const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
     const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
-    const [selectedMoodRating, setSelectedMoodRating] = React.useState("");
+    const [selectedMoodRating, setSelectedMoodRating] = React.useState(-1);
     const [sleepHours, setSleepHours] = React.useState(0);
     const [scrollEnabled, setScrollEnabled] = React.useState(true);
     const [medicationCompliance, setMedicationCompliance] =
@@ -96,17 +96,22 @@ const DailyDiaryFormScreen = observer(
       setMedications([]);
     };
 
+    const togglePainExperienced = (newvalue) => {
+      setPainExperienced(newvalue);
+      setPainType([]);
+    };
+
     const isValidForm = () => {
       const medicineValid = medicationCompliance
-        ? medications.length != 0
-        : medications.length == 0;
+        ? medications.length !== 0
+        : medications.length === 0;
       const painValid = painExperienced
-        ? painType.length != 0
-        : painType.length == 0;
+        ? painType.length !== 0
+        : painType.length === 0;
       return (
-        selectedSleepRating != -1 &&
-        selectedStressRating != -1 &&
-        selectedMoodRating &&
+        selectedSleepRating !== -1 &&
+        selectedStressRating !== -1 &&
+        selectedMoodRating !== -1 &&
         medicineValid &&
         painValid
       );
@@ -118,12 +123,12 @@ const DailyDiaryFormScreen = observer(
         updated_at: serverTimestamp(),
         sleep_rating: selectedSleepRating,
         sleep_time: sleepToMins(),
-        mood: Moods.indexOf(selectedMoodRating),
+        mood: selectedMoodRating,
         stress: selectedStressRating,
         medication_compliance: medicationCompliance,
         medications: medications,
         pain: painExperienced,
-        pain_type: painType[0],
+        pain_type: painExperienced ? painType[0] : "",
         vision_impaired: visionImpaired,
         priapism_episode: priapism,
         fever: fever,
@@ -132,6 +137,7 @@ const DailyDiaryFormScreen = observer(
         console.log("invalid form!");
         return;
       }
+      console.log("valid form");
       await diaryStore.addDiaryEntry(authStore.patient, entry);
     };
 
@@ -243,7 +249,7 @@ const DailyDiaryFormScreen = observer(
               <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
             </HStack>
             <PictureScale
-              data={Moods}
+              data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
               pictureData={[
                 require("../assets/images/stress_face.png"),
                 require("../assets/images/sad_face.png"),
@@ -334,13 +340,7 @@ const DailyDiaryFormScreen = observer(
             {medicationCompliance && (
               <>
                 <Text style={styles.questionText}>Which medication?</Text>
-                <Box
-                  style={{
-                    marginLeft: 18,
-                    marginRight: 18,
-                    marginBottom: 18,
-                  }}
-                >
+                <Box style={styles.selectDropdown}>
                   <CustomSelect
                     single={false}
                     choices={diaryMedicationTypes}
@@ -374,7 +374,7 @@ const DailyDiaryFormScreen = observer(
             >
               <ToggleButton
                 value={painExperienced}
-                onPress={setPainExperienced}
+                onPress={togglePainExperienced}
                 trackBar={{
                   activeBackgroundColor: "#F6F6F6",
                   inActiveBackgroundColor: "#F6F6F6",
@@ -431,13 +431,7 @@ const DailyDiaryFormScreen = observer(
                 <Text style={[styles.questionText]}>
                   Which pain are you feeling?
                 </Text>
-                <Box
-                  style={{
-                    marginLeft: 17,
-                    marginRight: 17,
-                    marginBottom: painExperienced ? 18 : 0,
-                  }}
-                >
+                <Box style={styles.selectDropdown}>
                   <CustomSelect
                     single={true}
                     selectText="Select pain type"
@@ -451,7 +445,13 @@ const DailyDiaryFormScreen = observer(
           </Box>
           <Box
             rounded="lg"
-            style={[styles.card, { marginTop: 10, marginBottom: 6 }]}
+            style={[
+              styles.card,
+              {
+                marginTop: 10,
+                marginBottom: 6,
+              },
+            ]}
           >
             <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
             <Text style={[styles.questionText, styles.firstQuestion]}>
