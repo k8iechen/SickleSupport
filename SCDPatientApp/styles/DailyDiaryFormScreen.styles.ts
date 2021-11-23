@@ -3,18 +3,16 @@ import Colors from "../constants/Colors";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     paddingTop: 36,
   },
 
   title: {
-    position: "absolute",
     width: 233,
     height: 38,
-    left: 28,
-    top: 115,
-    fontFamily: "Poppins",
+    marginLeft: 28,
+    marginTop: 18,
+    fontFamily: "Poppins-SemiBold",
     fontStyle: "normal",
     fontWeight: "600",
     fontSize: 28,
@@ -27,16 +25,63 @@ const styles = StyleSheet.create({
   // },
 
   backButton: {
-    position: "absolute",
     width: 48,
     height: 48,
-    left: 28,
-    top: 49,
+    marginLeft: 28,
+    marginTop: 49,
     backgroundColor: Colors.backButtonBackground,
     borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
   },
+
+  form: {
+    marginTop: 10,
+    backgroundColor: "#EDECF4",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+
+  card: {
+    backgroundColor: "#fff",
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+
+  cardText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 24,
+  },
+
+  cardTitle: {
+    marginLeft: 17,
+    marginTop: 5,
+  },
+
+  sleepSlider: {
+    width: "100%",
+    justifyContent: "center",
+    marginTop: 5,
+  },
+
+  sleepSliderText: {
+    color: Colors.cardText,
+  },
+
+  cardHeader: {
+    marginTop: 5,
+    alignItems: "center",
+  },
+
+  sleepText: {
+    fontSize: 18,
+    marginTop: 5,
+    color: Colors.selection
+  },
+
 });
 
 export default styles;

@@ -53,11 +53,11 @@ const OnboardingScreen = observer(
             />
             <Text style={styles.questionText}>What is your age?</Text>
             <ButtonRadio.Group>
-              <ButtonRadio onPress={() => setAge(Age.Child)}>0-9</ButtonRadio>
+              <ButtonRadio onPress={() => setAge(Age.Child)}>0-11</ButtonRadio>
               <ButtonRadio onPress={() => setAge(Age.Preteen)}>
-                10-15
+                12-17
               </ButtonRadio>
-              <ButtonRadio onPress={() => setAge(Age.Teen)}>15-24</ButtonRadio>
+              <ButtonRadio onPress={() => setAge(Age.Teen)}>18-24</ButtonRadio>
               <ButtonRadio onPress={() => setAge(Age.Adult)}>25-64</ButtonRadio>
               <ButtonRadio onPress={() => setAge(Age.Senior)}>65+</ButtonRadio>
               <ButtonRadio onPress={() => setAge(null)}>

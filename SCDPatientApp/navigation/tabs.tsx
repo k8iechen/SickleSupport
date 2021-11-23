@@ -1,7 +1,10 @@
 import React from "react";
 import { Image } from "react-native";
-import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import {
+  BottomTabBarButtonProps,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screens/HomeScreen";
 import HistoryScreen from "../screens/HistoryScreen";
@@ -37,6 +40,7 @@ const Tabs = () => {
       </Stack.Navigator>
     );
   }
+
   return (
     <Navigator
       screenOptions={{
@@ -57,15 +61,23 @@ const Tabs = () => {
       <Screen
         name="Home"
         component={HomeNavigator}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarItem
-              focused={focused}
-              icon={require("../assets/icons/home.png")}
-              label="Home"
-            />
-          ),
-          headerShown: false,
+        options={({ route }) => {
+          var homeOptions = {
+            tabBarIcon: ({ focused }) => (
+              <TabBarItem
+                focused={focused}
+                icon={require("../assets/icons/home.png")}
+                label="Home"
+              />
+            ),
+            headerShown: false,
+          };
+          if (getFocusedRouteNameFromRoute(route) == "DailyDiaryFormScreen") {
+            homeOptions["tabBarStyle"] = {
+              display: "none",
+            };
+          }
+          return homeOptions;
         }}
       />
       <Screen
