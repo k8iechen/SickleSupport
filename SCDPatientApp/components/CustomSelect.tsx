@@ -8,6 +8,7 @@ interface TCustomSelectOption {
   name: string;
 }
 
+// TODO: investigate the error related to nesting this within a scoll view
 const CustomSelect = ({
   single = false,
   selectText,
@@ -42,6 +43,9 @@ const CustomSelect = ({
         selectedItemIconColor={Colors.darkGrey}
         selectedItemFontFamily="Poppins-Medium"
         textColor={Colors.darkColor}
+        textInputProps={{ editable: false }}
+        searchInputPlaceholderText={selectText}
+        searchIcon={false}
         searchInputStyle={{
           color: Colors.darkGrey,
           fontFamily: "Poppins-Regular",
@@ -63,13 +67,6 @@ const CustomSelect = ({
         }}
         styleItemsContainer={{
           marginTop: 5,
-          marginBottom: 5,
-          backgroundColor: Colors.unselected,
-        }}
-        styleListContainer={{
-          backgroundColor: Colors.unselected,
-        }}
-        styleMainWrapper={{
           backgroundColor: Colors.unselected,
         }}
         styleRowList={{
