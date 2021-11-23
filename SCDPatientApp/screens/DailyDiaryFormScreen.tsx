@@ -512,10 +512,10 @@ const DailyDiaryFormScreen = observer(
                 }
               />
             </Center>
+            <Text style={[styles.questionText]}>
+              Have you had a priapism episode today?
+            </Text>
             <Center>
-              <Text style={[styles.questionText]}>
-                Have you had a priapism episode today?
-              </Text>
               <ToggleButton
                 value={priapism}
                 onPress={setPriapism}
