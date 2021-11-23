@@ -29,12 +29,12 @@ function PictureScale({
           key={scaleItem.id}
           headerPicture={scaleItem.header}
           mainText={scaleItem.text}
-          isSelected={selectedButton == scaleItem.text}
+          isSelected={selectedButton === scaleItem.text}
           siblingSelected={
-            selectedButton !== "" && selectedButton != scaleItem.text
+            selectedButton !== "" && selectedButton !== scaleItem.text
           }
           onPress={() => {
-            if (selectedButton == scaleItem.text) {
+            if (selectedButton === scaleItem.text) {
               setSelectedButton("");
             } else {
               setSelectedButton(scaleItem.text);

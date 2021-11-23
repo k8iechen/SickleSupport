@@ -49,13 +49,13 @@ function Scale({
     if (reverse) {
       var tmpColor = base.color;
       var tmpSelectColor = base.selectColor;
-      if (idx == 0) {
+      if (idx === 0) {
         base.color = baseScaleItems[4].color;
         base.selectColor = baseScaleItems[4].selectColor;
         baseScaleItems[4].color = tmpColor;
         baseScaleItems[4].selectColor = tmpSelectColor;
       }
-      if (idx == 1) {
+      if (idx === 1) {
         base.color = baseScaleItems[3].color;
         base.selectColor = baseScaleItems[3].selectColor;
         baseScaleItems[3].color = tmpColor;
@@ -75,12 +75,12 @@ function Scale({
           headerColor={scaleItem.color}
           selectedColor={scaleItem.selectColor}
           mainText={scaleItem.text}
-          isSelected={selectedButton == scaleItem.header}
+          isSelected={selectedButton === scaleItem.header}
           siblingSelected={
-            selectedButton != -1 && selectedButton != scaleItem.header
+            selectedButton !== -1 && selectedButton !== scaleItem.header
           }
           onPress={() => {
-            if (selectedButton == scaleItem.header) {
+            if (selectedButton === scaleItem.header) {
               setSelectedButton(-1);
             } else {
               setSelectedButton(scaleItem.header);
