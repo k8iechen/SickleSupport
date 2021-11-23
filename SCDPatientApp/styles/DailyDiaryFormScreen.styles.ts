@@ -44,13 +44,37 @@ const styles = StyleSheet.create({
 
   card: {
     backgroundColor: "#fff",
-    margin: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+
+  topCard: {
+    marginTop: 16,
+  },
+
+  bottomCard: {
+    marginBottom: 16,
   },
 
   cardText: {
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
     fontSize: 24,
+  },
+
+  questionText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 14,
+    color: Colors.cardText,
+    marginLeft: 17,
+    marginBottom: 15,
+    marginTop: 26,
+  },
+
+  firstQuestion: {
+    marginTop: 17,
   },
 
   cardTitle: {
