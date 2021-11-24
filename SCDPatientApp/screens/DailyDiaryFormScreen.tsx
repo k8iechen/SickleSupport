@@ -11,6 +11,7 @@ import {
   Modal,
 } from "native-base";
 import { observer } from "mobx-react-lite";
+import { WarningIcon } from "native-base";
 
 import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/DailyDiaryFormScreen.styles";
@@ -181,27 +182,19 @@ const DailyDiaryFormScreen = observer(
 
     return (
       <>
-        <Modal isOpen={showSuccessModal} onClose={closeSuccessModal} size="lg">
-          <Modal.Content maxWidth="350">
-            <Modal.CloseButton />
-            <Modal.Header>Success!</Modal.Header>
-            <Modal.Body>
-              <VStack space={3}>
-                <HStack alignItems="center" justifyContent="space-between">
-                  <Text>We have recorded your diary entry.</Text>
-                </HStack>
-              </VStack>
-            </Modal.Body>
-          </Modal.Content>
-        </Modal>
         <Modal isOpen={showErrorModal} onClose={closeErrorModal} size="lg">
           <Modal.Content maxWidth="350">
             <Modal.CloseButton />
-            <Modal.Header>Error</Modal.Header>
+            <Modal.Header>
+              <HStack>
+                <WarningIcon style={{color: Colors.darkColor}} />
+                <Text style={[styles.cardText, {marginLeft: 10}]}>Error</Text>
+              </HStack>
+            </Modal.Header>
             <Modal.Body>
               <VStack space={3}>
                 <HStack alignItems="center" justifyContent="space-between">
-                  <Text>{errorMsg}</Text>
+                  <Text style={styles.errorModalText}>{errorMsg}</Text>
                 </HStack>
               </VStack>
             </Modal.Body>
