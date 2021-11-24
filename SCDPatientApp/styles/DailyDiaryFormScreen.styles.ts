@@ -60,6 +60,13 @@ const styles = StyleSheet.create({
     marginTop: 26,
   },
 
+  errorModalText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 14,
+    marginBottom: 30
+  },
+
   firstQuestion: {
     marginTop: 17,
   },
