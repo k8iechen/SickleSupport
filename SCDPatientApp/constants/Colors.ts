@@ -6,9 +6,13 @@ const Colors = {
   title: "#0A0909",
   backButtonBackground: "#F8F8F6",
   backButtonArrow: "#9B9B9B",
-  selection: "#6A6DCD",
   darkGrey: "#545D69",
-  success: "#5DB075"
+  successGreen: "#5DB075",
+  unselected: "#F1F3F6",
+  darkColor: "#3B4256",
+  selection: "#6A6DCD",
+  success: "#5DB075",
+  white: "#FFFFFF",
 };
 
 export default Colors;

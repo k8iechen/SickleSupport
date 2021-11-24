@@ -9,7 +9,7 @@ function Scale({
   setSelectedButton,
 }: {
   data: Array<string>;
-  reverse: string;
+  reverse: boolean;
   selectedButton: Number;
   setSelectedButton;
 }) {

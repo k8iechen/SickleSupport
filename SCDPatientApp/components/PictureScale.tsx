@@ -10,7 +10,7 @@ function PictureScale({
 }: {
   pictureData: Array<any>;
   data: Array<String>;
-  selectedButton: string;
+  selectedButton: number;
   setSelectedButton;
 }) {
   const scaleItems = [];
@@ -29,15 +29,15 @@ function PictureScale({
           key={scaleItem.id}
           headerPicture={scaleItem.header}
           mainText={scaleItem.text}
-          isSelected={selectedButton === scaleItem.text}
+          isSelected={selectedButton === scaleItem.id}
           siblingSelected={
-            selectedButton !== "" && selectedButton !== scaleItem.text
+            selectedButton !== -1 && selectedButton !== scaleItem.id
           }
           onPress={() => {
-            if (selectedButton === scaleItem.text) {
-              setSelectedButton("");
+            if (selectedButton === scaleItem.id) {
+              setSelectedButton(-1);
             } else {
-              setSelectedButton(scaleItem.text);
+              setSelectedButton(scaleItem.id);
             }
           }}
         />

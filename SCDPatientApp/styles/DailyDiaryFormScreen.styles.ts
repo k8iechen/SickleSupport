@@ -20,10 +20,6 @@ const styles = StyleSheet.create({
     color: Colors.title,
   },
 
-  // backImage: {
-  //   color: Colors.backButtonArrow,
-  // },
-
   backButton: {
     width: 48,
     height: 48,
@@ -44,8 +40,6 @@ const styles = StyleSheet.create({
 
   card: {
     backgroundColor: "#fff",
-    marginTop: 5,
-    marginBottom: 5,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -54,6 +48,20 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
     fontSize: 24,
+  },
+
+  questionText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 14,
+    color: Colors.cardText,
+    marginLeft: 17,
+    marginBottom: 15,
+    marginTop: 26,
+  },
+
+  firstQuestion: {
+    marginTop: 17,
   },
 
   cardTitle: {
@@ -71,6 +79,14 @@ const styles = StyleSheet.create({
     color: Colors.cardText,
   },
 
+  saveButton: {
+    marginLeft: 28,
+    marginRight: 28,
+    marginTop: 13,
+    marginBottom: 13,
+    height: 56,
+    color: Colors.successGreen,
+  },
   cardHeader: {
     marginTop: 5,
     alignItems: "center",
@@ -79,9 +95,14 @@ const styles = StyleSheet.create({
   sleepText: {
     fontSize: 18,
     marginTop: 5,
-    color: Colors.selection
+    color: Colors.selection,
   },
 
+  selectDropdown: {
+    marginLeft: 17,
+    marginRight: 17,
+    marginBottom: 18,
+  },
 });
 
 export default styles;

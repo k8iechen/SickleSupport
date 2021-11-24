@@ -6,50 +6,218 @@ import {
   ScrollView,
   Box,
   HStack,
-  Button,
   Center,
   View,
+  Modal,
 } from "native-base";
 import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/DailyDiaryFormScreen.styles";
+import SaveButton from "../components/SaveButton";
+import { serverTimestamp } from "firebase/firestore";
+import { TDiaryEntry } from "../models/DiaryEntry";
+import { AuthContext } from "../contexts/AuthContext";
+import { useContext } from "react";
+import DiaryStore from "../stores/dairy.store";
+import CustomSelect from "../components/CustomSelect";
 import Colors from "../constants/Colors";
 import Scale from "../components/Scale";
 import PictureScale from "../components/PictureScale";
 import ToggleButton from "react-native-toggle-element";
 
+const diaryMedicationTypes = [
+  {
+    id: "Hydroxyurea",
+    name: "Hydroxyurea",
+  },
+  {
+    id: "Iron Chelator",
+    name: "Iron Chelator",
+  },
+  {
+    id: "Folic Acid",
+    name: "Folic Acid",
+  },
+  {
+    id: "Vitamin D",
+    name: "Vitamin D",
+  },
+];
+
+const painTypes = [
+  {
+    id: "Chronic",
+    name: "Chronic",
+  },
+  {
+    id: "Acute",
+    name: "Acute",
+  },
+];
+
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
     const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
     const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
-    const [selectedMoodRating, setSelectedMoodRating] = React.useState("");
-    const [sleepTime, setSleepTime] = React.useState(0);
+    const [selectedMoodRating, setSelectedMoodRating] = React.useState(-1);
+    const [sleepHours, setSleepHours] = React.useState(0);
     const [scrollEnabled, setScrollEnabled] = React.useState(true);
-    const [toggleValue, setToggleValue] = React.useState(false);
+    const [medicationCompliance, setMedicationCompliance] =
+      React.useState(false);
+    const [medications, setMedications] = React.useState([]);
+    const [painExperienced, setPainExperienced] = React.useState(false);
+    const [painType, setPainType] = React.useState([]);
+    const [visionImpaired, setVisionImpaired] = React.useState(false);
+    const [priapism, setPriapism] = React.useState(false);
+    const [fever, setFever] = React.useState(false);
+
+    const [showSuccessModal, setShowSuccessModal] = React.useState(false);
+    const [showErrorModal, setShowErrorModal] = React.useState(false);
+    const [errorMsg, setErrorMsg] = React.useState("");
+
+    const authStore = useContext(AuthContext);
+    const diaryStore = DiaryStore();
 
     function getTimeText() {
-      if (sleepTime == 0) {
-        return sleepTime + "h";
+      if (sleepHours == 0) {
+        return sleepHours + "h";
       }
-      var timeText = Math.floor(sleepTime / 2) + "h";
-      if (sleepTime % 2 != 0) {
+      var timeText = Math.floor(sleepHours / 2) + "h";
+      if (sleepHours % 2 != 0) {
         timeText += " 30";
       }
       return timeText;
     }
 
+    const sleepToMins = () => {
+      return Math.floor(sleepHours / 2) * 60 + (sleepHours % 2 == 0 ? 0 : 30);
+    };
+
+    const toggleMedicineTaken = (newvalue) => {
+      setMedicationCompliance(newvalue);
+      setMedications([]);
+    };
+
+    const togglePainExperienced = (newvalue) => {
+      setPainExperienced(newvalue);
+      setPainType([]);
+    };
+
+    const isValidForm = () => {
+      if (selectedSleepRating === -1) {
+        setErrorMsg("Please rate your sleep.");
+        return false;
+      }
+
+      if (selectedStressRating === -1) {
+        setErrorMsg("Please rate your stress.");
+        return false;
+      }
+
+      if (selectedMoodRating === -1) {
+        setErrorMsg("Please rate your mood.");
+        return false;
+      }
+
+      const medicineValid = medicationCompliance
+        ? medications.length !== 0
+        : medications.length === 0;
+      if (!medicineValid) {
+        setErrorMsg("Please select which medication(s) you have taken today.");
+        return false;
+      }
+
+      const painValid = painExperienced
+        ? painType.length !== 0
+        : painType.length === 0;
+      if (!painValid) {
+        setErrorMsg("Please indicate the type of pain you experienced.");
+        return false;
+      }
+
+      return true;
+    };
+
+    const handleSave = async () => {
+      const entry: TDiaryEntry = {
+        created_at: serverTimestamp(),
+        updated_at: serverTimestamp(),
+        sleep_rating: selectedSleepRating,
+        sleep_time: sleepToMins(),
+        mood: selectedMoodRating,
+        stress: selectedStressRating,
+        medication_compliance: medicationCompliance,
+        medications: medications,
+        pain: painExperienced,
+        pain_type: painExperienced ? painType[0] : "",
+        vision_impaired: visionImpaired,
+        priapism_episode: priapism,
+        fever: fever,
+      };
+      if (!isValidForm()) {
+        setShowErrorModal(true);
+        return;
+      }
+      const saved = await diaryStore.addDiaryEntry(authStore.patient, entry);
+      if (!saved) {
+        setErrorMsg(
+          "Apologies, something went wrong on our end! Please click the 'Save' button again."
+        );
+        setShowErrorModal(true);
+      }
+      setErrorMsg("");
+      setShowSuccessModal(true);
+    };
+
+    const closeSuccessModal = () => {
+      setShowSuccessModal(false);
+      navigation.goBack();
+    };
+
+    const closeErrorModal = () => {
+      setShowErrorModal(false);
+    };
+
     return (
-      <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
-        <VStack>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Image source={require("../assets/icons/back.png")} />
-          </TouchableOpacity>
-          <Text style={styles.title}>Daily Diary Entry</Text>
+      <>
+        <Modal isOpen={showSuccessModal} onClose={closeSuccessModal} size="lg">
+          <Modal.Content maxWidth="350">
+            <Modal.CloseButton />
+            <Modal.Header>Success!</Modal.Header>
+            <Modal.Body>
+              <VStack space={3}>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <Text>We have recorded your diary entry.</Text>
+                </HStack>
+              </VStack>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+        <Modal isOpen={showErrorModal} onClose={closeErrorModal} size="lg">
+          <Modal.Content maxWidth="350">
+            <Modal.CloseButton />
+            <Modal.Header>Error</Modal.Header>
+            <Modal.Body>
+              <VStack space={3}>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <Text>{errorMsg}</Text>
+                </HStack>
+              </VStack>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+        <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
+          <VStack>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Image source={require("../assets/icons/back.png")} />
+            </TouchableOpacity>
+            <Text style={styles.title}>Daily Diary Entry</Text>
+          </VStack>
           <VStack style={styles.form}>
             <Box
               rounded="lg"
@@ -69,8 +237,8 @@ const DailyDiaryFormScreen = observer(
               <HStack space={3} style={styles.sleepSlider}>
                 <TouchableOpacity
                   onPress={() => {
-                    if (sleepTime > 0) {
-                      setSleepTime(sleepTime - 1);
+                    if (sleepHours > 0) {
+                      setSleepHours(sleepHours - 1);
                     }
                   }}
                 >
@@ -83,10 +251,10 @@ const DailyDiaryFormScreen = observer(
                     width: "75%",
                     zIndex: 1,
                   }}
-                  value={sleepTime}
+                  value={sleepHours}
                   onChange={(v) => {
                     setScrollEnabled(false);
-                    setSleepTime(Math.floor(v));
+                    setSleepHours(Math.floor(v));
                   }}
                   onChangeEnd={(v) => {
                     setScrollEnabled(true);
@@ -102,8 +270,8 @@ const DailyDiaryFormScreen = observer(
                 </Slider>
                 <TouchableOpacity
                   onPress={() => {
-                    if (sleepTime < 48) {
-                      setSleepTime(sleepTime + 1);
+                    if (sleepHours < 48) {
+                      setSleepHours(sleepHours + 1);
                     }
                   }}
                 >
@@ -114,6 +282,25 @@ const DailyDiaryFormScreen = observer(
               </HStack>
               <Scale
                 data={["Awful", "Poor", "OK", "Good", "Great"]}
+                selectedButton={selectedSleepRating}
+                setSelectedButton={setSelectedSleepRating}
+              />
+            </Box>
+            <Box
+              rounded="lg"
+              style={[
+                styles.card,
+                {
+                  marginTop: 10,
+                },
+              ]}
+            >
+              <HStack style={styles.cardHeader}>
+                <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
+              </HStack>
+              <Scale
+                data={["Lowest", "Low", "Medium", "High", "Highest"]}
+                reverse={true}
                 selectedButton={selectedStressRating}
                 setSelectedButton={setSelectedStressRating}
               />
@@ -124,18 +311,23 @@ const DailyDiaryFormScreen = observer(
                 styles.card,
                 {
                   marginTop: 10,
-                  marginBottom: 10,
                 },
               ]}
             >
               <HStack space={2} style={styles.cardHeader}>
-                <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
+                <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
               </HStack>
-              <Scale
-                data={["Lowest", "Low", "Medium", "High", "Highest"]}
-                reverse={true}
-                selectedButton={selectedSleepRating}
-                setSelectedButton={setSelectedSleepRating}
+              <PictureScale
+                data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
+                pictureData={[
+                  require("../assets/images/stress_face.png"),
+                  require("../assets/images/sad_face.png"),
+                  require("../assets/images/calm_face.png"),
+                  require("../assets/images/happy_face.png"),
+                  require("../assets/images/excited_face.png"),
+                ]}
+                selectedButton={selectedMoodRating}
+                setSelectedButton={setSelectedMoodRating}
               />
             </Box>
             <Box
@@ -143,17 +335,22 @@ const DailyDiaryFormScreen = observer(
               style={[
                 styles.card,
                 {
-                  marginBottom: 19,
+                  marginTop: 10,
                 },
               ]}
             >
-              <HStack space={2} style={styles.cardHeader}>
-                <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
-              </HStack>
-              <Center>
+              <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
+              <Text style={[styles.questionText, styles.firstQuestion]}>
+                Have you taken your medicine for today?
+              </Text>
+              <Center
+                style={{
+                  marginBottom: medicationCompliance ? 0 : 23,
+                }}
+              >
                 <ToggleButton
-                  value={toggleValue}
-                  onPress={(newState) => setToggleValue(newState)}
+                  value={medicationCompliance}
+                  onPress={toggleMedicineTaken}
                   trackBar={{
                     activeBackgroundColor: "#F6F6F6",
                     inActiveBackgroundColor: "#F6F6F6",
@@ -178,7 +375,9 @@ const DailyDiaryFormScreen = observer(
                         style={{
                           fontFamily: "Poppins-Medium",
                           fontSize: 16,
-                          color: toggleValue ? "#BDBDBD" : Colors.selection,
+                          color: medicationCompliance
+                            ? "#BDBDBD"
+                            : Colors.selection,
                         }}
                       >
                         No
@@ -196,7 +395,9 @@ const DailyDiaryFormScreen = observer(
                         style={{
                           fontFamily: "Poppins-Medium",
                           fontSize: 16,
-                          color: toggleValue ? Colors.success : "#BDBDBD",
+                          color: medicationCompliance
+                            ? Colors.success
+                            : "#BDBDBD",
                         }}
                       >
                         Yes
@@ -205,25 +406,314 @@ const DailyDiaryFormScreen = observer(
                   }
                 />
               </Center>
-              <PictureScale
-                data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
-                pictureData={[
-                  require("../assets/images/stress_face.png"),
-                  require("../assets/images/sad_face.png"),
-                  require("../assets/images/calm_face.png"),
-                  require("../assets/images/happy_face.png"),
-                  require("../assets/images/excited_face.png"),
-                ]}
-                selectedButton={selectedMoodRating}
-                setSelectedButton={setSelectedMoodRating}
-              />
+              {medicationCompliance && (
+                <>
+                  <Text style={styles.questionText}>Which medication?</Text>
+                  <Box style={styles.selectDropdown}>
+                    <CustomSelect
+                      single={false}
+                      choices={diaryMedicationTypes}
+                      selectText="Select medication(s)"
+                      selections={medications}
+                      onSelectedItemsChange={(selectedMedications) =>
+                        setMedications(selectedMedications)
+                      }
+                    />
+                  </Box>
+                </>
+              )}
+            </Box>
+            <Box
+              rounded="lg"
+              style={[
+                styles.card,
+                {
+                  marginTop: 10,
+                },
+              ]}
+            >
+              <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
+              <Text style={[styles.questionText, styles.firstQuestion]}>
+                Did you feel pain today?
+              </Text>
+              <Center
+                style={{
+                  marginBottom: painExperienced ? 0 : 23,
+                }}
+              >
+                <ToggleButton
+                  value={painExperienced}
+                  onPress={togglePainExperienced}
+                  trackBar={{
+                    activeBackgroundColor: "#F6F6F6",
+                    inActiveBackgroundColor: "#F6F6F6",
+                    borderActiveColor: "#E8E8E8",
+                    borderInActiveColor: "#E8E8E8",
+                    borderWidth: 1,
+                    width: 250,
+                  }}
+                  thumbButton={{
+                    width: 125,
+                    activeBackgroundColor: "#ffffff",
+                    inActiveBackgroundColor: "#ffffff",
+                  }}
+                  leftComponent={
+                    <View
+                      style={{
+                        width: 125,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: painExperienced ? "#BDBDBD" : Colors.selection,
+                        }}
+                      >
+                        No
+                      </Text>
+                    </View>
+                  }
+                  rightComponent={
+                    <View
+                      style={{
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: painExperienced ? Colors.success : "#BDBDBD",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    </View>
+                  }
+                />
+              </Center>
+              {painExperienced && (
+                <>
+                  <Text style={[styles.questionText]}>
+                    Which pain are you feeling?
+                  </Text>
+                  <Box style={styles.selectDropdown}>
+                    <CustomSelect
+                      single={true}
+                      selectText="Select pain type"
+                      choices={painTypes}
+                      selections={painType}
+                      onSelectedItemsChange={(newvalue) =>
+                        setPainType(newvalue)
+                      }
+                    />
+                  </Box>
+                </>
+              )}
+            </Box>
+            <Box
+              rounded="lg"
+              style={[
+                styles.card,
+                {
+                  marginTop: 10,
+                  marginBottom: 6,
+                },
+              ]}
+            >
+              <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
+              <Text style={[styles.questionText, styles.firstQuestion]}>
+                Have you had trouble with vision today?
+              </Text>
+              <Center>
+                <ToggleButton
+                  value={visionImpaired}
+                  onPress={setVisionImpaired}
+                  trackBar={{
+                    activeBackgroundColor: "#F6F6F6",
+                    inActiveBackgroundColor: "#F6F6F6",
+                    borderActiveColor: "#E8E8E8",
+                    borderInActiveColor: "#E8E8E8",
+                    borderWidth: 1,
+                    width: 250,
+                  }}
+                  thumbButton={{
+                    width: 125,
+                    activeBackgroundColor: "#ffffff",
+                    inActiveBackgroundColor: "#ffffff",
+                  }}
+                  leftComponent={
+                    <View
+                      style={{
+                        width: 125,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: visionImpaired ? "#BDBDBD" : Colors.selection,
+                        }}
+                      >
+                        No
+                      </Text>
+                    </View>
+                  }
+                  rightComponent={
+                    <View
+                      style={{
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: visionImpaired ? Colors.success : "#BDBDBD",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    </View>
+                  }
+                />
+              </Center>
+              <Text style={[styles.questionText]}>
+                Have you had a priapism episode today?
+              </Text>
+              <Center>
+                <ToggleButton
+                  value={priapism}
+                  onPress={setPriapism}
+                  trackBar={{
+                    activeBackgroundColor: "#F6F6F6",
+                    inActiveBackgroundColor: "#F6F6F6",
+                    borderActiveColor: "#E8E8E8",
+                    borderInActiveColor: "#E8E8E8",
+                    borderWidth: 1,
+                    width: 250,
+                  }}
+                  thumbButton={{
+                    width: 125,
+                    activeBackgroundColor: "#ffffff",
+                    inActiveBackgroundColor: "#ffffff",
+                  }}
+                  leftComponent={
+                    <View
+                      style={{
+                        width: 125,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: priapism ? "#BDBDBD" : Colors.selection,
+                        }}
+                      >
+                        No
+                      </Text>
+                    </View>
+                  }
+                  rightComponent={
+                    <View
+                      style={{
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: priapism ? Colors.success : "#BDBDBD",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    </View>
+                  }
+                />
+              </Center>
+              <Text style={[styles.questionText]}>
+                Have you had a fever today?
+              </Text>
+              <Center style={{ marginBottom: 17 }}>
+                <ToggleButton
+                  value={fever}
+                  onPress={setFever}
+                  trackBar={{
+                    activeBackgroundColor: "#F6F6F6",
+                    inActiveBackgroundColor: "#F6F6F6",
+                    borderActiveColor: "#E8E8E8",
+                    borderInActiveColor: "#E8E8E8",
+                    borderWidth: 1,
+                    width: 250,
+                  }}
+                  thumbButton={{
+                    width: 125,
+                    activeBackgroundColor: "#ffffff",
+                    inActiveBackgroundColor: "#ffffff",
+                  }}
+                  leftComponent={
+                    <View
+                      style={{
+                        width: 125,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: fever ? "#BDBDBD" : Colors.selection,
+                        }}
+                      >
+                        No
+                      </Text>
+                    </View>
+                  }
+                  rightComponent={
+                    <View
+                      style={{
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 16,
+                          color: fever ? Colors.success : "#BDBDBD",
+                        }}
+                      >
+                        Yes
+                      </Text>
+                    </View>
+                  }
+                />
+              </Center>
+            </Box>
+            <Box
+              style={{
+                height: 100,
+                marginTop: 13,
+                backgroundColor: Colors.white,
+              }}
+            >
+              <Center>
+                <SaveButton onPress={handleSave} />
+              </Center>
             </Box>
           </VStack>
-          <Button success>
-            <Text>Save</Text>
-          </Button>
-        </VStack>
-      </ScrollView>
+        </ScrollView>
+      </>
     );
   }
 );

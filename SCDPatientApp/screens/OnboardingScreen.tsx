@@ -8,6 +8,7 @@ import { TPatient, Age, Gender } from "../models/Patient";
 import { AuthContext } from "../contexts/AuthContext";
 import ButtonRadio from "../components/ButtonRadio";
 import styles from "../styles/OnboardingScreen.styles";
+import SaveButton from "../components/SaveButton";
 
 const OnboardingScreen = observer(
   ({ navigation }: RootStackScreenProps<"Onboarding">) => {
@@ -100,10 +101,7 @@ const OnboardingScreen = observer(
               </ButtonRadio>
             </ButtonRadio.Group>
           </Stack>
-
-          <Button style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveText}>Save</Text>
-          </Button>
+          <SaveButton onPress={handleSave} />
         </Center>
       </ScrollView>
     );

@@ -19,7 +19,7 @@ export default function HomeScreen({
         variant="outline"
         onPress={() => navigation.navigate("DailyDiaryFormScreen")}
       >
-        <Text>Complete Diary Entry</Text>
+        <Text style={styles.diaryButtonText}>Complete Diary Entry</Text>
       </Button>
       <EditScreenInfo path="/screens/HomeScreen.tsx" />
     </View>
@@ -42,6 +42,20 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   diaryButton: {
+    fontFamily: "Poppins-Regular",
+    borderColor: Colors.darkGrey,
+    borderRadius: 6,
+    borderWidth: 2,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    width: 174,
+  },
+  diaryButtonText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: Colors.darkGrey,
     borderColor: Colors.darkGrey,
     borderRadius: 6,
   },
