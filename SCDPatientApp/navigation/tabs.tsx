@@ -1,10 +1,24 @@
 import React from "react";
-import { Image } from "react-native";
+import { Text, Image, TouchableOpacity } from "react-native";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import {
   BottomTabBarButtonProps,
   createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
+} from "@react-navigation/bottom-tabs"
+import {
+  Slider,
+  VStack,
+  ScrollView,
+  Box,
+  HStack,
+  Center,
+  View,
+  Modal,
+  Button
+} from "native-base";;
+import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import HomeScreen from "../screens/HomeScreen";
 import HistoryScreen from "../screens/HistoryScreen";
@@ -23,6 +37,7 @@ const Tabs = () => {
   const { Navigator, Screen } = Tab;
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
+  const [showPainEpisodeModal, setShowPainEpisodeModal] = React.useState(false);
 
   function HomeNavigator() {
     return (
@@ -42,6 +57,81 @@ const Tabs = () => {
   }
 
   return (
+    <>
+     <Modal isOpen={showPainEpisodeModal} onClose={setShowPainEpisodeModal} size="lg">
+          <Modal.Content style={{
+               marginBottom: 0,
+               marginTop: "auto",
+               width: "100%",
+               backgroundColor: "#EDEBF4",
+               borderRadius: 24,
+          }}>
+            <Modal.CloseButton />
+            <Modal.Header>
+              <Text style={{
+                fontFamily: "Poppins-SemiBold",
+                fontSize: 17,
+                marginLeft: 5,
+              }}>When did you have the pain episode?</Text>
+            </Modal.Header>
+            <Modal.Body>
+              <VStack>
+              <TouchableOpacity
+                style={{
+                  height: 73,
+                  backgroundColor: "#ffffff",
+                  borderRadius: 24,
+                  marginBottom: 20,
+                  justifyContent: 'center',
+                }}
+              >
+                <HStack>
+                  <AntDesign name="exclamationcircleo" size={24} color="#FF0000" style={{
+                    marginLeft: 31,
+                    marginRight: 20,
+                  }}
+                  />
+                  <Text style={{
+                     fontFamily: "Poppins-Medium",
+                     fontSize: 16,
+                     color: "#0A0909"
+                  }}>Ongoing episode</Text>
+                  <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF0000" style={{
+                    marginLeft: "auto",
+                    marginRight: 25,
+                  }}/>
+                </HStack>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: 73,
+                  backgroundColor: "#ffffff",
+                  borderRadius: 24,
+                  marginBottom: 30,
+                  justifyContent: 'center',
+                }}
+              >
+                <HStack>
+                <Feather name="clock" size={24} color="#FFC702" style={{
+                    marginLeft: 31,
+                    marginRight: 20,
+                  }}
+                  />
+                  <Text style={{
+                     fontFamily: "Poppins-Medium",
+                     fontSize: 16,
+                     color: "#0A0909"
+                  }}>Record a past episode</Text>
+                  <MaterialIcons name="keyboard-arrow-right" size={24} color="#FFC702" style={{
+                    marginLeft: "auto",
+                    marginRight: 25,
+                  }}/>
+                </HStack>
+              </TouchableOpacity>
+              </VStack>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
     <Navigator
       screenOptions={{
         tabBarShowLabel: false,
@@ -96,7 +186,7 @@ const Tabs = () => {
       />
       <Screen
         name="+"
-        component={PainEpisodeFormScreen}
+        component={() => <View />}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -114,8 +204,16 @@ const Tabs = () => {
             <CustomTabBarButton {...props} />
           ),
           headerShown: false,
-          tabBarStyle: {
-            display: "none",
+          // tabBarStyle: {
+          //   display: "none",
+          // },
+        }}
+        listeners={{
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+            setShowPainEpisodeModal(true);
+            // navigation.navigate("create new")
           },
         }}
       />
@@ -148,6 +246,7 @@ const Tabs = () => {
         }}
       />
     </Navigator>
+    </>
   );
 };
 
