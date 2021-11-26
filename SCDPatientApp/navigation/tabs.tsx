@@ -31,6 +31,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../models/navigation";
 import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
 
+const NewPainEpisodePlaceholder = () => <View />;
+
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
@@ -38,6 +40,7 @@ const Tabs = () => {
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
   const [showPainEpisodeModal, setShowPainEpisodeModal] = React.useState(false);
+  const [navigationObj, setNavigationObj] = React.useState(null);
 
   function HomeNavigator() {
     return (
@@ -51,6 +54,10 @@ const Tabs = () => {
         <Stack.Screen
           name="DailyDiaryFormScreen"
           component={DailyDiaryFormScreen}
+        />
+         <Stack.Screen
+          name="PainEpisodeFormScreen"
+          component={PainEpisodeFormScreen}
         />
       </Stack.Navigator>
     );
@@ -66,13 +73,15 @@ const Tabs = () => {
                backgroundColor: "#EDEBF4",
                borderRadius: 24,
           }}>
-            <Modal.CloseButton />
             <Modal.Header>
-              <Text style={{
-                fontFamily: "Poppins-SemiBold",
-                fontSize: 17,
-                marginLeft: 5,
-              }}>When did you have the pain episode?</Text>
+              <Center>
+                <Text style={{
+                  fontFamily: "Poppins-SemiBold",
+                  fontSize: 18,
+                  marginTop: 12,
+                  marginLeft: 5,
+                }}>When did you have the pain episode?</Text>
+              </Center>
             </Modal.Header>
             <Modal.Body>
               <VStack>
@@ -83,6 +92,10 @@ const Tabs = () => {
                   borderRadius: 24,
                   marginBottom: 20,
                   justifyContent: 'center',
+                }}
+                onPress={() => {
+                  setShowPainEpisodeModal(false);
+                  navigationObj.navigate("PainEpisodeFormScreen")
                 }}
               >
                 <HStack>
@@ -162,7 +175,7 @@ const Tabs = () => {
             ),
             headerShown: false,
           };
-          if (getFocusedRouteNameFromRoute(route) == "DailyDiaryFormScreen") {
+          if (getFocusedRouteNameFromRoute(route) !== "Root") {
             homeOptions["tabBarStyle"] = {
               display: "none",
             };
@@ -186,7 +199,7 @@ const Tabs = () => {
       />
       <Screen
         name="+"
-        component={() => <View />}
+        component={NewPainEpisodePlaceholder}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -204,18 +217,18 @@ const Tabs = () => {
             <CustomTabBarButton {...props} />
           ),
           headerShown: false,
-          // tabBarStyle: {
-          //   display: "none",
-          // },
+          tabBarStyle: {
+            display: "none",
+          },
         }}
-        listeners={{
+        listeners={({ navigation }) => ({
           tabPress: (e) => {
             // Prevent default action
             e.preventDefault();
+            setNavigationObj(navigation);
             setShowPainEpisodeModal(true);
-            // navigation.navigate("create new")
           },
-        }}
+        })}
       />
       <Screen
         name="Resources"
