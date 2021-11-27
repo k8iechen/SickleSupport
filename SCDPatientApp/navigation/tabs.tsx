@@ -100,6 +100,13 @@ const Tabs = () => {
     setSelectedEpisodeDates(newDates);
   }, [startDay]);
 
+  useEffect(() => {
+    if (showWhenPainEpisodeModal) {
+      setStartDay(TODAY_START_DAY);
+      setStartTime(TODAY_START_TIME);
+    }
+  }, [showWhenPainEpisodeModal]);
+
   function HomeNavigator() {
     return (
       <Stack.Navigator
@@ -139,7 +146,9 @@ const Tabs = () => {
       />
       <Modal
         isOpen={showWhenPainEpisodeModal}
-        onClose={setShowWhenPainEpisodeModal}
+        onClose={() => {
+          setShowWhenPainEpisodeModal(false);
+        }}
         size="lg"
       >
         <Modal.Content
