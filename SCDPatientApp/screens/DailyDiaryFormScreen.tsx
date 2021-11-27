@@ -9,6 +9,7 @@ import {
   Center,
   View,
   Modal,
+  Button,
 } from "native-base";
 import { observer } from "mobx-react-lite";
 import { WarningIcon } from "native-base";
@@ -59,6 +60,9 @@ const painTypes = [
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
+    // TODO: originalFormData should be updated when implementing feature edit-form; now needed for goBack modal
+    const [originalFormData, setOriginalFormData] = React.useState({});
+
     const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
     const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
     const [selectedMoodRating, setSelectedMoodRating] = React.useState(-1);
@@ -76,6 +80,7 @@ const DailyDiaryFormScreen = observer(
     const [showSuccessModal, setShowSuccessModal] = React.useState(false);
     const [showErrorModal, setShowErrorModal] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState("");
+    const [showBackModal, setShowBackModal] = React.useState(false);
 
     const authStore = useContext(AuthContext);
     const diaryStore = DiaryStore();
@@ -171,6 +176,27 @@ const DailyDiaryFormScreen = observer(
       setShowSuccessModal(true);
     };
 
+    const navigateBack = () => {
+      const entry: TDiaryEntry = {
+        created_at: serverTimestamp(),
+        updated_at: serverTimestamp(),
+        sleep_rating: selectedSleepRating,
+        sleep_time: sleepToMins(),
+        mood: selectedMoodRating,
+        stress: selectedStressRating,
+        medication_compliance: medicationCompliance,
+        medications: medications,
+        pain: painExperienced,
+        pain_type: painExperienced ? painType[0] : "",
+        vision_impaired: visionImpaired,
+        priapism_episode: priapism,
+        fever: fever,
+      };
+      // Only pop up modal if form data changed
+      if (originalFormData == entry) navigation.goBack();
+      else setShowBackModal(true);
+    };
+
     const closeSuccessModal = () => {
       setShowSuccessModal(false);
       navigation.goBack();
@@ -180,6 +206,10 @@ const DailyDiaryFormScreen = observer(
       setShowErrorModal(false);
     };
 
+    const closeBackModal = () => {
+      setShowBackModal(false);
+    };
+
     return (
       <>
         <Modal isOpen={showErrorModal} onClose={closeErrorModal} size="lg">
@@ -187,8 +217,8 @@ const DailyDiaryFormScreen = observer(
             <Modal.CloseButton />
             <Modal.Header>
               <HStack>
-                <WarningIcon style={{color: Colors.darkColor}} />
-                <Text style={[styles.cardText, {marginLeft: 10}]}>Error</Text>
+                <WarningIcon style={{ color: Colors.darkColor }} />
+                <Text style={[styles.cardText, { marginLeft: 10 }]}>Error</Text>
               </HStack>
             </Modal.Header>
             <Modal.Body>
@@ -200,12 +230,45 @@ const DailyDiaryFormScreen = observer(
             </Modal.Body>
           </Modal.Content>
         </Modal>
+        <Modal isOpen={showBackModal} onClose={closeBackModal} size="md">
+          <Modal.Content maxWidth="350">
+            <Modal.CloseButton />
+            <Modal.Header>
+              <HStack>
+                <WarningIcon style={{ color: Colors.darkColor }} />
+              </HStack>
+            </Modal.Header>
+            <Modal.Body>
+              <VStack space={3}>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <Text style={styles.backModalText}>
+                    Are you sure you want to discard your unsaved changes?
+                  </Text>
+                </HStack>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <Button
+                    style={styles.cancelButton}
+                    onPress={() => closeBackModal()}
+                  >
+                    <Text style={styles.modalButtonText}>Cancel</Text>
+                  </Button>
+                  <Button
+                    style={styles.okButton}
+                    onPress={() => navigation.goBack()}
+                  >
+                    <Text style={styles.modalButtonText}>OK</Text>
+                  </Button>
+                </HStack>
+              </VStack>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
         <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
           <VStack>
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.backButton}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigateBack()}
             >
               <Image source={require("../assets/icons/back.png")} />
             </TouchableOpacity>

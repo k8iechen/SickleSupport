@@ -63,7 +63,7 @@ const CustomSelect = ({
           marginRight: 10,
           marginTop: 20,
           backgroundColor: Colors.unselected,
-          borderColor: Colors.backButtonArrow,
+          borderColor: Colors.backButton,
         }}
         styleItemsContainer={{
           marginTop: 5,
@@ -74,11 +74,11 @@ const CustomSelect = ({
         }}
         styleSelectorContainer={{
           backgroundColor: Colors.unselected,
-          borderColor: Colors.backButtonArrow,
+          borderColor: Colors.backButton,
         }}
         styleTextDropdownSelected={{
           backgroundColor: Colors.unselected,
-          borderColor: Colors.backButtonArrow,
+          borderColor: Colors.backButton,
         }}
         tagTextColor={Colors.darkGrey}
       />
