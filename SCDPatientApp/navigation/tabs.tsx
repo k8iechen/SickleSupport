@@ -4,6 +4,7 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { Calendar } from "react-native-calendars";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   BottomTabBarButtonProps,
   createBottomTabNavigator,
@@ -58,6 +59,7 @@ const getHours = (hours: number) => {
 };
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
 
 const Tabs = () => {
   const { Navigator, Screen } = Tab;
@@ -109,22 +111,22 @@ const Tabs = () => {
 
   function HomeNavigator() {
     return (
-      <Stack.Navigator
+      <HomeStack.Navigator
         initialRouteName="Root"
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Root" component={HomeScreen} />
-        <Stack.Screen
+        <HomeStack.Screen name="Root" component={HomeScreen} />
+        <HomeStack.Screen
           name="DailyDiaryFormScreen"
           component={DailyDiaryFormScreen}
         />
-        <Stack.Screen
+        <HomeStack.Screen
           name="PainEpisodeFormScreen"
           component={PainEpisodeFormScreen}
         />
-      </Stack.Navigator>
+      </HomeStack.Navigator>
     );
   }
 
@@ -406,7 +408,6 @@ const Tabs = () => {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-
       <Modal
         isOpen={showTypePainEpisodeModal}
         onClose={setShowTypePainEpisodeModal}
