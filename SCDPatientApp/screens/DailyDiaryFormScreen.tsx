@@ -60,9 +60,6 @@ const painTypes = [
 
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
-    // TODO: originalFormData should be updated when implementing feature edit-form; now needed for goBack modal
-    const [originalFormData, setOriginalFormData] = React.useState({});
-
     const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
     const [selectedStressRating, setSelectedStressRating] = React.useState(-1);
     const [selectedMoodRating, setSelectedMoodRating] = React.useState(-1);
@@ -76,6 +73,27 @@ const DailyDiaryFormScreen = observer(
     const [visionImpaired, setVisionImpaired] = React.useState(false);
     const [priapism, setPriapism] = React.useState(false);
     const [fever, setFever] = React.useState(false);
+
+    const sleepToMins = () => {
+      return Math.floor(sleepHours / 2) * 60 + (sleepHours % 2 == 0 ? 0 : 30);
+    };
+
+    // TODO: originalFormData should be updated when implementing feature edit-form; now needed for goBack modal
+    const [originalFormData, setOriginalFormData] = React.useState({
+      created_at: serverTimestamp(),
+      updated_at: serverTimestamp(),
+      sleep_rating: selectedSleepRating,
+      sleep_time: sleepToMins(),
+      mood: selectedMoodRating,
+      stress: selectedStressRating,
+      medication_compliance: medicationCompliance,
+      medications: medications,
+      pain: painExperienced,
+      pain_type: painExperienced ? painType[0] : "",
+      vision_impaired: visionImpaired,
+      priapism_episode: priapism,
+      fever: fever,
+    });
 
     const [showSuccessModal, setShowSuccessModal] = React.useState(false);
     const [showErrorModal, setShowErrorModal] = React.useState(false);
@@ -95,10 +113,6 @@ const DailyDiaryFormScreen = observer(
       }
       return timeText;
     }
-
-    const sleepToMins = () => {
-      return Math.floor(sleepHours / 2) * 60 + (sleepHours % 2 == 0 ? 0 : 30);
-    };
 
     const toggleMedicineTaken = (newvalue) => {
       setMedicationCompliance(newvalue);
@@ -176,10 +190,8 @@ const DailyDiaryFormScreen = observer(
       setShowSuccessModal(true);
     };
 
-    const navigateBack = () => {
-      const entry: TDiaryEntry = {
-        created_at: serverTimestamp(),
-        updated_at: serverTimestamp(),
+    const isFormChanged = () => {
+      const entry = {
         sleep_rating: selectedSleepRating,
         sleep_time: sleepToMins(),
         mood: selectedMoodRating,
@@ -192,9 +204,18 @@ const DailyDiaryFormScreen = observer(
         priapism_episode: priapism,
         fever: fever,
       };
+
+      let { created_at, updated_at, ...cmpOriginalEntry } = originalFormData;
+      return JSON.stringify(entry) === JSON.stringify(cmpOriginalEntry);
+    };
+
+    const navigateBack = () => {
       // Only pop up modal if form data changed
-      if (originalFormData == entry) navigation.goBack();
-      else setShowBackModal(true);
+      if (isFormChanged()) {
+        navigation.goBack();
+      } else {
+        setShowBackModal(true);
+      }
     };
 
     const closeSuccessModal = () => {
