@@ -1,104 +1,107 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
-import Svg, { SvgCssUri } from "react-native-svg";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import { VStack, HStack, Center } from "native-base";
 import Colors from "../constants/Colors";
 
-function PainIntensityComponent({
+type TPainIntensityProps = {
+  selectedButton: number;
+  setSelectedButton: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const PainIntensityComponent = ({
   selectedButton,
   setSelectedButton,
-}: {
-  selectedButton: number;
-  setSelectedButton: any;
-}) {
+}: TPainIntensityProps) => {
   const detailItems = [
     {
-      id: 1,
-      color: ["#BAE096", "#C5E297"],
-      image: require("../assets/images/slight_pain.svg"),
-      title: "Slight Pain",
-      detail: "Pain is present, but it does not limit activity.",
-    },
-    {
-      id: 2,
-      color: ["#D0E496", "#DCE395"],
-      image: require("../assets/images/mild_pain.svg"),
-      title: "Mild Pain",
-      detail: "Can do most activities.",
-    },
-    {
-      id: 3,
-      color: ["#E6E496", "#EDE495"],
-      image: require("../assets/images/moderate_pain.svg"),
-      title: "Moderate Pain",
-      detail: "Unable to do some activities.",
+      id: 5,
+      color: ["#EEB38B", "#EDA78B"],
+      image: require("../assets/images/extreme_pain.png"),
+      title: "Extreme Pain",
+      detail: "Excruciating, unable to do any activities due to pain",
     },
     {
       id: 4,
-      color: ["#DEC353", "#F0C890"],
-      image: require("../assets/images/severe_pain.svg"),
+      color: ["#fce083", "#F0C890"],
+      image: require("../assets/images/severe_pain.png"),
       title: "Severe Pain",
       detail: "Unable to do most activities.",
     },
     {
-      id: 5,
-      color: ["#EEB38B", "#EDA78B"],
-      image: require("../assets/images/extreme_pain.svg"),
-      title: "Extreme Pain",
-      detail: "Excruciating, unable to do any activities due to pain",
+      id: 3,
+      color: ["#E6E496", "#EDE495"],
+      image: require("../assets/images/moderate_pain.png"),
+      title: "Moderate Pain",
+      detail: "Unable to do some activities.",
+    },
+    {
+      id: 2,
+      color: ["#D0E496", "#DCE395"],
+      image: require("../assets/images/mild_pain.png"),
+      title: "Mild Pain",
+      detail: "Can do most activities.",
+    },
+    {
+      id: 1,
+      color: ["#BAE096", "#C5E297"],
+      image: require("../assets/images/slight_pain.png"),
+      title: "Slight Pain",
+      detail: "Pain is present, but it does not limit activity.",
     },
   ];
   const levelItems = [
     {
-      id: 1,
-      color: "#BAE096",
-    },
-    {
-      id: 2,
-      color: "#C5E297",
-    },
-    {
-      id: 3,
-      color: "#D0E496",
-    },
-    {
-      id: 4,
-      color: "#DCE395",
-    },
-    {
-      id: 5,
-      color: "#E6E496",
-    },
-    {
-      id: 6,
-      color: "#EDE495",
-    },
-    {
-      id: 7,
-      color: "#DEC353",
-    },
-    {
-      id: 8,
-      color: "#F0C890",
+      id: 10,
+      color: "#EDA78B",
     },
     {
       id: 9,
       color: "#EEB38B",
     },
     {
-      id: 10,
-      color: "#EDA78B",
+      id: 8,
+      color: "#F0C890",
+    },
+    {
+      id: 7,
+      color: "#FCE083",
+    },
+
+    {
+      id: 6,
+      color: "#EDE495",
+    },
+    {
+      id: 5,
+      color: "#E6E496",
+    },
+    {
+      id: 4,
+      color: "#DCE395",
+    },
+    {
+      id: 3,
+      color: "#D0E496",
+    },
+    {
+      id: 2,
+      color: "#C5E297",
+    },
+    {
+      id: 1,
+      color: "#BAE096",
     },
   ];
 
   return (
-    <HStack space={2} style={styles.painIntensityComponent}>
-      <VStack space={0} style={styles.painIntensityLevels}>
+    <HStack style={styles.painIntensityComponent}>
+      <VStack style={styles.painIntensityLevels}>
         {levelItems.map((levelItem) => (
           <LevelButton
             key={levelItem.id}
             mainText={levelItem.id.toString()}
             color={levelItem.color}
+            isSelected={selectedButton === levelItem.id}
             onPress={() => {
               if (selectedButton === levelItem.id) {
                 setSelectedButton(-1);
@@ -109,9 +112,10 @@ function PainIntensityComponent({
           />
         ))}
       </VStack>
-      <VStack space={0} style={styles.painIntensityDetails}>
+      <VStack style={styles.painIntensityDetails}>
         {detailItems.map((detailItem) => (
           <Detail
+            key={detailItem.id}
             headerPicture={detailItem.image}
             mainText={detailItem.title}
             detailText={detailItem.detail}
@@ -122,112 +126,165 @@ function PainIntensityComponent({
       </VStack>
     </HStack>
   );
-}
+};
 
-function LevelButton({
-  color,
-  mainText,
-  onPress,
-}: {
+type TLevelButtonProps = {
   color: string;
   mainText: string;
+  isSelected: boolean;
   onPress: () => void;
-}) {
+};
+
+const LevelButton = ({
+  color,
+  mainText,
+  isSelected,
+  onPress,
+}: TLevelButtonProps) => {
   return (
-    <TouchableOpacity
-      activeOpacity={1}
-      style={styles.scaleButton}
-      onPress={onPress}
-    >
+    <TouchableOpacity activeOpacity={1} onPress={onPress}>
       <Center
         style={{
+          opacity: isSelected ? 1 : 0.7,
           backgroundColor: color,
-          borderRadius: 3,
+          ...styles.painIntensityLevelButton,
         }}
       >
-        <Text style={[styles.scaleButtonText]}>{mainText}</Text>
+        <Text style={[styles.painIntensityLevelButtonText]}>{mainText}</Text>
       </Center>
     </TouchableOpacity>
   );
-}
+};
 
-function Detail({
-  headerPicture,
-  mainText,
-  detailText,
-  isSelected,
-  selectedColor,
-}: {
+type TDetailProps = {
   headerPicture: any;
   mainText: string;
   detailText: string;
   isSelected: boolean;
   selectedColor: string;
-}) {
+};
+
+const Detail = ({
+  headerPicture,
+  mainText,
+  detailText,
+  isSelected,
+  selectedColor,
+}: TDetailProps) => {
+  const renderDetailText = () => {
+    if (isSelected) {
+      return (
+        <Text
+          style={{
+            color: Colors.white,
+            ...styles.painIntensityDetailDetailText,
+          }}
+        >
+          {detailText}
+        </Text>
+      );
+    }
+  };
   return (
-    <Center
+    <HStack
       style={{
-        backgroundColor: isSelected ? selectedColor : "#ffffff",
-        borderRadius: 3,
+        backgroundColor: isSelected ? selectedColor : Colors.white,
+        ...styles.painIntensityDetailBlock,
       }}
     >
-      <HStack>
-        <Image
-          source={require("../assets/images/slight_pain.png")}
-          style={{ tintColor: isSelected ? Colors.white : Colors.cardText }}
-        />
-        <VStack>
-          <Text
-            style={{
-              color: isSelected ? Colors.white : Colors.cardText,
-              ...styles.scaleButtonText,
-            }}
-          >
-            {mainText}
-          </Text>
-          <Text
-            style={{
-              color: isSelected ? Colors.white : Colors.cardText,
-              ...styles.scaleButtonText,
-            }}
-          >
-            {detailText}
-          </Text>
-        </VStack>
-      </HStack>
-    </Center>
+      <Image
+        source={headerPicture}
+        style={{
+          tintColor: isSelected ? Colors.white : Colors.cardText,
+          ...styles.painIntensityDetailPicture,
+        }}
+      />
+      <VStack style={styles.painIntensityDetailTextBlock}>
+        <Text
+          style={{
+            color: isSelected ? Colors.white : Colors.cardText,
+            ...styles.painIntensityDetailHeaderText,
+          }}
+        >
+          {mainText}
+        </Text>
+        {renderDetailText()}
+      </VStack>
+    </HStack>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  scale: {
+  painIntensityComponent: {
     width: "100%",
-    justifyContent: "center",
-    marginRight: 20,
+    marginLeft: 15,
   },
 
-  scaleButton: {
-    width: 60,
-    height: 57,
-  },
-
-  scaleButtonText: {
-    fontFamily: "Poppins-Medium",
-    fontWeight: "bold",
-    textAlign: "center",
-    // marginTop: 4,
-    // marginBottom: 10,
-    fontSize: 12,
-  },
-
-  painIntensityComponent: {},
   painIntensityLevels: {
-    // width: 75,
-    // height: 280,
-    // left: 30,
-    // top: 62,
+    width: 75,
+    height: 280,
+    marginRight: 0,
   },
-  painIntensityDetails: {},
+
+  painIntensityLevelButton: {
+    width: 75,
+    height: 28,
+    marginTop: 0,
+    marginBottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  painIntensityLevelButtonText: {
+    fontFamily: "Poppins-Bold",
+    fontStyle: "normal",
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: "center",
+    color: Colors.white,
+  },
+
+  painIntensityDetails: {
+    width: 200,
+    height: 280,
+  },
+
+  painIntensityDetailBlock: {
+    width: 265,
+    height: 56,
+    marginLeft: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    // justifyContent: "center",
+    alignItems: "center",
+  },
+
+  painIntensityDetailPicture: {
+    width: 35,
+    height: 35,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  painIntensityDetailTextBlock: {
+    width: 210,
+    height: 56,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  painIntensityDetailHeaderText: {
+    fontFamily: "Poppins-Bold",
+    fontStyle: "normal",
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: "left",
+  },
+  painIntensityDetailDetailText: {
+    fontFamily: "Poppins-Medium",
+    fontStyle: "normal",
+    fontSize: 12,
+    lineHeight: 18,
+    textAlign: "left",
+  },
 });
 
 export default PainIntensityComponent;
