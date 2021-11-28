@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { VStack, HStack } from "native-base";
 import Colors from "../constants/Colors";
