@@ -3,13 +3,12 @@ import { Text, View } from "native-base";
 import Colors from "../constants/Colors";
 import ToggleButton from "react-native-toggle-element";
 
-export default function ButtonRadio({
-  value,
-  onPress,
-}: {
+type YesNoButtonProps = {
   value: boolean;
   onPress: () => void;
-}) {
+};
+
+export default function YesNoButton({ value, onPress }: YesNoButtonProps) {
   return (
     <ToggleButton
       value={value}

@@ -222,284 +222,245 @@ const DailyDiaryFormScreen = observer(
       navigation.goBack();
     };
 
-    const SleepComponent: React.FC = React.useCallback(
-      () => (
-        <Box
-          rounded="lg"
-          style={[
-            styles.card,
-            {
-              marginTop: 16,
-            },
-          ]}
-        >
-          <HStack space={2} style={styles.cardHeader}>
-            <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
-            <Text style={[styles.cardText, styles.sleepText]}>
-              {getTimeText()}
-            </Text>
-          </HStack>
-          <HStack space={3} style={styles.sleepSlider}>
-            <TouchableOpacity
-              onPress={() => {
-                if (sleepHours > 0) {
-                  setSleepHours(sleepHours - 1);
-                }
-              }}
-            >
-              <Text style={[styles.cardText, styles.sleepSliderText]}>-</Text>
-            </TouchableOpacity>
-            <Slider
-              style={{
-                width: "75%",
-                zIndex: 1,
-              }}
-              value={sleepHours}
-              onChange={(v) => {
-                setScrollEnabled(false);
-                setSleepHours(Math.floor(v));
-              }}
-              onChangeEnd={(v) => {
-                setScrollEnabled(true);
-              }}
-              minValue={0}
-              maxValue={48}
-              size="lg"
-            >
-              <Slider.Track bg={"#c1d9f7"}>
-                <Slider.FilledTrack bg={Colors.selection} />
-              </Slider.Track>
-              <Slider.Thumb bg={Colors.selection} />
-            </Slider>
-            <TouchableOpacity
-              onPress={() => {
-                if (sleepHours < 48) {
-                  setSleepHours(sleepHours + 1);
-                }
-              }}
-            >
-              <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
-            </TouchableOpacity>
-          </HStack>
-          <Scale
-            data={["Awful", "Poor", "OK", "Good", "Great"]}
-            selectedButton={selectedSleepRating}
-            setSelectedButton={setSelectedSleepRating}
-          />
-        </Box>
-      ),
-      [sleepHours, setSleepHours, selectedSleepRating, setSelectedSleepRating]
-    );
-
-    const StressComponent: React.FC = React.useCallback(
-      () => (
-        <Box
-          rounded="lg"
-          style={[
-            styles.card,
-            {
-              marginTop: 10,
-            },
-          ]}
-        >
-          <HStack style={styles.cardHeader}>
-            <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
-          </HStack>
-          <Scale
-            data={["Lowest", "Low", "Medium", "High", "Highest"]}
-            reverse={true}
-            selectedButton={selectedStressRating}
-            setSelectedButton={setSelectedStressRating}
-          />
-        </Box>
-      ),
-      [selectedStressRating, setSelectedSleepRating]
-    );
-
-    const MoodComponent: React.FC = React.useCallback(
-      () => (
-        <Box
-          rounded="lg"
-          style={[
-            styles.card,
-            {
-              marginTop: 10,
-            },
-          ]}
-        >
-          <HStack space={2} style={styles.cardHeader}>
-            <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
-          </HStack>
-          <PictureScale
-            data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
-            pictureData={[
-              require("../assets/images/stress_face.png"),
-              require("../assets/images/sad_face.png"),
-              require("../assets/images/calm_face.png"),
-              require("../assets/images/happy_face.png"),
-              require("../assets/images/excited_face.png"),
-            ]}
-            selectedButton={selectedMoodRating}
-            setSelectedButton={setSelectedMoodRating}
-          />
-        </Box>
-      ),
-      [selectedMoodRating, setSelectedMoodRating]
-    );
-
-    const MedicineComponent: React.FC = React.useCallback(
-      () => (
-        <Box
-          rounded="lg"
-          style={[
-            styles.card,
-            {
-              marginTop: 10,
-            },
-          ]}
-        >
-          <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
-          <Text style={[styles.questionText, styles.firstQuestion]}>
-            Have you taken your medicine for today?
+    const SleepComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 16,
+          },
+        ]}
+      >
+        <HStack space={2} style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
+          <Text style={[styles.cardText, styles.sleepText]}>
+            {getTimeText()}
           </Text>
-          <Center
-            style={{
-              marginBottom: medicationCompliance ? 0 : 23,
+        </HStack>
+        <HStack space={3} style={styles.sleepSlider}>
+          <TouchableOpacity
+            onPress={() => {
+              if (sleepHours > 0) {
+                setSleepHours(sleepHours - 1);
+              }
             }}
           >
-            <YesNoButton
-              value={medicationCompliance}
-              onPress={() => toggleMedicineCompliance(!medicationCompliance)}
-            />
-          </Center>
-          {medicationCompliance && (
-            <>
-              <Text style={styles.questionText}>Which medication?</Text>
-              <Box style={styles.selectDropdown}>
-                <CustomSelect
-                  single={false}
-                  choices={diaryMedicationTypes}
-                  selectText="Select medication(s)"
-                  selections={medications}
-                  onSelectedItemsChange={(selectedMedications) =>
-                    setMedications(selectedMedications)
-                  }
-                />
-              </Box>
-            </>
-          )}
-        </Box>
-      ),
-      [
-        medicationCompliance,
-        setMedicationCompliance,
-        medications,
-        setMedications,
-        toggleMedicineCompliance,
-      ]
+            <Text style={[styles.cardText, styles.sleepSliderText]}>-</Text>
+          </TouchableOpacity>
+          <Slider
+            style={{
+              width: "75%",
+              zIndex: 1,
+            }}
+            value={sleepHours}
+            onChange={(v) => {
+              setScrollEnabled(false);
+              setSleepHours(Math.floor(v));
+            }}
+            onChangeEnd={(v) => {
+              setScrollEnabled(true);
+            }}
+            minValue={0}
+            maxValue={48}
+            size="lg"
+          >
+            <Slider.Track bg={"#c1d9f7"}>
+              <Slider.FilledTrack bg={Colors.selection} />
+            </Slider.Track>
+            <Slider.Thumb bg={Colors.selection} />
+          </Slider>
+          <TouchableOpacity
+            onPress={() => {
+              if (sleepHours < 48) {
+                setSleepHours(sleepHours + 1);
+              }
+            }}
+          >
+            <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
+          </TouchableOpacity>
+        </HStack>
+        <Scale
+          data={["Awful", "Poor", "OK", "Good", "Great"]}
+          selectedButton={selectedSleepRating}
+          setSelectedButton={setSelectedSleepRating}
+        />
+      </Box>
     );
 
-    const PainComponent: React.FC = React.useCallback(
-      () => (
+    const StressComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <HStack style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
+        </HStack>
+        <Scale
+          data={["Lowest", "Low", "Medium", "High", "Highest"]}
+          reverse={true}
+          selectedButton={selectedStressRating}
+          setSelectedButton={setSelectedStressRating}
+        />
+      </Box>
+    );
+
+    const MoodComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <HStack space={2} style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
+        </HStack>
+        <PictureScale
+          data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
+          pictureData={[
+            require("../assets/images/stress_face.png"),
+            require("../assets/images/sad_face.png"),
+            require("../assets/images/calm_face.png"),
+            require("../assets/images/happy_face.png"),
+            require("../assets/images/excited_face.png"),
+          ]}
+          selectedButton={selectedMoodRating}
+          setSelectedButton={setSelectedMoodRating}
+        />
+      </Box>
+    );
+
+    const MedicineComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
+        <Text style={[styles.questionText, styles.firstQuestion]}>
+          Have you taken your medicine for today?
+        </Text>
+        <Center
+          style={{
+            marginBottom: medicationCompliance ? 0 : 23,
+          }}
+        >
+          <YesNoButton
+            value={medicationCompliance}
+            onPress={() => toggleMedicineCompliance(!medicationCompliance)}
+          />
+        </Center>
+        {medicationCompliance && (
+          <>
+            <Text style={styles.questionText}>Which medication?</Text>
+            <Box style={styles.selectDropdown}>
+              <CustomSelect
+                single={false}
+                choices={diaryMedicationTypes}
+                selectText="Select medication(s)"
+                selections={medications}
+                onSelectedItemsChange={(selectedMedications) =>
+                  setMedications(selectedMedications)
+                }
+              />
+            </Box>
+          </>
+        )}
+      </Box>
+    );
+
+    const PainComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
+        <Text style={[styles.questionText, styles.firstQuestion]}>
+          Did you feel pain today?
+        </Text>
+        <Center
+          style={{
+            marginBottom: painExperienced ? 0 : 23,
+          }}
+        >
+          <YesNoButton
+            value={painExperienced}
+            onPress={() => togglePainExperienced(!painExperienced)}
+          />
+        </Center>
+        {painExperienced && (
+          <>
+            <Text style={[styles.questionText]}>
+              Which pain are you feeling?
+            </Text>
+            <Box style={styles.selectDropdown}>
+              <CustomSelect
+                single={true}
+                selectText="Select pain type"
+                choices={painTypes}
+                selections={painType}
+                onSelectedItemsChange={(newvalue) => setPainType(newvalue)}
+              />
+            </Box>
+          </>
+        )}
+      </Box>
+    );
+
+    const OtherQuestionsComponent: React.FC = () => (
+      <>
         <Box
           rounded="lg"
           style={[
             styles.card,
             {
               marginTop: 10,
+              marginBottom: 6,
             },
           ]}
         >
-          <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
+          <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
           <Text style={[styles.questionText, styles.firstQuestion]}>
-            Did you feel pain today?
+            Have you had trouble with vision today?
           </Text>
-          <Center
-            style={{
-              marginBottom: painExperienced ? 0 : 23,
-            }}
-          >
+          <Center>
             <YesNoButton
-              value={painExperienced}
-              onPress={() => togglePainExperienced(!painExperienced)}
+              value={visionImpaired}
+              onPress={() => setVisionImpaired(!visionImpaired)}
             />
           </Center>
-          {painExperienced && (
-            <>
-              <Text style={[styles.questionText]}>
-                Which pain are you feeling?
-              </Text>
-              <Box style={styles.selectDropdown}>
-                <CustomSelect
-                  single={true}
-                  selectText="Select pain type"
-                  choices={painTypes}
-                  selections={painType}
-                  onSelectedItemsChange={(newvalue) => setPainType(newvalue)}
-                />
-              </Box>
-            </>
-          )}
+          <Text style={[styles.questionText]}>
+            Have you had a priapism episode today?
+          </Text>
+          <Center>
+            <YesNoButton
+              value={priapism}
+              onPress={() => setPriapism(!priapism)}
+            />
+          </Center>
+          <Text style={[styles.questionText]}>Have you had a fever today?</Text>
+          <Center style={{ marginBottom: 17 }}>
+            <YesNoButton value={fever} onPress={() => setFever(!fever)} />
+          </Center>
         </Box>
-      ),
-      [
-        painExperienced,
-        setPainExperienced,
-        togglePainExperienced,
-        painType,
-        setPainType,
-      ]
-    );
-
-    const OtherQuestionsComponent: React.FC = React.useCallback(
-      () => (
-        <>
-          <Box
-            rounded="lg"
-            style={[
-              styles.card,
-              {
-                marginTop: 10,
-                marginBottom: 6,
-              },
-            ]}
-          >
-            <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
-            <Text style={[styles.questionText, styles.firstQuestion]}>
-              Have you had trouble with vision today?
-            </Text>
-            <Center>
-              <YesNoButton
-                value={visionImpaired}
-                onPress={() => setVisionImpaired(!visionImpaired)}
-              />
-            </Center>
-            <Text style={[styles.questionText]}>
-              Have you had a priapism episode today?
-            </Text>
-            <Center>
-              <YesNoButton
-                value={priapism}
-                onPress={() => setPriapism(!priapism)}
-              />
-            </Center>
-            <Text style={[styles.questionText]}>
-              Have you had a fever today?
-            </Text>
-            <Center style={{ marginBottom: 17 }}>
-              <YesNoButton value={fever} onPress={() => setFever(!fever)} />
-            </Center>
-          </Box>
-        </>
-      ),
-      [
-        visionImpaired,
-        setVisionImpaired,
-        priapism,
-        setPriapism,
-        fever,
-        setFever,
-      ]
+      </>
     );
 
     const closeBackModal = () => {

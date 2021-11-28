@@ -3,17 +3,19 @@ import * as React from "react";
 import Colors from "../constants/Colors";
 import { styles } from "../styles/PopupModal.styles";
 
-export default function PopupModal({
-  visible,
-  onClose,
-  title,
-  description,
-}: {
+type ErrorModalProps = {
   visible: boolean;
   onClose: () => void;
   title: string;
   description: string;
-}) {
+};
+
+export default function ErrorModal({
+  visible,
+  onClose,
+  title,
+  description,
+}: ErrorModalProps) {
   return (
     <Modal isOpen={visible} onClose={onClose} size="lg">
       <Modal.Content maxWidth="350">
