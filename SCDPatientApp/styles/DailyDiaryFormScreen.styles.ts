@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
+import { styles as sharedStyles } from "./Shared.styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -45,9 +46,7 @@ const styles = StyleSheet.create({
   },
 
   cardText: {
-    fontFamily: "Poppins-Medium",
-    fontWeight: "500",
-    fontSize: 24,
+    ...sharedStyles.cardTitleText,
   },
 
   questionText: {
