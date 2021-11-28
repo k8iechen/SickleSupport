@@ -508,14 +508,12 @@ const DailyDiaryFormScreen = observer(
 
     return (
       <>
-        {showErrorModal && (
-          <ErrorModal
-            visible={showErrorModal}
-            onClose={() => setShowErrorModal(false)}
-            title="Error"
-            description={errorMsg}
-          />
-        )}
+        <ErrorModal
+          visible={showErrorModal}
+          onClose={() => setShowErrorModal(false)}
+          title="Error"
+          description={errorMsg}
+        />
         <Modal isOpen={showBackModal} onClose={closeBackModal} size="md">
           <Modal.Content maxWidth="350">
             <Modal.CloseButton />
