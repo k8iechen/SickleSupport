@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
-import Svg, { SvgCssUri } from "react-native-svg";
+import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import { VStack, HStack } from "native-base";
 import Colors from "../constants/Colors";
 
-function PainIntensityComponent({
+type TPainIntensityProps = {
+  selectedButton: number;
+  setSelectedButton: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const PainIntensityComponent = ({
   selectedButton,
   setSelectedButton,
-}: {
-  selectedButton: number;
-  setSelectedButton: any;
-}) {
+}: TPainIntensityProps) => {
   const detailItems = [
     {
       id: 5,
@@ -124,7 +125,7 @@ function PainIntensityComponent({
       </VStack>
     </HStack>
   );
-}
+};
 
 function LevelButton({
   color,
