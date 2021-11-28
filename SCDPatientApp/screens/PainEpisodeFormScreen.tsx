@@ -71,7 +71,7 @@ export default function HomeScreen({
           >
             <HStack space={2} style={styles.cardHeader}>
               <Text style={[styles.cardText, styles.cardTitle]}>
-                Where did you find the pain?
+                Where did you feel the pain?
               </Text>
             </HStack>
             <PainAreaComponent muscles={painArea} updateMuscles={setPainArea} />
