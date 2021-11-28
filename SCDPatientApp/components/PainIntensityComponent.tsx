@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import { VStack, HStack } from "native-base";
+import { VStack, HStack, Center } from "native-base";
 import Colors from "../constants/Colors";
 
 type TPainIntensityProps = {
@@ -22,7 +22,7 @@ const PainIntensityComponent = ({
     },
     {
       id: 4,
-      color: ["#DEC353", "#F0C890"],
+      color: ["#fce083", "#F0C890"],
       image: require("../assets/images/severe_pain.png"),
       title: "Severe Pain",
       detail: "Unable to do most activities.",
@@ -64,7 +64,7 @@ const PainIntensityComponent = ({
     },
     {
       id: 7,
-      color: "#DEC353",
+      color: "#FCE083",
     },
 
     {
@@ -101,6 +101,7 @@ const PainIntensityComponent = ({
             key={levelItem.id}
             mainText={levelItem.id.toString()}
             color={levelItem.color}
+            isSelected={selectedButton === levelItem.id}
             onPress={() => {
               if (selectedButton === levelItem.id) {
                 setSelectedButton(-1);
@@ -127,42 +128,49 @@ const PainIntensityComponent = ({
   );
 };
 
-function LevelButton({
-  color,
-  mainText,
-  onPress,
-}: {
+type TLevelButtonProps = {
   color: string;
   mainText: string;
+  isSelected: boolean;
   onPress: () => void;
-}) {
+};
+
+const LevelButton = ({
+  color,
+  mainText,
+  isSelected,
+  onPress,
+}: TLevelButtonProps) => {
   return (
-    <TouchableOpacity
-      activeOpacity={1}
-      style={{
-        backgroundColor: color,
-        ...styles.painIntensityLevelButton,
-      }}
-      onPress={onPress}
-    >
-      <Text style={[styles.painIntensityLevelButtonText]}>{mainText}</Text>
+    <TouchableOpacity activeOpacity={1} onPress={onPress}>
+      <Center
+        style={{
+          opacity: isSelected ? 1 : 0.7,
+          backgroundColor: color,
+          ...styles.painIntensityLevelButton,
+        }}
+      >
+        <Text style={[styles.painIntensityLevelButtonText]}>{mainText}</Text>
+      </Center>
     </TouchableOpacity>
   );
-}
+};
 
-function Detail({
-  headerPicture,
-  mainText,
-  detailText,
-  isSelected,
-  selectedColor,
-}: {
+type TDetailProps = {
   headerPicture: any;
   mainText: string;
   detailText: string;
   isSelected: boolean;
   selectedColor: string;
-}) {
+};
+
+const Detail = ({
+  headerPicture,
+  mainText,
+  detailText,
+  isSelected,
+  selectedColor,
+}: TDetailProps) => {
   const renderDetailText = () => {
     if (isSelected) {
       return (
@@ -204,7 +212,7 @@ function Detail({
       </VStack>
     </HStack>
   );
-}
+};
 
 const styles = StyleSheet.create({
   painIntensityComponent: {
