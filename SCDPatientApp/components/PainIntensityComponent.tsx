@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   painIntensityDetailTextBlock: {
     width: 210,
     height: 56,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   painIntensityDetailHeaderText: {
@@ -267,14 +267,14 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontSize: 12,
     lineHeight: 18,
-    textAlign: "center",
+    textAlign: "left",
   },
   painIntensityDetailDetailText: {
     fontFamily: "Poppins-Medium",
     fontStyle: "normal",
     fontSize: 12,
     lineHeight: 18,
-    textAlign: "center",
+    textAlign: "left",
   },
 });
 
