@@ -2,12 +2,14 @@ import { serverTimestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import {
   Box,
+  Button,
   Center,
   HStack,
+  Modal,
   ScrollView,
   Slider,
-  View,
   VStack,
+  WarningIcon,
 } from "native-base";
 import * as React from "react";
 import { useContext } from "react";
@@ -55,11 +57,6 @@ const painTypes = [
   },
 ];
 
-// TODO: clean this up
-// Use built in native base form validation
-// spend a second to see if I can figure out the arrow renderer
-// see if I can figure out the nested lists issue
-
 const DailyDiaryFormScreen = observer(
   ({ navigation }: RootStackScreenProps<"DailyDiaryFormScreen">) => {
     const [selectedSleepRating, setSelectedSleepRating] = React.useState(-1);
@@ -75,8 +72,32 @@ const DailyDiaryFormScreen = observer(
     const [visionImpaired, setVisionImpaired] = React.useState(false);
     const [priapism, setPriapism] = React.useState(false);
     const [fever, setFever] = React.useState(false);
+
+    const sleepToMins = () => {
+      return Math.floor(sleepHours / 2) * 60 + (sleepHours % 2 == 0 ? 0 : 30);
+    };
+
+    // TODO: originalFormData should be updated when implementing feature edit-form; now needed for goBack modal
+    const [originalFormData, setOriginalFormData] = React.useState({
+      created_at: serverTimestamp(),
+      updated_at: serverTimestamp(),
+      sleep_rating: selectedSleepRating,
+      sleep_time: sleepToMins(),
+      mood: selectedMoodRating,
+      stress: selectedStressRating,
+      medication_compliance: medicationCompliance,
+      medications: medications,
+      pain: painExperienced,
+      pain_type: painExperienced ? painType[0] : "",
+      vision_impaired: visionImpaired,
+      priapism_episode: priapism,
+      fever: fever,
+    });
+
+    const [showSuccessModal, setShowSuccessModal] = React.useState(false);
     const [showErrorModal, setShowErrorModal] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState("");
+    const [showBackModal, setShowBackModal] = React.useState(false);
 
     const authStore = useContext(AuthContext);
     const diaryStore = DiaryStore();
@@ -91,10 +112,6 @@ const DailyDiaryFormScreen = observer(
       }
       return timeText;
     }
-
-    const sleepToMins = () => {
-      return Math.floor(sleepHours / 2) * 60 + (sleepHours % 2 == 0 ? 0 : 30);
-    };
 
     const toggleMedicineCompliance = (newvalue) => {
       setMedicationCompliance(newvalue);
@@ -170,6 +187,39 @@ const DailyDiaryFormScreen = observer(
       } else {
         navigation.goBack();
       }
+    };
+
+    const isFormChanged = () => {
+      const entry = {
+        sleep_rating: selectedSleepRating,
+        sleep_time: sleepToMins(),
+        mood: selectedMoodRating,
+        stress: selectedStressRating,
+        medication_compliance: medicationCompliance,
+        medications: medications,
+        pain: painExperienced,
+        pain_type: painExperienced ? painType[0] : "",
+        vision_impaired: visionImpaired,
+        priapism_episode: priapism,
+        fever: fever,
+      };
+
+      let { created_at, updated_at, ...cmpOriginalEntry } = originalFormData;
+      return JSON.stringify(entry) === JSON.stringify(cmpOriginalEntry);
+    };
+
+    const navigateBack = () => {
+      // Only pop up modal if form data changed
+      if (isFormChanged()) {
+        navigation.goBack();
+      } else {
+        setShowBackModal(true);
+      }
+    };
+
+    const closeSuccessModal = () => {
+      setShowSuccessModal(false);
+      navigation.goBack();
     };
 
     const SleepComponent: React.FC = React.useCallback(
@@ -452,6 +502,10 @@ const DailyDiaryFormScreen = observer(
       ]
     );
 
+    const closeBackModal = () => {
+      setShowBackModal(false);
+    };
+
     return (
       <>
         {showErrorModal && (
@@ -462,12 +516,45 @@ const DailyDiaryFormScreen = observer(
             description={errorMsg}
           />
         )}
+        <Modal isOpen={showBackModal} onClose={closeBackModal} size="md">
+          <Modal.Content maxWidth="350">
+            <Modal.CloseButton />
+            <Modal.Header>
+              <HStack>
+                <WarningIcon style={{ color: Colors.darkColor }} />
+              </HStack>
+            </Modal.Header>
+            <Modal.Body>
+              <VStack space={3}>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <Text style={styles.backModalText}>
+                    Are you sure you want to discard your unsaved changes?
+                  </Text>
+                </HStack>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <Button
+                    style={styles.cancelButton}
+                    onPress={() => closeBackModal()}
+                  >
+                    <Text style={styles.modalButtonText}>Cancel</Text>
+                  </Button>
+                  <Button
+                    style={styles.okButton}
+                    onPress={() => navigation.goBack()}
+                  >
+                    <Text style={styles.modalButtonText}>OK</Text>
+                  </Button>
+                </HStack>
+              </VStack>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
         <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
           <VStack>
             <TouchableOpacity
               activeOpacity={0.5}
               style={styles.backButton}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigateBack()}
             >
               <Image source={require("../assets/icons/back.png")} />
             </TouchableOpacity>
