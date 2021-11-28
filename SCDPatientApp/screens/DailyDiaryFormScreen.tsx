@@ -1,32 +1,31 @@
-import * as React from "react";
-import { Text, Image, TouchableOpacity } from "react-native";
+import { serverTimestamp } from "firebase/firestore";
+import { observer } from "mobx-react-lite";
 import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  Modal,
+  ScrollView,
   Slider,
   VStack,
-  ScrollView,
-  Box,
-  HStack,
-  Center,
-  View,
-  Modal,
-  Button,
+  WarningIcon,
 } from "native-base";
-import { observer } from "mobx-react-lite";
-import { WarningIcon } from "native-base";
-
-import { RootStackScreenProps } from "../models/navigation";
-import styles from "../styles/DailyDiaryFormScreen.styles";
-import SaveButton from "../components/SaveButton";
-import { serverTimestamp } from "firebase/firestore";
-import { TDiaryEntry } from "../models/DiaryEntry";
-import { AuthContext } from "../contexts/AuthContext";
+import * as React from "react";
 import { useContext } from "react";
-import DiaryStore from "../stores/dairy.store";
+import { Image, Text, TouchableOpacity } from "react-native";
 import CustomSelect from "../components/CustomSelect";
-import Colors from "../constants/Colors";
-import Scale from "../components/Scale";
+import ErrorModal from "../components/ErrorModal";
 import PictureScale from "../components/PictureScale";
-import ToggleButton from "react-native-toggle-element";
+import SaveButton from "../components/SaveButton";
+import Scale from "../components/Scale";
+import YesNoButton from "../components/YesNoButton";
+import Colors from "../constants/Colors";
+import { AuthContext } from "../contexts/AuthContext";
+import { TDiaryEntry } from "../models/DiaryEntry";
+import { RootStackScreenProps } from "../models/navigation";
+import DiaryStore from "../stores/dairy.store";
+import styles from "../styles/DailyDiaryFormScreen.styles";
 
 const diaryMedicationTypes = [
   {
@@ -114,7 +113,7 @@ const DailyDiaryFormScreen = observer(
       return timeText;
     }
 
-    const toggleMedicineTaken = (newvalue) => {
+    const toggleMedicineCompliance = (newvalue) => {
       setMedicationCompliance(newvalue);
       setMedications([]);
     };
@@ -179,15 +178,15 @@ const DailyDiaryFormScreen = observer(
         setShowErrorModal(true);
         return;
       }
-      const saved = await diaryStore.addDiaryEntry(authStore.patient, entry);
+      const saved = await diaryStore.addEntry(authStore.patient, entry);
       if (!saved) {
         setErrorMsg(
-          "Apologies, something went wrong on our end! Please click the 'Save' button again."
+          "Oops, something went wrong on our end! Please click the 'Save' button again."
         );
         setShowErrorModal(true);
+      } else {
+        navigation.goBack();
       }
-      setErrorMsg("");
-      setShowSuccessModal(true);
     };
 
     const isFormChanged = () => {
@@ -223,9 +222,246 @@ const DailyDiaryFormScreen = observer(
       navigation.goBack();
     };
 
-    const closeErrorModal = () => {
-      setShowErrorModal(false);
-    };
+    const SleepComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 16,
+          },
+        ]}
+      >
+        <HStack space={2} style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
+          <Text style={[styles.cardText, styles.sleepText]}>
+            {getTimeText()}
+          </Text>
+        </HStack>
+        <HStack space={3} style={styles.sleepSlider}>
+          <TouchableOpacity
+            onPress={() => {
+              if (sleepHours > 0) {
+                setSleepHours(sleepHours - 1);
+              }
+            }}
+          >
+            <Text style={[styles.cardText, styles.sleepSliderText]}>-</Text>
+          </TouchableOpacity>
+          <Slider
+            style={{
+              width: "75%",
+              zIndex: 1,
+            }}
+            value={sleepHours}
+            onChange={(v) => {
+              setScrollEnabled(false);
+              setSleepHours(Math.floor(v));
+            }}
+            onChangeEnd={(v) => {
+              setScrollEnabled(true);
+            }}
+            minValue={0}
+            maxValue={48}
+            size="lg"
+          >
+            <Slider.Track bg={"#c1d9f7"}>
+              <Slider.FilledTrack bg={Colors.selection} />
+            </Slider.Track>
+            <Slider.Thumb bg={Colors.selection} />
+          </Slider>
+          <TouchableOpacity
+            onPress={() => {
+              if (sleepHours < 48) {
+                setSleepHours(sleepHours + 1);
+              }
+            }}
+          >
+            <Text style={[styles.cardText, styles.sleepSliderText]}>+</Text>
+          </TouchableOpacity>
+        </HStack>
+        <Scale
+          data={["Awful", "Poor", "OK", "Good", "Great"]}
+          selectedButton={selectedSleepRating}
+          setSelectedButton={setSelectedSleepRating}
+        />
+      </Box>
+    );
+
+    const StressComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <HStack style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
+        </HStack>
+        <Scale
+          data={["Lowest", "Low", "Medium", "High", "Highest"]}
+          reverse={true}
+          selectedButton={selectedStressRating}
+          setSelectedButton={setSelectedStressRating}
+        />
+      </Box>
+    );
+
+    const MoodComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <HStack space={2} style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
+        </HStack>
+        <PictureScale
+          data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
+          pictureData={[
+            require("../assets/images/stress_face.png"),
+            require("../assets/images/sad_face.png"),
+            require("../assets/images/calm_face.png"),
+            require("../assets/images/happy_face.png"),
+            require("../assets/images/excited_face.png"),
+          ]}
+          selectedButton={selectedMoodRating}
+          setSelectedButton={setSelectedMoodRating}
+        />
+      </Box>
+    );
+
+    const MedicineComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
+        <Text style={[styles.questionText, styles.firstQuestion]}>
+          Have you taken your medicine for today?
+        </Text>
+        <Center
+          style={{
+            marginBottom: medicationCompliance ? 0 : 23,
+          }}
+        >
+          <YesNoButton
+            value={medicationCompliance}
+            onPress={() => toggleMedicineCompliance(!medicationCompliance)}
+          />
+        </Center>
+        {medicationCompliance && (
+          <>
+            <Text style={styles.questionText}>Which medication?</Text>
+            <Box style={styles.selectDropdown}>
+              <CustomSelect
+                single={false}
+                choices={diaryMedicationTypes}
+                selectText="Select medication(s)"
+                selections={medications}
+                onSelectedItemsChange={(selectedMedications) =>
+                  setMedications(selectedMedications)
+                }
+              />
+            </Box>
+          </>
+        )}
+      </Box>
+    );
+
+    const PainComponent: React.FC = () => (
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
+        <Text style={[styles.questionText, styles.firstQuestion]}>
+          Did you feel pain today?
+        </Text>
+        <Center
+          style={{
+            marginBottom: painExperienced ? 0 : 23,
+          }}
+        >
+          <YesNoButton
+            value={painExperienced}
+            onPress={() => togglePainExperienced(!painExperienced)}
+          />
+        </Center>
+        {painExperienced && (
+          <>
+            <Text style={[styles.questionText]}>
+              Which pain are you feeling?
+            </Text>
+            <Box style={styles.selectDropdown}>
+              <CustomSelect
+                single={true}
+                selectText="Select pain type"
+                choices={painTypes}
+                selections={painType}
+                onSelectedItemsChange={(newvalue) => setPainType(newvalue)}
+              />
+            </Box>
+          </>
+        )}
+      </Box>
+    );
+
+    const OtherQuestionsComponent: React.FC = () => (
+      <>
+        <Box
+          rounded="lg"
+          style={[
+            styles.card,
+            {
+              marginTop: 10,
+              marginBottom: 6,
+            },
+          ]}
+        >
+          <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
+          <Text style={[styles.questionText, styles.firstQuestion]}>
+            Have you had trouble with vision today?
+          </Text>
+          <Center>
+            <YesNoButton
+              value={visionImpaired}
+              onPress={() => setVisionImpaired(!visionImpaired)}
+            />
+          </Center>
+          <Text style={[styles.questionText]}>
+            Have you had a priapism episode today?
+          </Text>
+          <Center>
+            <YesNoButton
+              value={priapism}
+              onPress={() => setPriapism(!priapism)}
+            />
+          </Center>
+          <Text style={[styles.questionText]}>Have you had a fever today?</Text>
+          <Center style={{ marginBottom: 17 }}>
+            <YesNoButton value={fever} onPress={() => setFever(!fever)} />
+          </Center>
+        </Box>
+      </>
+    );
 
     const closeBackModal = () => {
       setShowBackModal(false);
@@ -233,24 +469,12 @@ const DailyDiaryFormScreen = observer(
 
     return (
       <>
-        <Modal isOpen={showErrorModal} onClose={closeErrorModal} size="lg">
-          <Modal.Content maxWidth="350">
-            <Modal.CloseButton />
-            <Modal.Header>
-              <HStack>
-                <WarningIcon style={{ color: Colors.darkColor }} />
-                <Text style={[styles.cardText, { marginLeft: 10 }]}>Error</Text>
-              </HStack>
-            </Modal.Header>
-            <Modal.Body>
-              <VStack space={3}>
-                <HStack alignItems="center" justifyContent="space-between">
-                  <Text style={styles.errorModalText}>{errorMsg}</Text>
-                </HStack>
-              </VStack>
-            </Modal.Body>
-          </Modal.Content>
-        </Modal>
+        <ErrorModal
+          visible={showErrorModal}
+          onClose={() => setShowErrorModal(false)}
+          title="Error"
+          description={errorMsg}
+        />
         <Modal isOpen={showBackModal} onClose={closeBackModal} size="md">
           <Modal.Content maxWidth="350">
             <Modal.CloseButton />
@@ -296,487 +520,12 @@ const DailyDiaryFormScreen = observer(
             <Text style={styles.title}>Daily Diary Entry</Text>
           </VStack>
           <VStack style={styles.form}>
-            <Box
-              rounded="lg"
-              style={[
-                styles.card,
-                {
-                  marginTop: 16,
-                },
-              ]}
-            >
-              <HStack space={2} style={styles.cardHeader}>
-                <Text style={[styles.cardText, styles.cardTitle]}>Sleep</Text>
-                <Text style={[styles.cardText, styles.sleepText]}>
-                  {getTimeText()}
-                </Text>
-              </HStack>
-              <HStack space={3} style={styles.sleepSlider}>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (sleepHours > 0) {
-                      setSleepHours(sleepHours - 1);
-                    }
-                  }}
-                >
-                  <Text style={[styles.cardText, styles.sleepSliderText]}>
-                    -
-                  </Text>
-                </TouchableOpacity>
-                <Slider
-                  style={{
-                    width: "75%",
-                    zIndex: 1,
-                  }}
-                  value={sleepHours}
-                  onChange={(v) => {
-                    setScrollEnabled(false);
-                    setSleepHours(Math.floor(v));
-                  }}
-                  onChangeEnd={(v) => {
-                    setScrollEnabled(true);
-                  }}
-                  minValue={0}
-                  maxValue={48}
-                  size="lg"
-                >
-                  <Slider.Track bg={"#c1d9f7"}>
-                    <Slider.FilledTrack bg={Colors.selection} />
-                  </Slider.Track>
-                  <Slider.Thumb bg={Colors.selection} />
-                </Slider>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (sleepHours < 48) {
-                      setSleepHours(sleepHours + 1);
-                    }
-                  }}
-                >
-                  <Text style={[styles.cardText, styles.sleepSliderText]}>
-                    +
-                  </Text>
-                </TouchableOpacity>
-              </HStack>
-              <Scale
-                data={["Awful", "Poor", "OK", "Good", "Great"]}
-                selectedButton={selectedSleepRating}
-                setSelectedButton={setSelectedSleepRating}
-              />
-            </Box>
-            <Box
-              rounded="lg"
-              style={[
-                styles.card,
-                {
-                  marginTop: 10,
-                },
-              ]}
-            >
-              <HStack style={styles.cardHeader}>
-                <Text style={[styles.cardText, styles.cardTitle]}>Stress</Text>
-              </HStack>
-              <Scale
-                data={["Lowest", "Low", "Medium", "High", "Highest"]}
-                reverse={true}
-                selectedButton={selectedStressRating}
-                setSelectedButton={setSelectedStressRating}
-              />
-            </Box>
-            <Box
-              rounded="lg"
-              style={[
-                styles.card,
-                {
-                  marginTop: 10,
-                },
-              ]}
-            >
-              <HStack space={2} style={styles.cardHeader}>
-                <Text style={[styles.cardText, styles.cardTitle]}>Mood</Text>
-              </HStack>
-              <PictureScale
-                data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
-                pictureData={[
-                  require("../assets/images/stress_face.png"),
-                  require("../assets/images/sad_face.png"),
-                  require("../assets/images/calm_face.png"),
-                  require("../assets/images/happy_face.png"),
-                  require("../assets/images/excited_face.png"),
-                ]}
-                selectedButton={selectedMoodRating}
-                setSelectedButton={setSelectedMoodRating}
-              />
-            </Box>
-            <Box
-              rounded="lg"
-              style={[
-                styles.card,
-                {
-                  marginTop: 10,
-                },
-              ]}
-            >
-              <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
-              <Text style={[styles.questionText, styles.firstQuestion]}>
-                Have you taken your medicine for today?
-              </Text>
-              <Center
-                style={{
-                  marginBottom: medicationCompliance ? 0 : 23,
-                }}
-              >
-                <ToggleButton
-                  value={medicationCompliance}
-                  onPress={toggleMedicineTaken}
-                  trackBar={{
-                    activeBackgroundColor: "#F6F6F6",
-                    inActiveBackgroundColor: "#F6F6F6",
-                    borderActiveColor: "#E8E8E8",
-                    borderInActiveColor: "#E8E8E8",
-                    borderWidth: 1,
-                    width: 250,
-                  }}
-                  thumbButton={{
-                    width: 125,
-                    activeBackgroundColor: "#ffffff",
-                    inActiveBackgroundColor: "#ffffff",
-                  }}
-                  leftComponent={
-                    <View
-                      style={{
-                        width: 125,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: medicationCompliance
-                            ? "#BDBDBD"
-                            : Colors.selection,
-                        }}
-                      >
-                        No
-                      </Text>
-                    </View>
-                  }
-                  rightComponent={
-                    <View
-                      style={{
-                        width: "100%",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: medicationCompliance
-                            ? Colors.success
-                            : "#BDBDBD",
-                        }}
-                      >
-                        Yes
-                      </Text>
-                    </View>
-                  }
-                />
-              </Center>
-              {medicationCompliance && (
-                <>
-                  <Text style={styles.questionText}>Which medication?</Text>
-                  <Box style={styles.selectDropdown}>
-                    <CustomSelect
-                      single={false}
-                      choices={diaryMedicationTypes}
-                      selectText="Select medication(s)"
-                      selections={medications}
-                      onSelectedItemsChange={(selectedMedications) =>
-                        setMedications(selectedMedications)
-                      }
-                    />
-                  </Box>
-                </>
-              )}
-            </Box>
-            <Box
-              rounded="lg"
-              style={[
-                styles.card,
-                {
-                  marginTop: 10,
-                },
-              ]}
-            >
-              <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
-              <Text style={[styles.questionText, styles.firstQuestion]}>
-                Did you feel pain today?
-              </Text>
-              <Center
-                style={{
-                  marginBottom: painExperienced ? 0 : 23,
-                }}
-              >
-                <ToggleButton
-                  value={painExperienced}
-                  onPress={togglePainExperienced}
-                  trackBar={{
-                    activeBackgroundColor: "#F6F6F6",
-                    inActiveBackgroundColor: "#F6F6F6",
-                    borderActiveColor: "#E8E8E8",
-                    borderInActiveColor: "#E8E8E8",
-                    borderWidth: 1,
-                    width: 250,
-                  }}
-                  thumbButton={{
-                    width: 125,
-                    activeBackgroundColor: "#ffffff",
-                    inActiveBackgroundColor: "#ffffff",
-                  }}
-                  leftComponent={
-                    <View
-                      style={{
-                        width: 125,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: painExperienced ? "#BDBDBD" : Colors.selection,
-                        }}
-                      >
-                        No
-                      </Text>
-                    </View>
-                  }
-                  rightComponent={
-                    <View
-                      style={{
-                        width: "100%",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: painExperienced ? Colors.success : "#BDBDBD",
-                        }}
-                      >
-                        Yes
-                      </Text>
-                    </View>
-                  }
-                />
-              </Center>
-              {painExperienced && (
-                <>
-                  <Text style={[styles.questionText]}>
-                    Which pain are you feeling?
-                  </Text>
-                  <Box style={styles.selectDropdown}>
-                    <CustomSelect
-                      single={true}
-                      selectText="Select pain type"
-                      choices={painTypes}
-                      selections={painType}
-                      onSelectedItemsChange={(newvalue) =>
-                        setPainType(newvalue)
-                      }
-                    />
-                  </Box>
-                </>
-              )}
-            </Box>
-            <Box
-              rounded="lg"
-              style={[
-                styles.card,
-                {
-                  marginTop: 10,
-                  marginBottom: 6,
-                },
-              ]}
-            >
-              <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
-              <Text style={[styles.questionText, styles.firstQuestion]}>
-                Have you had trouble with vision today?
-              </Text>
-              <Center>
-                <ToggleButton
-                  value={visionImpaired}
-                  onPress={setVisionImpaired}
-                  trackBar={{
-                    activeBackgroundColor: "#F6F6F6",
-                    inActiveBackgroundColor: "#F6F6F6",
-                    borderActiveColor: "#E8E8E8",
-                    borderInActiveColor: "#E8E8E8",
-                    borderWidth: 1,
-                    width: 250,
-                  }}
-                  thumbButton={{
-                    width: 125,
-                    activeBackgroundColor: "#ffffff",
-                    inActiveBackgroundColor: "#ffffff",
-                  }}
-                  leftComponent={
-                    <View
-                      style={{
-                        width: 125,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: visionImpaired ? "#BDBDBD" : Colors.selection,
-                        }}
-                      >
-                        No
-                      </Text>
-                    </View>
-                  }
-                  rightComponent={
-                    <View
-                      style={{
-                        width: "100%",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: visionImpaired ? Colors.success : "#BDBDBD",
-                        }}
-                      >
-                        Yes
-                      </Text>
-                    </View>
-                  }
-                />
-              </Center>
-              <Text style={[styles.questionText]}>
-                Have you had a priapism episode today?
-              </Text>
-              <Center>
-                <ToggleButton
-                  value={priapism}
-                  onPress={setPriapism}
-                  trackBar={{
-                    activeBackgroundColor: "#F6F6F6",
-                    inActiveBackgroundColor: "#F6F6F6",
-                    borderActiveColor: "#E8E8E8",
-                    borderInActiveColor: "#E8E8E8",
-                    borderWidth: 1,
-                    width: 250,
-                  }}
-                  thumbButton={{
-                    width: 125,
-                    activeBackgroundColor: "#ffffff",
-                    inActiveBackgroundColor: "#ffffff",
-                  }}
-                  leftComponent={
-                    <View
-                      style={{
-                        width: 125,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: priapism ? "#BDBDBD" : Colors.selection,
-                        }}
-                      >
-                        No
-                      </Text>
-                    </View>
-                  }
-                  rightComponent={
-                    <View
-                      style={{
-                        width: "100%",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: priapism ? Colors.success : "#BDBDBD",
-                        }}
-                      >
-                        Yes
-                      </Text>
-                    </View>
-                  }
-                />
-              </Center>
-              <Text style={[styles.questionText]}>
-                Have you had a fever today?
-              </Text>
-              <Center style={{ marginBottom: 17 }}>
-                <ToggleButton
-                  value={fever}
-                  onPress={setFever}
-                  trackBar={{
-                    activeBackgroundColor: "#F6F6F6",
-                    inActiveBackgroundColor: "#F6F6F6",
-                    borderActiveColor: "#E8E8E8",
-                    borderInActiveColor: "#E8E8E8",
-                    borderWidth: 1,
-                    width: 250,
-                  }}
-                  thumbButton={{
-                    width: 125,
-                    activeBackgroundColor: "#ffffff",
-                    inActiveBackgroundColor: "#ffffff",
-                  }}
-                  leftComponent={
-                    <View
-                      style={{
-                        width: 125,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: fever ? "#BDBDBD" : Colors.selection,
-                        }}
-                      >
-                        No
-                      </Text>
-                    </View>
-                  }
-                  rightComponent={
-                    <View
-                      style={{
-                        width: "100%",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontFamily: "Poppins-Medium",
-                          fontSize: 16,
-                          color: fever ? Colors.success : "#BDBDBD",
-                        }}
-                      >
-                        Yes
-                      </Text>
-                    </View>
-                  }
-                />
-              </Center>
-            </Box>
+            {SleepComponent({})}
+            {StressComponent({})}
+            {MoodComponent({})}
+            {MedicineComponent({})}
+            {PainComponent({})}
+            {OtherQuestionsComponent({})}
             <Box
               style={{
                 height: 100,
