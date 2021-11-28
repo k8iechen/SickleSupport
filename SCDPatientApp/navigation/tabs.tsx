@@ -118,6 +118,7 @@ const Tabs = () => {
         <HomeStack.Screen
           name="DailyDiaryFormScreen"
           component={DailyDiaryFormScreen}
+          options={{ gestureEnabled: false }} // Prevent user from swapping left to force exit form
         />
         <HomeStack.Screen
           name="PainEpisodeFormScreen"

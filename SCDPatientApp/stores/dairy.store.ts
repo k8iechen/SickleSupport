@@ -4,7 +4,7 @@ import { TDiaryEntry } from "../models/DiaryEntry";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 export interface IDiaryStore {
-  addDiaryEntry: (
+  addEntry: (
     patient: TPatient | null | undefined,
     entry: TDiaryEntry
   ) => Promise<boolean>;
@@ -12,7 +12,7 @@ export interface IDiaryStore {
 
 const DiaryStore = (): IDiaryStore => {
   const store: IDiaryStore = {
-    addDiaryEntry: async (
+    addEntry: async (
       patient: TPatient | null | undefined,
       entry: TDiaryEntry
     ): Promise<boolean> => {

@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
+import { styles as sharedStyles } from "./Shared.styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -45,9 +46,7 @@ const styles = StyleSheet.create({
   },
 
   cardText: {
-    fontFamily: "Poppins-Medium",
-    fontWeight: "500",
-    fontSize: 24,
+    ...sharedStyles.cardTitleText,
   },
 
   questionText: {
@@ -64,7 +63,14 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
     fontSize: 14,
-    marginBottom: 30
+    marginBottom: 30,
+  },
+
+  backModalText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 14,
+    marginBottom: 10,
   },
 
   firstQuestion: {
@@ -94,6 +100,28 @@ const styles = StyleSheet.create({
     height: 56,
     color: Colors.successGreen,
   },
+
+  cancelButton: {
+    width: 80,
+    borderRadius: 8,
+    backgroundColor: Colors.backButton,
+  },
+
+  okButton: {
+    width: 80,
+    borderRadius: 8,
+    backgroundColor: Colors.primary,
+  },
+
+  modalButtonText: {
+    fontFamily: "Poppins-Regular",
+    fontStyle: "normal",
+    fontWeight: "600",
+    fontSize: 14,
+    textAlign: "center",
+    color: Colors.white,
+  },
+
   cardHeader: {
     marginTop: 5,
     alignItems: "center",
