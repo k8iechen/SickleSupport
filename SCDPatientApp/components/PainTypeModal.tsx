@@ -6,6 +6,8 @@ import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import Colors from "../constants/Colors";
+
 type TPainTypeModalProps = {
   showModal: boolean;
   setShowModal;
@@ -99,14 +101,14 @@ const styles = StyleSheet.create({
   },
   ongoingBtn: {
     height: 73,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.white,
     borderRadius: 24,
     marginBottom: 20,
     justifyContent: "center",
   },
   pastBtn: {
     height: 73,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.white,
     borderRadius: 24,
     marginBottom: 30,
     justifyContent: "center",
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
   btnText: {
     fontFamily: "Poppins-Medium",
     fontSize: 16,
-    color: "#0A0909",
+    color: Colors.title,
   },
   btnArrow: {
     marginLeft: "auto",
