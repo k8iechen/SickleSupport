@@ -1,18 +1,22 @@
 import * as React from "react";
+import { useContext } from "react";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Button, VStack, Box, HStack } from "native-base";
 import { RootTabScreenProps } from "../models/navigation";
 import Colors from "../constants/Colors";
 import SummaryCard from "../components/SummaryCard";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
+  const authStore = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <VStack style={styles.content}>
         <Text style={styles.helloText}>Hello,</Text>
-        <Text style={styles.nameText}>Katherine</Text>
+        <Text style={styles.nameText}>{authStore.patient?.name}</Text>
 
         <SummaryCard
           medicationStreak={8}
