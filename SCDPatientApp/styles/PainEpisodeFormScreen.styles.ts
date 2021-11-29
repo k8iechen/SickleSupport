@@ -60,6 +60,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
+  firstQuestion: {
+    marginTop: 17,
+  },
+
   subTitleText: {
     fontSize: 18,
     marginTop: 5,

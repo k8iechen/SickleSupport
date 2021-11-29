@@ -94,7 +94,6 @@ const DailyDiaryFormScreen = observer(
       fever: fever,
     });
 
-    const [showSuccessModal, setShowSuccessModal] = React.useState(false);
     const [showErrorModal, setShowErrorModal] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState("");
     const [showBackModal, setShowBackModal] = React.useState(false);
@@ -215,11 +214,6 @@ const DailyDiaryFormScreen = observer(
       } else {
         setShowBackModal(true);
       }
-    };
-
-    const closeSuccessModal = () => {
-      setShowSuccessModal(false);
-      navigation.goBack();
     };
 
     const SleepComponent: React.FC = () => (
