@@ -79,6 +79,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 26,
   },
+
+  selectDropdown: {
+    marginLeft: 17,
+    marginRight: 17,
+  },
 });
 
 export default styles;
