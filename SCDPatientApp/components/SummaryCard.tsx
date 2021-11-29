@@ -3,17 +3,17 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import { Button, VStack, Box, HStack } from "native-base";
 import Colors from "../constants/Colors";
 
-type TSummaryCardProps = {
+interface TSummaryCardProps {
   medicationStreak: number;
   totalPainEpisodes: number;
   numHospitalEpisodes: number;
-};
+}
 
-const SummaryCard = ({
+const SummaryCard: React.FC<TSummaryCardProps> = ({
   medicationStreak,
   totalPainEpisodes,
   numHospitalEpisodes,
-}: TSummaryCardProps) => {
+}) => {
   return (
     <>
       <Text style={styles.summaryText}>Summary</Text>
