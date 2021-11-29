@@ -7,17 +7,6 @@ import { VStack, Box, HStack, Center, Circle, Modal } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 
-type TPainWhenModalProps = {
-  showModal: boolean;
-  setShowModal;
-  setShowTypeModal;
-  startDay;
-  setStartDay;
-  startTime;
-  setStartTime;
-  navigation;
-};
-
 const getDateString = (date: Date) => {
   const offset = date.getTimezoneOffset();
   const parsedDate = new Date(date.getTime() - offset * 60 * 1000);
@@ -41,7 +30,18 @@ export const TODAY_START_TIME = {
   minutes: TODAYS_DATE.getMinutes(),
 };
 
-export const PainWhenModal = ({
+interface TPainWhenModalProps {
+  showModal: boolean;
+  setShowModal;
+  setShowTypeModal;
+  startDay;
+  setStartDay;
+  startTime;
+  setStartTime;
+  navigation;
+}
+
+export const PainWhenModal: React.FC<TPainWhenModalProps> = ({
   showModal,
   setShowModal,
   setShowTypeModal,
@@ -50,7 +50,7 @@ export const PainWhenModal = ({
   startTime,
   setStartTime,
   navigation,
-}: TPainWhenModalProps) => {
+}) => {
   const [showTimePicker, setShowTimePicker] = React.useState(false);
   const [selectedEpisodeDates, setSelectedEpisodeDates] = React.useState(null);
 

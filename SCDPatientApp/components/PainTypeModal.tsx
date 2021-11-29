@@ -8,19 +8,19 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
 
-type TPainTypeModalProps = {
+interface TPainTypeModalProps {
   showModal: boolean;
   setShowModal;
   setShowWhenModal;
   navigation;
-};
+}
 
-const PainTypeModal = ({
+const PainTypeModal: React.FC<TPainTypeModalProps> = ({
   showModal,
   setShowModal,
   setShowWhenModal,
   navigation,
-}: TPainTypeModalProps) => {
+}) => {
   return (
     <Modal isOpen={showModal} onClose={setShowModal} size="lg">
       <Modal.Content style={styles.modalContent}>
