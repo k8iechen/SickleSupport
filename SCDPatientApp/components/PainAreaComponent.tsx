@@ -5,19 +5,19 @@ import Colors from "../constants/Colors";
 import Body from "./Body";
 import ToggleButton from "react-native-toggle-element";
 
-interface Muscle {
+type Muscle = {
   intensity?: number;
   color: string;
   slug: string;
   pointsArray?: string[];
-}
+};
 
-interface TPainIntensityProps {
+interface PainIntensityProps {
   muscles: Muscle[];
   updateMuscles: any;
 }
 
-const PainAreaComponent: React.FC<TPainIntensityProps> = ({
+const PainAreaComponent: React.FC<PainIntensityProps> = ({
   muscles,
   updateMuscles,
 }) => {
