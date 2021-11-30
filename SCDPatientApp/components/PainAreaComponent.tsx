@@ -76,7 +76,6 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             frontOnly={true}
             data={muscles}
             onMusclePress={(muscle: TMuscle) => {
-              console.log(muscle);
               handleMusclePress(muscle);
             }}
           />
@@ -86,7 +85,6 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             backOnly={true}
             data={muscles}
             onMusclePress={(muscle: TMuscle) => {
-              console.log(muscle);
               handleMusclePress(muscle);
             }}
           />
