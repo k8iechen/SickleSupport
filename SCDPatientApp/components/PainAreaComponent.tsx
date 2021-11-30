@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { VStack, HStack, Center, Box } from "native-base";
 import Colors from "../constants/Colors";
-import Body from "react-native-body-highlighter";
+import Body from "./Body";
 import ToggleButton from "react-native-toggle-element";
 
 type TMuscle = {
+  intensity?: number;
+  color: string;
   slug: string;
-  intensity: number;
+  pointsArray?: string[];
 };
+
 type TPainIntensityProps = {
   muscles: TMuscle[];
   updateMuscles: any;
@@ -52,8 +55,18 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             activeBackgroundColor: "#ffffff",
             inActiveBackgroundColor: "#ffffff",
           }}
-          leftComponent={<Text>Front</Text>}
-          rightComponent={<Text>Back</Text>}
+          leftComponent={
+            <VStack style={styles.painAreaToggleText}>
+              <Text>Front</Text>
+              {!bodySide && <Text>(right-left)</Text>}
+            </VStack>
+          }
+          rightComponent={
+            <VStack style={styles.painAreaToggleText}>
+              <Text>Back</Text>
+              {bodySide && <Text>(left-right)</Text>}
+            </VStack>
+          }
         />
       </Center>
       <Center style={styles.painAreaBody}>
@@ -63,6 +76,7 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             frontOnly={true}
             data={muscles}
             onMusclePress={(muscle: TMuscle) => {
+              console.log(muscle);
               handleMusclePress(muscle);
             }}
           />
@@ -72,6 +86,7 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             backOnly={true}
             data={muscles}
             onMusclePress={(muscle: TMuscle) => {
+              console.log(muscle);
               handleMusclePress(muscle);
             }}
           />
@@ -89,6 +104,11 @@ const styles = StyleSheet.create({
   painAreaToggle: {
     marginTop: 10,
     marginBottom: 10,
+  },
+
+  painAreaToggleText: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   painAreaBody: {

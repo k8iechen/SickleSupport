@@ -13,6 +13,7 @@ const Colors = {
   selection: "#6A6DCD",
   success: "#5DB075",
   white: "#FFFFFF",
+  bodyUnselected: "#b2bec3",
 };
 
 export default Colors;

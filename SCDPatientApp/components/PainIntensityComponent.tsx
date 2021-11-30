@@ -218,6 +218,7 @@ const styles = StyleSheet.create({
   painIntensityComponent: {
     width: "100%",
     marginLeft: 15,
+    marginBottom: 15,
   },
 
   painIntensityLevels: {
