@@ -1,6 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
 import { Center, HStack, Text } from "native-base";
 import * as React from "react";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import styles from "../styles/CounterWithButtons.styles";
 
 interface CounterWithButtonsProps {
@@ -14,21 +15,15 @@ export default function CounterWithButtons({
 }: CounterWithButtonsProps) {
   return (
     <HStack style={styles.container}>
-      <AntDesign
-        name="minuscircleo"
-        size={24}
-        color={"black"}
-        onPress={() => setValue(value - 1)}
-      />
+      <TouchableOpacity onPress={() => setValue(value - 1)}>
+        <AntDesign name="minuscircleo" size={24} color={"black"} />
+      </TouchableOpacity>
       <Center>
         <Text style={styles.text}>{value}</Text>
       </Center>
-      <AntDesign
-        name="pluscircleo"
-        size={24}
-        color="black"
-        onPress={() => setValue(value + 1)}
-      />
+      <TouchableOpacity onPress={() => setValue(value + 1)}>
+        <AntDesign name="pluscircleo" size={24} color="black" />
+      </TouchableOpacity>
     </HStack>
   );
 }
