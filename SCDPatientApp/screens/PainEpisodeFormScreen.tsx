@@ -293,7 +293,7 @@ export default function HomeScreen({
       <Box style={{ marginLeft: 10, marginTop: 5 }}>
         <ButtonRadio.MultiGroup>
           {painTriggerTypes.map((val) => (
-            <ButtonRadio onPress={() => handlePainTriggerPress(val)}>
+            <ButtonRadio key={val} onPress={() => handlePainTriggerPress(val)}>
               {val}
             </ButtonRadio>
           ))}
@@ -312,6 +312,7 @@ export default function HomeScreen({
         <ButtonRadio.MultiGroup>
           {reliefMethodTypes.map((val) => (
             <ButtonRadio
+              key={val}
               onPress={() => {
                 handleReliefMethodPress(val);
               }}

@@ -22,24 +22,23 @@ function Group({ children }) {
 }
 
 function MultiGroup({ children }) {
-  const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
+  const [selectedIndices, setSelectedIndices] = useState<Set<number>>(
+    new Set()
+  );
   return (
     <View style={styles.buttonRadioGroup}>
       {React.Children.map(children, (child, idx) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child, {
             onPress: () => {
-              const idxOf = selectedIndices?.indexOf(idx);
-              if (idxOf !== -1) {
-                setSelectedIndices(
-                  selectedIndices?.filter((elem) => elem !== idx)
-                );
+              if (selectedIndices.delete(idx)) {
+                setSelectedIndices(new Set(selectedIndices));
               } else {
-                setSelectedIndices([...selectedIndices, idx]);
+                setSelectedIndices(new Set(selectedIndices.add(idx)));
               }
               child.props.onPress();
             },
-            isSelected: selectedIndices?.indexOf(idx) !== -1,
+            isSelected: selectedIndices.has(idx),
           });
         }
         return child;
