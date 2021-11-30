@@ -1,9 +1,9 @@
-import { FieldValue } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 
 export type TPainEntry = {
   uid?: string;
-  created_at: FieldValue;
-  updated_at: FieldValue;
+  created_at: Timestamp | FieldValue;
+  updated_at: Timestamp | FieldValue;
   pain_intensity: number;
   medication_taken: boolean;
   tylenols_taken: number;

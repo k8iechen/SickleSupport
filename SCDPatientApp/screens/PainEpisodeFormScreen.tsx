@@ -48,24 +48,28 @@ const locationTypes = [
   },
 ];
 
-const SLEEP = "Sleep";
-const LACK_OF_SLEEP = "Lack of sleep";
-const INFECTION = "Infection";
-const COLD_EXPOSURE = "Cold exposure";
-const DEHYDRATION = "Dehydration";
-const INJURY = "Injury";
-const ANXIETY = "Anxiety";
-const EXERCISE = "Exercise";
-const MENSTRUAL_CYCLE = "Menstrual cycle";
-const OTHER = "Other";
-const DID_NOT_HAVE_ACCESS_TO_MEDICATION =
-  "Did not have access to my medication";
-const CANNABIS = "Cannabis";
-const HOT_SHOWER = "Hot shower";
-const MEDITATION = "Meditation";
-const STAYING_INDOORS = "Staying indoors";
-const DRINK_WATER = "Drink water";
-const HEAT_PAD = "Heat pad";
+const painTriggerTypes = [
+  "Sleep",
+  "Lack of sleep",
+  "Infection",
+  "Cold exposure",
+  "Dehydration",
+  "Injury",
+  "Anxiety",
+  "Exercise",
+  "Menstrual cycle",
+  "Other",
+  "Did not have access to my medication",
+];
+
+const reliefMethodTypes = [
+  "Cannabis",
+  "Hot shower",
+  "Meditation",
+  "Staying indoors",
+  "Drink water",
+  "Heat pad",
+];
 
 export default function HomeScreen({
   navigation,
@@ -86,13 +90,10 @@ export default function HomeScreen({
   const [antiInflamCount, setAntiInflamCount] = React.useState<number>(0);
   const [shortOpiodCount, setShortOpiodCount] = React.useState<number>(0);
   const [longOpiodCount, setLongOpiodCount] = React.useState<number>(0);
-
   const [location, setLocation] = React.useState([]);
-
   const [painTriggers, setPainTriggers] = React.useState<string[]>([]);
   const [reliefMethods, setReliefMethods] = React.useState<string[]>([]);
   const [notes, setNotes] = React.useState<string>("");
-
   const [errorMsg, setErrorMsg] = React.useState<string>("");
   const [showErrorModal, setShowErrorModal] = React.useState<boolean>(false);
 
@@ -291,43 +292,11 @@ export default function HomeScreen({
       </Text>
       <Box style={{ marginLeft: 10, marginTop: 5 }}>
         <ButtonRadio.MultiGroup>
-          <ButtonRadio onPress={() => handlePainTriggerPress(SLEEP)}>
-            {SLEEP}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(LACK_OF_SLEEP)}>
-            {LACK_OF_SLEEP}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(INFECTION)}>
-            {INFECTION}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(COLD_EXPOSURE)}>
-            {COLD_EXPOSURE}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(DEHYDRATION)}>
-            {DEHYDRATION}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(INJURY)}>
-            {INJURY}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(ANXIETY)}>
-            {ANXIETY}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(EXERCISE)}>
-            {EXERCISE}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(MENSTRUAL_CYCLE)}>
-            {MENSTRUAL_CYCLE}
-          </ButtonRadio>
-          <ButtonRadio onPress={() => handlePainTriggerPress(OTHER)}>
-            {OTHER}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() =>
-              handlePainTriggerPress(DID_NOT_HAVE_ACCESS_TO_MEDICATION)
-            }
-          >
-            {DID_NOT_HAVE_ACCESS_TO_MEDICATION}
-          </ButtonRadio>
+          {painTriggerTypes.map((val) => (
+            <ButtonRadio onPress={() => handlePainTriggerPress(val)}>
+              {val}
+            </ButtonRadio>
+          ))}
         </ButtonRadio.MultiGroup>
       </Box>
       <Text
@@ -341,62 +310,15 @@ export default function HomeScreen({
       </Text>
       <Box style={{ marginLeft: 10, marginBottom: 15 }}>
         <ButtonRadio.MultiGroup>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(CANNABIS);
-            }}
-          >
-            {CANNABIS}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(SLEEP);
-            }}
-          >
-            {SLEEP}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(HOT_SHOWER);
-            }}
-          >
-            {HOT_SHOWER}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(MEDITATION);
-            }}
-          >
-            {MEDITATION}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(STAYING_INDOORS);
-            }}
-          >
-            {STAYING_INDOORS}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(DRINK_WATER);
-            }}
-          >
-            {DRINK_WATER}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(HEAT_PAD);
-            }}
-          >
-            {HEAT_PAD}
-          </ButtonRadio>
-          <ButtonRadio
-            onPress={() => {
-              handleReliefMethodPress(OTHER);
-            }}
-          >
-            {OTHER}
-          </ButtonRadio>
+          {reliefMethodTypes.map((val) => (
+            <ButtonRadio
+              onPress={() => {
+                handleReliefMethodPress(val);
+              }}
+            >
+              {val}
+            </ButtonRadio>
+          ))}
         </ButtonRadio.MultiGroup>
       </Box>
     </Box>
@@ -445,38 +367,36 @@ export default function HomeScreen({
   };
 
   const OtherQuestionsComponent: React.FC = () => (
-    <>
-      <Box
-        rounded="lg"
-        style={[
-          styles.card,
-          {
-            marginTop: 10,
-          },
-        ]}
+    <Box
+      rounded="lg"
+      style={[
+        styles.card,
+        {
+          marginTop: 10,
+        },
+      ]}
+    >
+      <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
+      <Text
+        style={{
+          ...styles.questionText,
+          marginTop: 10,
+        }}
       >
-        <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
-        <Text
-          style={{
-            ...styles.questionText,
-            marginTop: 10,
-          }}
-        >
-          Did you go to the hospital?
-        </Text>
-        <Center
-          style={{
-            marginTop: 15,
-            marginBottom: 20,
-          }}
-        >
-          <YesNoButton
-            value={hospitalVisit}
-            onPress={() => setHospitalVisit(!hospitalVisit)}
-          />
-        </Center>
-      </Box>
-    </>
+        Did you go to the hospital?
+      </Text>
+      <Center
+        style={{
+          marginTop: 15,
+          marginBottom: 20,
+        }}
+      >
+        <YesNoButton
+          value={hospitalVisit}
+          onPress={() => setHospitalVisit(!hospitalVisit)}
+        />
+      </Center>
+    </Box>
   );
 
   return (

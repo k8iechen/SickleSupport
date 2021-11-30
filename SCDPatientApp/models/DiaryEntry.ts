@@ -1,9 +1,9 @@
-import { FieldValue } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 
 export type TDiaryEntry = {
   uid?: string;
-  created_at: FieldValue;
-  updated_at: FieldValue;
+  created_at: FieldValue | Timestamp;
+  updated_at: FieldValue | Timestamp;
   sleep_time: number;
   sleep_rating: number;
   mood: number;

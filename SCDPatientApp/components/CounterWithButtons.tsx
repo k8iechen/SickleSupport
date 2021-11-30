@@ -3,10 +3,10 @@ import { HStack, Text } from "native-base";
 import * as React from "react";
 import styles from "../styles/CounterWithButtons.styles";
 
-type CounterWithButtonsProps = {
+interface CounterWithButtonsProps {
   value: number;
   setValue: (newvalue: number) => void;
-};
+}
 
 export default function CounterWithButtons({
   value,
