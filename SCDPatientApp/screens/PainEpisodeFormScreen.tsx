@@ -1,15 +1,20 @@
+import { serverTimestamp } from "firebase/firestore";
+import { Box, Center, HStack, ScrollView, TextArea, VStack } from "native-base";
 import * as React from "react";
-import { Text, Image, TouchableOpacity } from "react-native";
-import { VStack, ScrollView, Box, HStack, Center, TextArea } from "native-base";
-import { RootTabScreenProps } from "../models/navigation";
-import styles from "../styles/PainEpisodeFormScreen.styles";
-import PainIntensityComponent from "../components/PainIntensityComponent";
-import YesNoButton from "../components/YesNoButton";
+import { Image, Text, TouchableOpacity } from "react-native";
+import ButtonRadio from "../components/ButtonRadio";
 import CounterWithButtons from "../components/CounterWithButtons";
 import CustomSelect from "../components/CustomSelect";
-import ButtonRadio from "../components/ButtonRadio";
-import Colors from "../constants/Colors";
+import PainIntensityComponent from "../components/PainIntensityComponent";
 import SaveButton from "../components/SaveButton";
+import YesNoButton from "../components/YesNoButton";
+import Colors from "../constants/Colors";
+import { RootTabScreenProps } from "../models/navigation";
+import { TPainEntry } from "../models/PainEntry";
+import styles from "../styles/PainEpisodeFormScreen.styles";
+import PainEntryStore from "../stores/painEntry.store";
+import { AuthContext } from "../contexts/AuthContext";
+import ErrorModal from "../components/ErrorModal";
 
 const locationTypes = [
   {
@@ -64,32 +69,37 @@ const HEAT_PAD = "Heat pad";
 export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeScreen">) {
+  const authStore = React.useContext(AuthContext);
+  const painEntryStore = PainEntryStore();
+
   const [scrollEnabled, setScrollEnabled] = React.useState(true);
-  const [selectedPainIntesntity, setSelectedPainIntesntity] =
-    React.useState(-1);
+  const [selectedPainIntensity, setSelectedPainIntensity] = React.useState(-1);
   const navigateBack = () => {
     // TODO: Only pop up modal if form data changed
     navigation.goBack();
   };
   const [medicationTaken, setMedicationTaken] = React.useState(false);
   const [hospitalVisit, setHospitalVisit] = React.useState(false);
-  const [tylenol, setTylenol] = React.useState(0);
+  const [tylenolCount, setTylenolCount] = React.useState(0);
   const [antiInflamCount, setAntiInflamCount] = React.useState<number>(0);
   const [shortOpiodCount, setShortOpiodCount] = React.useState<number>(0);
   const [longOpiodCount, setLongOpiodCount] = React.useState<number>(0);
 
-  const [painLocation, setPainLocation] = React.useState([]);
+  const [location, setLocation] = React.useState([]);
 
   const [painTriggers, setPainTriggers] = React.useState<string[]>([]);
   const [reliefMethods, setReliefMethods] = React.useState<string[]>([]);
   const [notes, setNotes] = React.useState<string>("");
+
+  const [errorMsg, setErrorMsg] = React.useState<string>("");
+  const [showErrorModal, setShowErrorModal] = React.useState<boolean>(false);
 
   const toNonNegative = (val: number) => {
     return Math.max(0, val);
   };
 
   const toggleMedicationTaken = () => {
-    setTylenol(0);
+    setTylenolCount(0);
     setAntiInflamCount(0);
     setShortOpiodCount(0);
     setLongOpiodCount(0);
@@ -114,8 +124,65 @@ export default function HomeScreen({
     }
   };
 
+  const isValidForm = () => {
+    if (selectedPainIntensity === -1) {
+      setErrorMsg("Please rate the intensity of your pain.");
+      return false;
+    }
+
+    if (!location) {
+      setErrorMsg(
+        "Please select the location you were at when the pain started."
+      );
+      return false;
+    }
+
+    if (painTriggers.length === 0) {
+      setErrorMsg("Please select the trigger(s) of the pain episode.");
+      return false;
+    }
+
+    if (reliefMethods.length === 0) {
+      setErrorMsg("Please select the relief methods attempted.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSave = async () => {
-    console.log("saving to firebase");
+    if (!isValidForm()) {
+      setShowErrorModal(true);
+      return;
+    }
+    const entry: TPainEntry = {
+      created_at: serverTimestamp(),
+      updated_at: serverTimestamp(),
+      medication_taken: medicationTaken,
+      pain_intensity: selectedPainIntensity,
+      tylenols_taken: tylenolCount,
+      anti_inflammatories_taken: antiInflamCount,
+      short_acting_opiods_taken: shortOpiodCount,
+      long_acting_opiods_taken: longOpiodCount,
+      location: location[0],
+      pain_triggers: painTriggers,
+      relief_methods: reliefMethods,
+      hospital_visit: hospitalVisit,
+      notes: notes,
+    };
+
+    const result = await painEntryStore.addEntry(authStore.patient, entry);
+    if (result) {
+      console.log("success");
+      setErrorMsg("");
+      setShowErrorModal(false);
+      navigation.goBack();
+    } else {
+      setErrorMsg(
+        "Oops, something went wrong on our end! Please click the 'Save' button again."
+      );
+      setShowErrorModal(true);
+    }
   };
 
   // component definitions
@@ -154,8 +221,8 @@ export default function HomeScreen({
             How many tylenol did you take?
           </Text>
           <CounterWithButtons
-            value={tylenol}
-            setValue={(newval) => setTylenol(toNonNegative(newval))}
+            value={tylenolCount}
+            setValue={(newval) => setTylenolCount(toNonNegative(newval))}
           />
           <Text style={[styles.questionText, styles.medicineQuestion]}>
             How many anti-inflammatories did you take?
@@ -212,9 +279,9 @@ export default function HomeScreen({
           single={true}
           choices={locationTypes}
           selectText="Select location"
-          selections={painLocation}
+          selections={location}
           onSelectedItemsChange={(selectedLocation) =>
-            setPainLocation([...selectedLocation])
+            setLocation([...selectedLocation])
           }
         />
       </Box>
@@ -336,26 +403,43 @@ export default function HomeScreen({
 
   const AdditionalNotes: React.FC = () => {
     return (
-      <Center flex={1} px="3" style={{ width: "100%", marginBottom: 21 }}>
-        <TextArea
-          h={"175px"}
-          placeholder="Write any additional notes here"
-          w={{
-            base: "100%",
-            md: "25%",
-          }}
-          style={{
-            color: "#000000",
-            backgroundColor: "#F6F6F6",
-            fontFamily: "Poppins-Medium",
-            fontSize: 15,
-            borderRadius: 14,
-            borderWidth: 0,
-          }}
-          value={notes}
-          onChangeText={(newtext) => setNotes(newtext)}
-        />
-      </Center>
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <Text style={[styles.cardText, styles.cardTitle]}>
+          Additional Notes
+        </Text>
+        <Center
+          flex={1}
+          px="3"
+          style={{ width: "100%", marginTop: 5, marginBottom: 21 }}
+        >
+          <TextArea
+            h={"175px"}
+            placeholder="Write any additional notes here"
+            w={{
+              base: "100%",
+              md: "25%",
+            }}
+            style={{
+              color: "#000000",
+              backgroundColor: "#F6F6F6",
+              fontFamily: "Poppins-Medium",
+              fontSize: 15,
+              borderRadius: 14,
+              borderWidth: 0,
+            }}
+            value={notes}
+            onChangeText={(newtext) => setNotes(newtext)}
+          />
+        </Center>
+      </Box>
     );
   };
 
@@ -396,6 +480,12 @@ export default function HomeScreen({
 
   return (
     <>
+      <ErrorModal
+        visible={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        title="Error"
+        description={errorMsg}
+      />
       <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
         <VStack>
           <TouchableOpacity
@@ -423,37 +513,14 @@ export default function HomeScreen({
               </Text>
             </HStack>
             <PainIntensityComponent
-              selectedButton={selectedPainIntesntity}
-              setSelectedButton={setSelectedPainIntesntity}
+              selectedButton={selectedPainIntensity}
+              setSelectedButton={setSelectedPainIntensity}
             />
           </Box>
           {MedicineComponent({})}
           {TriggerComponent({})}
-
-          {/* Hospital component */}
           {OtherQuestionsComponent({})}
-
-          {/* Additional Notes */}
-          <Box
-            rounded="lg"
-            style={[
-              styles.card,
-              {
-                marginTop: 10,
-              },
-            ]}
-          >
-            <Text style={[styles.cardText, styles.cardTitle]}>
-              Additional Notes
-            </Text>
-            <Center
-              style={{
-                marginTop: 5,
-              }}
-            >
-              {AdditionalNotes({})}
-            </Center>
-          </Box>
+          {AdditionalNotes({})}
           <Box
             style={{
               height: 100,

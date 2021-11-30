@@ -1,25 +1,30 @@
 import { db } from "../firebase";
 import { TPatient } from "../models/Patient";
-import { TDiaryEntry } from "../models/DiaryEntry";
+import { TPainEntry } from "../models/PainEntry";
 import { addDoc, collection } from "firebase/firestore";
 
-export interface IDiaryStore {
+export interface IPainEntryStore {
   addEntry: (
     patient: TPatient | null | undefined,
-    entry: TDiaryEntry
+    entry: TPainEntry
   ) => Promise<boolean>;
 }
 
-const DiaryStore = (): IDiaryStore => {
-  const store: IDiaryStore = {
+const PainEntryStore = (): IPainEntryStore => {
+  const store: IPainEntryStore = {
     addEntry: async (
       patient: TPatient | null | undefined,
-      entry: TDiaryEntry
+      entry: TPainEntry
     ): Promise<boolean> => {
       try {
         const patientId = patient?.uid?.toString();
         if (patientId) {
-          await addDoc(collection(db, "patients", patientId, "diaries"), entry);
+          await addDoc(
+            collection(db, "patients", patientId, "pain_entries"),
+            entry
+          );
+
+          //   await
           return true;
         } else {
           throw "Error: there is no patient in the auth context";
@@ -34,4 +39,4 @@ const DiaryStore = (): IDiaryStore => {
   return store;
 };
 
-export default DiaryStore;
+export default PainEntryStore;

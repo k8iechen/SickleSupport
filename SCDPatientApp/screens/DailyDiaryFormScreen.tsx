@@ -158,6 +158,10 @@ const DailyDiaryFormScreen = observer(
     };
 
     const handleSave = async () => {
+      if (!isValidForm()) {
+        setShowErrorModal(true);
+        return;
+      }
       const entry: TDiaryEntry = {
         created_at: serverTimestamp(),
         updated_at: serverTimestamp(),
@@ -173,10 +177,6 @@ const DailyDiaryFormScreen = observer(
         priapism_episode: priapism,
         fever: fever,
       };
-      if (!isValidForm()) {
-        setShowErrorModal(true);
-        return;
-      }
       const saved = await diaryStore.addEntry(authStore.patient, entry);
       if (!saved) {
         setErrorMsg(
