@@ -7,11 +7,10 @@ const Colors = {
   backButtonBackground: "#F8F8F6",
   backButton: "#9B9B9B",
   darkGrey: "#545D69",
-  successGreen: "#5DB075",
   unselected: "#F1F3F6",
   darkColor: "#3B4256",
   selection: "#6A6DCD",
-  success: "#5DB075",
+  success: "#35B36F",
   white: "#FFFFFF",
 };
 
