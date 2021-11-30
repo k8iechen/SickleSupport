@@ -1,6 +1,6 @@
+import * as React from "react";
 import { serverTimestamp } from "firebase/firestore";
 import { Box, Center, HStack, ScrollView, TextArea, VStack } from "native-base";
-import * as React from "react";
 import { Image, Text, TouchableOpacity } from "react-native";
 import ButtonRadio from "../components/ButtonRadio";
 import CounterWithButtons from "../components/CounterWithButtons";
@@ -15,6 +15,7 @@ import styles from "../styles/PainEpisodeFormScreen.styles";
 import PainEntryStore from "../stores/painEntry.store";
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorModal from "../components/ErrorModal";
+import PainAreaComponent from "../components/PainAreaComponent";
 
 const locationTypes = [
   {
@@ -516,22 +517,38 @@ export default function HomeScreen({
               setSelectedButton={setSelectedPainIntensity}
             />
           </Box>
-          {MedicineComponent({})}
-          {TriggerComponent({})}
-          {OtherQuestionsComponent({})}
-          {AdditionalNotes({})}
           <Box
-            style={{
-              height: 100,
-              marginTop: 13,
-              backgroundColor: Colors.white,
-            }}
+            rounded="lg"
+            style={[
+              styles.card,
+              {
+                marginTop: 10,
+              },
+            ]}
           >
-            <Center>
-              <SaveButton onPress={handleSave} />
-            </Center>
+            <HStack space={2} style={styles.cardHeader}>
+              <Text style={[styles.cardText, styles.cardTitle]}>
+                Where did you feel the pain?
+              </Text>
+            </HStack>
+            <PainAreaComponent muscles={painArea} updateMuscles={setPainArea} />
           </Box>
         </VStack>
+        {MedicineComponent({})}
+        {TriggerComponent({})}
+        {OtherQuestionsComponent({})}
+        {AdditionalNotes({})}
+        <Box
+          style={{
+            height: 100,
+            marginTop: 13,
+            backgroundColor: Colors.white,
+          }}
+        >
+          <Center>
+            <SaveButton onPress={handleSave} />
+          </Center>
+        </Box>
       </ScrollView>
     </>
   );
