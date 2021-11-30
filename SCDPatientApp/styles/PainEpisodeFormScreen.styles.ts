@@ -60,8 +60,17 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  firstQuestion: {
-    marginTop: 17,
+  medicineQuestion: {
+    marginTop: 10,
+    marginBottom: 15,
+  },
+
+  questionTopSpacing: {
+    marginTop: 15,
+  },
+
+  topSpacing: {
+    marginTop: 10,
   },
 
   subTitleText: {
@@ -76,8 +85,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.cardText,
     marginLeft: 17,
-    marginBottom: 15,
-    marginTop: 26,
+  },
+
+  narrowQuestionText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 14,
+    color: Colors.cardText,
+    marginLeft: 17,
+    marginTop: 12,
   },
 
   selectDropdown: {

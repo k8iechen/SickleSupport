@@ -8,6 +8,8 @@ import YesNoButton from "../components/YesNoButton";
 import CounterWithButtons from "../components/CounterWithButtons";
 import CustomSelect from "../components/CustomSelect";
 import ButtonRadio from "../components/ButtonRadio";
+import Colors from "../constants/Colors";
+import SaveButton from "../components/SaveButton";
 
 const locationTypes = [
   {
@@ -80,6 +82,7 @@ export default function HomeScreen({
 
   const [painTriggers, setPainTriggers] = React.useState<string[]>([]);
   const [reliefMethods, setReliefMethods] = React.useState<string[]>([]);
+  const [notes, setNotes] = React.useState<string>("");
 
   const toNonNegative = (val: number) => {
     return Math.max(0, val);
@@ -111,6 +114,10 @@ export default function HomeScreen({
     }
   };
 
+  const handleSave = async () => {
+    console.log("saving to firebase");
+  };
+
   // component definitions
   const MedicineComponent: React.FC = () => (
     <Box
@@ -125,36 +132,46 @@ export default function HomeScreen({
       <HStack space={2} style={styles.cardHeader}>
         <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
       </HStack>
-      <Text style={[styles.questionText, styles.firstQuestion]}>
+      <Text
+        style={{
+          ...styles.questionText,
+          marginTop: 10,
+        }}
+      >
         Did you take any medication?
       </Text>
-      <Center style={{ marginBottom: medicationTaken ? 0 : 23 }}>
+      <Center
+        style={[
+          styles.questionTopSpacing,
+          { marginBottom: medicationTaken ? 10 : 23 },
+        ]}
+      >
         <YesNoButton value={medicationTaken} onPress={toggleMedicationTaken} />
       </Center>
       {medicationTaken && (
         <>
-          <Text style={styles.questionText}>
+          <Text style={[styles.questionText, styles.medicineQuestion]}>
             How many tylenol did you take?
           </Text>
           <CounterWithButtons
             value={tylenol}
             setValue={(newval) => setTylenol(toNonNegative(newval))}
           />
-          <Text style={styles.questionText}>
+          <Text style={[styles.questionText, styles.medicineQuestion]}>
             How many anti-inflammatories did you take?
           </Text>
           <CounterWithButtons
             value={antiInflamCount}
             setValue={(newval) => setAntiInflamCount(toNonNegative(newval))}
           />
-          <Text style={styles.questionText}>
+          <Text style={[styles.questionText, styles.medicineQuestion]}>
             How many short acting opioids did you take?
           </Text>
           <CounterWithButtons
             value={shortOpiodCount}
             setValue={(newval) => setShortOpiodCount(toNonNegative(newval))}
           />
-          <Text style={styles.questionText}>
+          <Text style={[styles.questionText, styles.medicineQuestion]}>
             How many long acting opioids did you take?
           </Text>
           <Box style={{ marginBottom: 23 }}>
@@ -181,7 +198,13 @@ export default function HomeScreen({
       <HStack space={2} style={styles.cardHeader}>
         <Text style={[styles.cardText, styles.cardTitle]}>Trigger</Text>
       </HStack>
-      <Text style={[styles.questionText, styles.firstQuestion]}>
+      <Text
+        style={{
+          ...styles.questionText,
+          marginTop: 10,
+          marginBottom: 10,
+        }}
+      >
         Where were you when the pain started?
       </Text>
       <Box style={styles.selectDropdown}>
@@ -195,10 +218,10 @@ export default function HomeScreen({
           }
         />
       </Box>
-      <Text style={styles.questionText}>
+      <Text style={styles.narrowQuestionText}>
         What was the trigger of your pain?
       </Text>
-      <Box style={{ marginLeft: 10 }}>
+      <Box style={{ marginLeft: 10, marginTop: 5 }}>
         <ButtonRadio.MultiGroup>
           <ButtonRadio onPress={() => handlePainTriggerPress(SLEEP)}>
             {SLEEP}
@@ -239,10 +262,16 @@ export default function HomeScreen({
           </ButtonRadio>
         </ButtonRadio.MultiGroup>
       </Box>
-      <Text style={styles.questionText}>
+      <Text
+        style={{
+          ...styles.questionText,
+          marginTop: 10,
+          marginBottom: 5,
+        }}
+      >
         What relief methods have you tried?
       </Text>
-      <Box>
+      <Box style={{ marginLeft: 10, marginBottom: 15 }}>
         <ButtonRadio.MultiGroup>
           <ButtonRadio
             onPress={() => {
@@ -307,22 +336,63 @@ export default function HomeScreen({
 
   const AdditionalNotes: React.FC = () => {
     return (
-      <Center flex={1} px="3" style={{ width: "100%" }}>
+      <Center flex={1} px="3" style={{ width: "100%", marginBottom: 21 }}>
         <TextArea
-          h={20}
+          h={"175px"}
           placeholder="Write any additional notes here"
           w={{
-            base: "90%",
+            base: "100%",
             md: "25%",
           }}
           style={{
-            color: "#9B9B9B",
+            color: "#000000",
             backgroundColor: "#F6F6F6",
+            fontFamily: "Poppins-Medium",
+            fontSize: 15,
+            borderRadius: 14,
+            borderWidth: 0,
           }}
+          value={notes}
+          onChangeText={(newtext) => setNotes(newtext)}
         />
       </Center>
     );
   };
+
+  const OtherQuestionsComponent: React.FC = () => (
+    <>
+      <Box
+        rounded="lg"
+        style={[
+          styles.card,
+          {
+            marginTop: 10,
+          },
+        ]}
+      >
+        <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
+        <Text
+          style={{
+            ...styles.questionText,
+            marginTop: 10,
+          }}
+        >
+          Did you go to the hospital?
+        </Text>
+        <Center
+          style={{
+            marginTop: 15,
+            marginBottom: 20,
+          }}
+        >
+          <YesNoButton
+            value={hospitalVisit}
+            onPress={() => setHospitalVisit(!hospitalVisit)}
+          />
+        </Center>
+      </Box>
+    </>
+  );
 
   return (
     <>
@@ -361,27 +431,7 @@ export default function HomeScreen({
           {TriggerComponent({})}
 
           {/* Hospital component */}
-          <Box
-            rounded="lg"
-            style={[
-              styles.card,
-              {
-                marginTop: 10,
-              },
-            ]}
-          >
-            <HStack space={2} style={styles.cardHeader}>
-              <Text style={[styles.cardText, styles.cardTitle]}>
-                Did you go to the hospital?
-              </Text>
-              <Center>
-                <YesNoButton
-                  value={hospitalVisit}
-                  onPress={() => setHospitalVisit(!hospitalVisit)}
-                />
-              </Center>
-            </HStack>
-          </Box>
+          {OtherQuestionsComponent({})}
 
           {/* Additional Notes */}
           <Box
@@ -393,12 +443,27 @@ export default function HomeScreen({
               },
             ]}
           >
-            <HStack space={2} style={styles.cardHeader}>
-              <Text style={[styles.cardText, styles.cardTitle]}>
-                Additional Notes
-              </Text>
-            </HStack>
-            <Center>{AdditionalNotes({})}</Center>
+            <Text style={[styles.cardText, styles.cardTitle]}>
+              Additional Notes
+            </Text>
+            <Center
+              style={{
+                marginTop: 5,
+              }}
+            >
+              {AdditionalNotes({})}
+            </Center>
+          </Box>
+          <Box
+            style={{
+              height: 100,
+              marginTop: 13,
+              backgroundColor: Colors.white,
+            }}
+          >
+            <Center>
+              <SaveButton onPress={handleSave} />
+            </Center>
           </Box>
         </VStack>
       </ScrollView>
