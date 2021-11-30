@@ -8,7 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { getHours } from "../common/DateUtils";
 
-interface dayObj {
+interface DayObj {
   dateString: string;
   day: number;
   month: number;
@@ -16,7 +16,7 @@ interface dayObj {
   year: number;
 }
 
-interface timeObj {
+interface TimeObj {
   hours: number;
   minutes: number;
 }
@@ -25,12 +25,12 @@ interface PainWhenModalProps {
   showModal: boolean;
   setShowModal;
   setShowTypeModal;
-  startDay: dayObj;
+  startDay: DayObj;
   setStartDay;
-  startTime: timeObj;
+  startTime: TimeObj;
   setStartTime;
-  initialStartDay: dayObj;
-  initialStartTime: timeObj;
+  initialStartDay: DayObj;
+  initialStartTime: TimeObj;
   navigation;
 }
 
