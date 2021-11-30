@@ -173,7 +173,6 @@ export default function HomeScreen({
 
     const result = await painEntryStore.addEntry(authStore.patient, entry);
     if (result) {
-      console.log("success");
       setErrorMsg("");
       setShowErrorModal(false);
       navigation.goBack();

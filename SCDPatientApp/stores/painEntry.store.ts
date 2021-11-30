@@ -1,7 +1,13 @@
 import { db } from "../firebase";
 import { TPatient } from "../models/Patient";
 import { TPainEntry } from "../models/PainEntry";
-import { addDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  increment,
+  updateDoc,
+} from "firebase/firestore";
 
 export interface IPainEntryStore {
   addEntry: (
@@ -24,7 +30,15 @@ const PainEntryStore = (): IPainEntryStore => {
             entry
           );
 
-          //   await
+          const patientRef = doc(db, "patients", patientId);
+          await updateDoc(patientRef, {
+            pain_episodes: increment(1),
+          });
+          if (entry.hospital_visit) {
+            await updateDoc(patientRef, {
+              hospital_visit: increment(1),
+            });
+          }
           return true;
         } else {
           throw "Error: there is no patient in the auth context";
