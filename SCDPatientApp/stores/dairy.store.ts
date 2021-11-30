@@ -1,7 +1,7 @@
 import { db } from "../firebase";
 import { TPatient } from "../models/Patient";
 import { TDiaryEntry } from "../models/DiaryEntry";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 export interface IDiaryStore {
   addEntry: (

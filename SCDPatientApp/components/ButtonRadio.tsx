@@ -21,6 +21,32 @@ function Group({ children }) {
   );
 }
 
+function MultiGroup({ children }) {
+  const [selectedIndices, setSelectedIndices] = useState<Set<number>>(
+    new Set()
+  );
+  return (
+    <View style={styles.buttonRadioGroup}>
+      {React.Children.map(children, (child, idx) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, {
+            onPress: () => {
+              if (selectedIndices.delete(idx)) {
+                setSelectedIndices(new Set(selectedIndices));
+              } else {
+                setSelectedIndices(new Set(selectedIndices.add(idx)));
+              }
+              child.props.onPress();
+            },
+            isSelected: selectedIndices.has(idx),
+          });
+        }
+        return child;
+      })}
+    </View>
+  );
+}
+
 function ButtonRadio({
   children,
   isSelected,
@@ -54,6 +80,7 @@ function ButtonRadio({
 }
 
 ButtonRadio.Group = Group;
+ButtonRadio.MultiGroup = MultiGroup;
 
 const styles = StyleSheet.create({
   buttonRadioTextContainer: {
