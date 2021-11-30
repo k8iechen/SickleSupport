@@ -75,6 +75,7 @@ export default function HomeScreen({
 
   const [scrollEnabled, setScrollEnabled] = React.useState(true);
   const [selectedPainIntensity, setSelectedPainIntensity] = React.useState(-1);
+  const [painArea, setPainArea] = React.useState([]);
   const navigateBack = () => {
     // TODO: Only pop up modal if form data changed
     navigation.goBack();
@@ -533,22 +534,22 @@ export default function HomeScreen({
             </HStack>
             <PainAreaComponent muscles={painArea} updateMuscles={setPainArea} />
           </Box>
+          {MedicineComponent({})}
+          {TriggerComponent({})}
+          {OtherQuestionsComponent({})}
+          {AdditionalNotes({})}
+          <Box
+            style={{
+              height: 100,
+              marginTop: 13,
+              backgroundColor: Colors.white,
+            }}
+          >
+            <Center>
+              <SaveButton onPress={handleSave} />
+            </Center>
+          </Box>
         </VStack>
-        {MedicineComponent({})}
-        {TriggerComponent({})}
-        {OtherQuestionsComponent({})}
-        {AdditionalNotes({})}
-        <Box
-          style={{
-            height: 100,
-            marginTop: 13,
-            backgroundColor: Colors.white,
-          }}
-        >
-          <Center>
-            <SaveButton onPress={handleSave} />
-          </Center>
-        </Box>
       </ScrollView>
     </>
   );
