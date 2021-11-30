@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
+import Colors from "../constants/Colors";
 
 const styles = StyleSheet.create({
   saveButton: {
     width: "80%",
-    backgroundColor: "#5DB075",
+    backgroundColor: Colors.success,
     borderRadius: 8,
     marginVertical: 16,
   },
