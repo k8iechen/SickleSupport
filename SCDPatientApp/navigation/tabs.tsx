@@ -23,6 +23,7 @@ import {
   TODAY_START_DAY,
   TODAY_START_TIME,
 } from "../components/PainWhenModal";
+import { getDateString } from "../common/DateUtils";
 
 const NewPainEpisodePlaceholder = () => <View />;
 
@@ -36,6 +37,19 @@ const Tabs = () => {
     React.useState(false);
   const [showWhenPainEpisodeModal, setShowWhenPainEpisodeModal] =
     React.useState(false);
+
+  const TODAYS_DATE = new Date();
+  const TODAY_START_DAY = {
+    dateString: getDateString(TODAYS_DATE),
+    day: TODAYS_DATE.getDate(),
+    month: TODAYS_DATE.getMonth(),
+    timestamp: TODAYS_DATE.getTime(),
+    year: TODAYS_DATE.getFullYear(),
+  };
+  const TODAY_START_TIME = {
+    hours: TODAYS_DATE.getHours(),
+    minutes: TODAYS_DATE.getMinutes(),
+  };
 
   const [navigationObj, setNavigationObj] = React.useState(null);
   const [startDay, setStartDay] = React.useState(TODAY_START_DAY);
@@ -73,6 +87,8 @@ const Tabs = () => {
         setStartDay={setStartDay}
         startTime={startTime}
         setStartTime={setStartTime}
+        initialStartDay={TODAY_START_DAY}
+        initialStartTime={TODAY_START_TIME}
         navigation={navigationObj}
       />
       <PainTypeModal

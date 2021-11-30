@@ -6,42 +6,35 @@ import { VStack, Box, HStack, Center, Circle, Modal } from "native-base";
 
 import { Entypo } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import { getHours } from "../common/DateUtils";
 
-const getDateString = (date: Date) => {
-  const offset = date.getTimezoneOffset();
-  const parsedDate = new Date(date.getTime() - offset * 60 * 1000);
-  return parsedDate.toISOString().split("T")[0];
-};
+interface dayObj {
+  dateString: string;
+  day: number;
+  month: number;
+  timestamp: number;
+  year: number;
+}
 
-const getHours = (hours: number) => {
-  return hours > 12 ? hours - 12 : hours;
-};
+interface timeObj {
+  hours: number;
+  minutes: number;
+}
 
-const TODAYS_DATE = new Date();
-export const TODAY_START_DAY = {
-  dateString: getDateString(TODAYS_DATE),
-  day: TODAYS_DATE.getDate(),
-  month: TODAYS_DATE.getMonth(),
-  timestamp: TODAYS_DATE.getTime(),
-  year: TODAYS_DATE.getFullYear(),
-};
-export const TODAY_START_TIME = {
-  hours: TODAYS_DATE.getHours(),
-  minutes: TODAYS_DATE.getMinutes(),
-};
-
-interface TPainWhenModalProps {
+interface PainWhenModalProps {
   showModal: boolean;
   setShowModal;
   setShowTypeModal;
-  startDay;
+  startDay: dayObj;
   setStartDay;
-  startTime;
+  startTime: timeObj;
   setStartTime;
+  initialStartDay: dayObj;
+  initialStartTime: timeObj;
   navigation;
 }
 
-export const PainWhenModal: React.FC<TPainWhenModalProps> = ({
+export const PainWhenModal: React.FC<PainWhenModalProps> = ({
   showModal,
   setShowModal,
   setShowTypeModal,
@@ -49,10 +42,13 @@ export const PainWhenModal: React.FC<TPainWhenModalProps> = ({
   setStartDay,
   startTime,
   setStartTime,
+  initialStartDay,
+  initialStartTime,
   navigation,
 }) => {
   const [showTimePicker, setShowTimePicker] = React.useState(false);
   const [selectedEpisodeDates, setSelectedEpisodeDates] = React.useState(null);
+  const TODAYS_DATE = new Date();
 
   useEffect(() => {
     var newDates = {};
@@ -67,8 +63,8 @@ export const PainWhenModal: React.FC<TPainWhenModalProps> = ({
 
   useEffect(() => {
     if (showModal) {
-      setStartDay(TODAY_START_DAY);
-      setStartTime(TODAY_START_TIME);
+      setStartDay(initialStartDay);
+      setStartTime(initialStartTime);
     }
   }, [showModal]);
 
@@ -178,15 +174,13 @@ export const PainWhenModal: React.FC<TPainWhenModalProps> = ({
               <Calendar
                 style={styles.calendar}
                 renderArrow={(direction) => {
-                  if (direction === "left") {
-                    return (
-                      <Entypo name="chevron-left" size={24} color="#A095C1" />
-                    );
-                  } else {
-                    return (
-                      <Entypo name="chevron-right" size={24} color="#A095C1" />
-                    );
-                  }
+                  return (
+                    <Entypo
+                      name={"chevron-" + direction}
+                      size={24}
+                      color="#A095C1"
+                    />
+                  );
                 }}
                 maxDate={TODAYS_DATE}
                 onDayPress={(day) => {
@@ -203,8 +197,8 @@ export const PainWhenModal: React.FC<TPainWhenModalProps> = ({
                     marginRight: 40,
                   }}
                   onPress={() => {
-                    setStartDay(TODAY_START_DAY);
-                    setStartTime(TODAY_START_TIME);
+                    setStartDay(initialStartDay);
+                    setStartTime(initialStartTime);
                   }}
                 >
                   <Text style={styles.modalBtnText}>Now</Text>

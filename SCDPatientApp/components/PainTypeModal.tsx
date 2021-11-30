@@ -2,20 +2,18 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { VStack, HStack, Center, Modal } from "native-base";
 
-import { Feather } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
 
-interface TPainTypeModalProps {
+interface PainTypeModalProps {
   showModal: boolean;
   setShowModal;
   setShowWhenModal;
   navigation;
 }
 
-const PainTypeModal: React.FC<TPainTypeModalProps> = ({
+const PainTypeModal: React.FC<PainTypeModalProps> = ({
   showModal,
   setShowModal,
   setShowWhenModal,
