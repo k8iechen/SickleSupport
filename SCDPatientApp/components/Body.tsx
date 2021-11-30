@@ -13,12 +13,7 @@ import bodyFront from "../constants/BodyFront";
 import bodyBack from "../constants/BodyBack";
 import Colors from "../constants/Colors";
 
-type Muscle = {
-  intensity?: number;
-  color: string;
-  slug: string;
-  pointsArray?: string[];
-};
+import { Muscle } from "../models/Body";
 
 interface BodyProps {
   onMusclePress?: (muscle: Muscle) => void;

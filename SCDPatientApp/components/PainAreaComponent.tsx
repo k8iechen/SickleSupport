@@ -4,13 +4,7 @@ import { VStack, HStack, Center, Box } from "native-base";
 import Colors from "../constants/Colors";
 import Body from "./Body";
 import ToggleButton from "react-native-toggle-element";
-
-type Muscle = {
-  intensity?: number;
-  color: string;
-  slug: string;
-  pointsArray?: string[];
-};
+import { Muscle } from "../models/Body";
 
 interface PainIntensityProps {
   muscles: Muscle[];
