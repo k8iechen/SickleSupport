@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: 13,
     marginBottom: 13,
     height: 56,
-    color: Colors.successGreen,
+    color: Colors.success,
   },
 
   cancelButton: {
