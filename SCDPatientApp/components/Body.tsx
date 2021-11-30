@@ -12,35 +12,36 @@ import differenceWith from "ramda/src/differenceWith";
 import bodyFront from "../constants/BodyFront";
 import bodyBack from "../constants/BodyBack";
 import Colors from "../constants/Colors";
-type MuscleT = {
+
+interface Muscle {
   intensity?: number;
   color: string;
   slug: string;
   pointsArray?: string[];
-};
+}
 
-type Props = {
-  onMusclePress?: (muscle: MuscleT) => void;
+interface BodyProps {
+  onMusclePress?: (muscle: Muscle) => void;
   zoomOnPress: boolean;
   colors: ReadonlyArray<string>;
-  data: ReadonlyArray<MuscleT>;
+  data: ReadonlyArray<Muscle>;
   scale: number;
   frontOnly: boolean;
   backOnly: boolean;
-};
+}
 
 const colorsIntensity = [Colors.primary, Colors.primary];
-const comparison = (a: MuscleT, b: MuscleT) => a.slug === b.slug;
+const comparison = (a: Muscle, b: Muscle) => a.slug === b.slug;
 
-const Body = ({
+const Body: React.FC<BodyProps> = ({
   onMusclePress,
-  zoomOnPress,
-  colors,
+  zoomOnPress = false,
+  colors = colorsIntensity,
   data,
-  scale,
-  frontOnly,
-  backOnly,
-}: Props) => {
+  scale = 1,
+  frontOnly = false,
+  backOnly = false,
+}) => {
   const [openInModal, setOpenInModal] = useState(false);
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const Body = ({
   }, [onMusclePress, zoomOnPress]);
 
   const mergedMuscles = useCallback(
-    (dataSource: ReadonlyArray<MuscleT>) => {
+    (dataSource: ReadonlyArray<Muscle>) => {
       const innerData = data
         .map((d) => {
           return dataSource.find((t) => t.slug === d.slug);
@@ -70,7 +71,7 @@ const Body = ({
     [data, colors]
   );
 
-  const getColorToFill = (muscle: MuscleT) => {
+  const getColorToFill = (muscle: Muscle) => {
     let color;
     if (muscle.intensity) color = colors[muscle.intensity];
     else color = muscle.color;
@@ -78,16 +79,16 @@ const Body = ({
     return color;
   };
 
-  const handleMusclePress = (muscle: MuscleT) => {
+  const handleMusclePress = (muscle: Muscle) => {
     if (onMusclePress && !zoomOnPress) onMusclePress(muscle);
 
     if (zoomOnPress && !openInModal) setOpenInModal(!openInModal);
   };
 
-  const renderBodySvg = (data: ReadonlyArray<MuscleT>) => (
+  const renderBodySvg = (data: ReadonlyArray<Muscle>) => (
     <Svg height="200" width="100">
       {mergedMuscles(data).map(
-        (muscle: MuscleT) =>
+        (muscle: Muscle) =>
           muscle.pointsArray &&
           muscle.pointsArray.map((points: string) => (
             <Polygon
@@ -144,14 +145,6 @@ const Body = ({
       </View>
     </TouchableWithoutFeedback>
   );
-};
-
-Body.defaultProps = {
-  scale: 1,
-  colors: colorsIntensity,
-  backOnly: false,
-  frontOnly: false,
-  zoomOnPress: false,
 };
 
 const styles = StyleSheet.create({

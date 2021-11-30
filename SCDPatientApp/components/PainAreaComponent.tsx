@@ -5,25 +5,28 @@ import Colors from "../constants/Colors";
 import Body from "./Body";
 import ToggleButton from "react-native-toggle-element";
 
-type TMuscle = {
+interface Muscle {
   intensity?: number;
   color: string;
   slug: string;
   pointsArray?: string[];
-};
+}
 
-type TPainIntensityProps = {
-  muscles: TMuscle[];
+interface TPainIntensityProps {
+  muscles: Muscle[];
   updateMuscles: any;
-};
+}
 
-const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
+const PainAreaComponent: React.FC<TPainIntensityProps> = ({
+  muscles,
+  updateMuscles,
+}) => {
   const [bodySide, setbodySide] = useState(false); // true for front; false for back
   const toggleBodySide = (newvalue: any) => {
     setbodySide(newvalue);
   };
 
-  const handleMusclePress = (muscle: TMuscle) => {
+  const handleMusclePress = (muscle: Muscle) => {
     const id = muscles.findIndex((m) => m.slug === muscle.slug);
     if (id !== -1) {
       updateMuscles([
@@ -75,7 +78,7 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             scale={2}
             frontOnly={true}
             data={muscles}
-            onMusclePress={(muscle: TMuscle) => {
+            onMusclePress={(muscle: Muscle) => {
               handleMusclePress(muscle);
             }}
           />
@@ -84,7 +87,7 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             scale={2}
             backOnly={true}
             data={muscles}
-            onMusclePress={(muscle: TMuscle) => {
+            onMusclePress={(muscle: Muscle) => {
               handleMusclePress(muscle);
             }}
           />
