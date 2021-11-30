@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     lineHeight: 24,
     overflow: "hidden",
+    width: 75,
+    textAlign: "center",
   },
   container: {
     alignItems: "center",

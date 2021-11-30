@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import { HStack, Text } from "native-base";
+import { Center, HStack, Text } from "native-base";
 import * as React from "react";
 import styles from "../styles/CounterWithButtons.styles";
 
@@ -20,7 +20,9 @@ export default function CounterWithButtons({
         color={"black"}
         onPress={() => setValue(value - 1)}
       />
-      <Text style={styles.text}>{value}</Text>
+      <Center>
+        <Text style={styles.text}>{value}</Text>
+      </Center>
       <AntDesign
         name="pluscircleo"
         size={24}
