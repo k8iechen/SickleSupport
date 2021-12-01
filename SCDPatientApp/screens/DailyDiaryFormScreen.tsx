@@ -94,7 +94,6 @@ const DailyDiaryFormScreen = observer(
       fever: fever,
     });
 
-    const [showSuccessModal, setShowSuccessModal] = React.useState(false);
     const [showErrorModal, setShowErrorModal] = React.useState(false);
     const [errorMsg, setErrorMsg] = React.useState("");
     const [showBackModal, setShowBackModal] = React.useState(false);
@@ -159,6 +158,10 @@ const DailyDiaryFormScreen = observer(
     };
 
     const handleSave = async () => {
+      if (!isValidForm()) {
+        setShowErrorModal(true);
+        return;
+      }
       const entry: TDiaryEntry = {
         created_at: serverTimestamp(),
         updated_at: serverTimestamp(),
@@ -174,10 +177,6 @@ const DailyDiaryFormScreen = observer(
         priapism_episode: priapism,
         fever: fever,
       };
-      if (!isValidForm()) {
-        setShowErrorModal(true);
-        return;
-      }
       const saved = await diaryStore.addEntry(authStore.patient, entry);
       if (!saved) {
         setErrorMsg(
@@ -215,11 +214,6 @@ const DailyDiaryFormScreen = observer(
       } else {
         setShowBackModal(true);
       }
-    };
-
-    const closeSuccessModal = () => {
-      setShowSuccessModal(false);
-      navigation.goBack();
     };
 
     const SleepComponent: React.FC = () => (
