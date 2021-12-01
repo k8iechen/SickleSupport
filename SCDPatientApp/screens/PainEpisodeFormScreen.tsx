@@ -1,6 +1,16 @@
 import * as React from "react";
 import { serverTimestamp } from "firebase/firestore";
-import { Box, Center, HStack, ScrollView, TextArea, VStack } from "native-base";
+import {
+  Box,
+  Center,
+  HStack,
+  ScrollView,
+  TextArea,
+  VStack,
+  Modal,
+  WarningIcon,
+  Button,
+} from "native-base";
 import { Image, Text, TouchableOpacity } from "react-native";
 import ButtonRadio from "../components/ButtonRadio";
 import CounterWithButtons from "../components/CounterWithButtons";
@@ -81,8 +91,12 @@ export default function HomeScreen({
   const [selectedPainIntensity, setSelectedPainIntensity] = React.useState(-1);
   const [painArea, setPainArea] = React.useState([]);
   const navigateBack = () => {
-    // TODO: Only pop up modal if form data changed
-    navigation.goBack();
+    // Only pop up modal if form data changed
+    if (isFormChanged()) {
+      navigation.goBack();
+    } else {
+      setShowBackModal(true);
+    }
   };
   const [medicationTaken, setMedicationTaken] = React.useState(false);
   const [hospitalVisit, setHospitalVisit] = React.useState(false);
@@ -96,6 +110,24 @@ export default function HomeScreen({
   const [notes, setNotes] = React.useState<string>("");
   const [errorMsg, setErrorMsg] = React.useState<string>("");
   const [showErrorModal, setShowErrorModal] = React.useState<boolean>(false);
+  const [showBackModal, setShowBackModal] = React.useState<boolean>(false);
+
+  // TODO: originalFormData should be updated when implementing feature edit-form; now needed for goBack modal
+  const [originalFormData, setOriginalFormData] = React.useState({
+    created_at: serverTimestamp(),
+    updated_at: serverTimestamp(),
+    medication_taken: medicationTaken,
+    pain_intensity: selectedPainIntensity,
+    tylenols_taken: tylenolCount,
+    anti_inflammatories_taken: antiInflamCount,
+    short_acting_opiods_taken: shortOpiodCount,
+    long_acting_opiods_taken: longOpiodCount,
+    location: location[0],
+    pain_triggers: painTriggers,
+    relief_methods: reliefMethods,
+    hospital_visit: hospitalVisit,
+    notes: notes,
+  });
 
   const toNonNegative = (val: number) => {
     return Math.max(0, val);
@@ -185,6 +217,25 @@ export default function HomeScreen({
       );
       setShowErrorModal(true);
     }
+  };
+
+  const isFormChanged = () => {
+    const entry = {
+      medication_taken: medicationTaken,
+      pain_intensity: selectedPainIntensity,
+      tylenols_taken: tylenolCount,
+      anti_inflammatories_taken: antiInflamCount,
+      short_acting_opiods_taken: shortOpiodCount,
+      long_acting_opiods_taken: longOpiodCount,
+      location: location[0],
+      pain_triggers: painTriggers,
+      relief_methods: reliefMethods,
+      hospital_visit: hospitalVisit,
+      notes: notes,
+    };
+
+    let { created_at, updated_at, ...cmpOriginalEntry } = originalFormData;
+    return JSON.stringify(entry) === JSON.stringify(cmpOriginalEntry);
   };
 
   // component definitions
@@ -400,6 +451,10 @@ export default function HomeScreen({
     </Box>
   );
 
+  const closeBackModal = () => {
+    setShowBackModal(false);
+  };
+
   return (
     <>
       <ErrorModal
@@ -408,6 +463,39 @@ export default function HomeScreen({
         title="Error"
         description={errorMsg}
       />
+      <Modal isOpen={showBackModal} onClose={closeBackModal} size="md">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>
+            <HStack>
+              <WarningIcon style={{ color: Colors.darkColor }} />
+            </HStack>
+          </Modal.Header>
+          <Modal.Body>
+            <VStack space={3}>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Text style={styles.backModalText}>
+                  Are you sure you want to discard your unsaved changes?
+                </Text>
+              </HStack>
+              <HStack alignItems="center" justifyContent="space-between">
+                <Button
+                  style={styles.cancelButton}
+                  onPress={() => closeBackModal()}
+                >
+                  <Text style={styles.modalButtonText}>Cancel</Text>
+                </Button>
+                <Button
+                  style={styles.okButton}
+                  onPress={() => navigation.goBack()}
+                >
+                  <Text style={styles.modalButtonText}>OK</Text>
+                </Button>
+              </HStack>
+            </VStack>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
       <ScrollView style={styles.container} scrollEnabled={scrollEnabled}>
         <VStack>
           <TouchableOpacity
