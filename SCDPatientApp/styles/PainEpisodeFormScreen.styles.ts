@@ -3,6 +3,7 @@ import Colors from "../constants/Colors";
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
     paddingTop: 36,
   },
@@ -12,6 +13,7 @@ const styles = StyleSheet.create({
     height: 38,
     marginLeft: 28,
     marginTop: 18,
+    marginBottom: 10,
     fontFamily: "Poppins-SemiBold",
     fontStyle: "normal",
     fontWeight: "600",
@@ -85,6 +87,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.cardText,
     marginLeft: 17,
+    marginBottom: 15,
+    marginTop: 26,
   },
 
   narrowQuestionText: {

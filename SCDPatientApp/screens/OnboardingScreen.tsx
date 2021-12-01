@@ -1,6 +1,13 @@
 import React, { useState, useContext } from "react";
 import { Text, Image } from "react-native";
-import { Button, Input, Stack, Center, ScrollView } from "native-base";
+import {
+  FormControl,
+  WarningOutlineIcon,
+  Input,
+  Stack,
+  Center,
+  ScrollView,
+} from "native-base";
 import { observer } from "mobx-react-lite";
 
 import { RootStackScreenProps } from "../models/navigation";
@@ -19,15 +26,21 @@ const OnboardingScreen = observer(
     const [gender, setGender] = useState<Gender | null>(null);
     const [notification, setNotification] = useState<number | null>(null);
 
+    const [nameIsInvalid, setNameIsInvalid] = useState<boolean>(false);
+
     const handleSave = async () => {
       try {
-        authStore.setPatient({
-          uid: authStore.patient!.uid!,
-          name,
-          age,
-          gender,
-          notification,
-        } as TPatient);
+        if (!name) {
+          setNameIsInvalid(true);
+        } else {
+          authStore.setPatient({
+            uid: authStore.patient!.uid!,
+            name,
+            age,
+            gender,
+            notification,
+          } as TPatient);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -46,12 +59,25 @@ const OnboardingScreen = observer(
 
           <Stack style={styles.questionContainer}>
             <Text style={styles.questionText}>What is your name?</Text>
-            <Input
-              value={name}
-              placeholder="Full name"
-              w="90%"
-              onChangeText={(text) => setName(text)}
-            />
+            <FormControl isInvalid={nameIsInvalid} w="90%">
+              <Input
+                value={name}
+                placeholder="Full name"
+                onChangeText={(text) => {
+                  console.log("*", text, "*");
+                  setName(text);
+                  if (text) {
+                    setNameIsInvalid(false);
+                  }
+                }}
+              />
+              <FormControl.ErrorMessage
+                leftIcon={<WarningOutlineIcon size="xs" />}
+              >
+                Your name is required.
+              </FormControl.ErrorMessage>
+            </FormControl>
+
             <Text style={styles.questionText}>What is your age?</Text>
             <ButtonRadio.Group>
               <ButtonRadio onPress={() => setAge(Age.Child)}>0-11</ButtonRadio>
@@ -61,10 +87,11 @@ const OnboardingScreen = observer(
               <ButtonRadio onPress={() => setAge(Age.Teen)}>18-24</ButtonRadio>
               <ButtonRadio onPress={() => setAge(Age.Adult)}>25-64</ButtonRadio>
               <ButtonRadio onPress={() => setAge(Age.Senior)}>65+</ButtonRadio>
-              <ButtonRadio onPress={() => setAge(null)}>
+              <ButtonRadio default onPress={() => setAge(null)}>
                 Rather Not Say
               </ButtonRadio>
             </ButtonRadio.Group>
+
             <Text style={styles.questionText}>What is your gender?</Text>
             <ButtonRadio.Group>
               <ButtonRadio onPress={() => setGender(Gender.Male)}>
@@ -76,10 +103,11 @@ const OnboardingScreen = observer(
               <ButtonRadio onPress={() => setGender(Gender.Other)}>
                 Other
               </ButtonRadio>
-              <ButtonRadio onPress={() => setGender(null)}>
+              <ButtonRadio default onPress={() => setGender(null)}>
                 Rather Not Say
               </ButtonRadio>
             </ButtonRadio.Group>
+
             <Text style={styles.questionText}>
               When do you want daily notification reminders?
             </Text>
@@ -93,14 +121,12 @@ const OnboardingScreen = observer(
               <ButtonRadio onPress={() => setNotification((12 + 8) * 3600)}>
                 08:00 pm
               </ButtonRadio>
-              {/* <ButtonRadio onPress={() => setNotification()}>
-              Other
-            </ButtonRadio> */}
-              <ButtonRadio onPress={() => setNotification(null)}>
+              <ButtonRadio default onPress={() => setNotification(null)}>
                 Never
               </ButtonRadio>
             </ButtonRadio.Group>
           </Stack>
+
           <SaveButton onPress={handleSave} />
         </Center>
       </ScrollView>

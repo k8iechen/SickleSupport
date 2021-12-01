@@ -37,7 +37,7 @@ const AuthStore = (): IAuthStore => {
       setPatient: action(async (patient: TPatient) => {
         try {
           const { uid, ...data } = patient;
-          await setDoc(doc(db, "patients", uid), data);
+          await setDoc(doc(db, "patients", uid!), data);
           store.patient = patient;
         } catch (error: unknown) {
           if (error instanceof FirestoreError) {
