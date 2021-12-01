@@ -176,6 +176,7 @@ export default function PainEpisodeFormScreen({
 
     const result = await painEntryStore.addEntry(authStore.patient, entry);
     if (result) {
+      authStore.setStale(true);
       setErrorMsg("");
       setShowErrorModal(false);
       navigation.goBack();

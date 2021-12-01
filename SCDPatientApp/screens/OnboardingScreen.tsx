@@ -64,7 +64,6 @@ const OnboardingScreen = observer(
                 value={name}
                 placeholder="Full name"
                 onChangeText={(text) => {
-                  console.log("*", text, "*");
                   setName(text);
                   if (text) {
                     setNameIsInvalid(false);

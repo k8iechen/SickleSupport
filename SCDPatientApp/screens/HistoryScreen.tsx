@@ -7,7 +7,15 @@ import {
   FlatList,
   ListRenderItemInfo,
 } from "react-native";
-import { Image, Spinner, HStack, VStack, Spacer, Box } from "native-base";
+import {
+  Image,
+  Spinner,
+  HStack,
+  VStack,
+  Spacer,
+  Box,
+  Button,
+} from "native-base";
 import {
   query,
   collection,
@@ -19,6 +27,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { Entypo } from "@expo/vector-icons";
+import { observer } from "mobx-react-lite";
 
 import { db } from "../firebase";
 import Colors from "../constants/Colors";
@@ -27,6 +36,7 @@ import { TDiaryEntry } from "../models/DiaryEntry";
 import { TPainEntry } from "../models/PainEntry";
 import { AuthContext } from "../contexts/AuthContext";
 
+import levelItems from "../constants/PainLevel";
 import painStyles from "../styles/PainEpisodeFormScreen.styles";
 
 const isToday = (someDate: Date): boolean => {
@@ -116,7 +126,16 @@ const EntryView: React.FC<IEntryViewProps> = ({ entry }) => {
         </VStack>
         <Spacer />
         {isPainEntry && (
-          <View style={styles.entryCircle}>
+          <View
+            style={[
+              {
+                // TODO: change to hashmap access
+                backgroundColor:
+                  levelItems[10 - (entry as TPainEntry).pain_intensity].color,
+              },
+              styles.entryCircle,
+            ]}
+          >
             <Text style={styles.entryCircleNumber}>
               {(entry as TPainEntry).pain_intensity}
             </Text>
@@ -163,110 +182,100 @@ function merge(diaries: TDiaryEntry[], episodes: TPainEntry[]) {
   return merged;
 }
 
-export default function HistoryScreen({
-  navigation,
-}: RootTabScreenProps<"HistoryScreen">) {
-  const authStore = useContext(AuthContext);
+const HistoryScreen: React.FC<RootTabScreenProps<"HistoryScreen">> = observer(
+  ({ navigation }) => {
+    const authStore = useContext(AuthContext);
 
-  const [history, setHistory] = useState<
-    (TDiaryEntry | TPainEntry)[] | null | undefined
-  >(null);
+    const [history, setHistory] = useState<
+      (TDiaryEntry | TPainEntry)[] | null | undefined
+    >(null);
 
-  const loadHistory = async (): Promise<void> => {
-    try {
-      // const patientId = authStore.patient!.uid!;
-      const patientId = "IsMrjVKNb7c5cggZvUBy7XBE1O73";
+    const loadHistory = async (): Promise<void> => {
+      console.log("loading");
+      try {
+        const patientId = authStore.patient!.uid!;
 
-      // TODO: dangerous call - pulls all diaries entries
-      const diariesQuery = query(
-        collection(db, "patients", patientId, "diaries"),
-        orderBy("created_at", "desc")
-      );
-      const episodesQuery = query(
-        collection(
-          db,
-          "patients",
-          "iWiLzzQzVNb53DNHyUvxp0naFM82",
-          "pain_entries"
-        ),
-        orderBy("created_at", "desc")
-      );
+        // TODO: dangerous call - pulls all diaries entries
+        const diariesQuery = query(
+          collection(db, "patients", patientId, "diaries"),
+          orderBy("created_at", "desc")
+        );
+        const episodesQuery = query(
+          collection(db, "patients", patientId, "pain_entries"),
+          orderBy("created_at", "desc")
+        );
 
-      const diaries: TDiaryEntry[] = await queryToData(diariesQuery);
-      const episodes: TPainEntry[] = await queryToData(episodesQuery);
+        const diaries: TDiaryEntry[] = await queryToData(diariesQuery);
+        const episodes: TPainEntry[] = await queryToData(episodesQuery);
 
-      console.log(episodes);
+        setHistory(merge(diaries, episodes));
+        authStore.setStale(false);
+      } catch (error) {
+        console.log(error);
+        setHistory(undefined);
+      }
+    };
 
-      setHistory(merge(diaries, episodes));
-    } catch (error) {
-      console.log(error);
-      setHistory(undefined);
-    }
-  };
+    useEffect(() => {
+      loadHistory();
+    }, [authStore.stale]);
 
-  useEffect(() => {
-    loadHistory();
-  }, []);
-
-  return (
-    <View style={painStyles.container}>
-      <VStack>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={painStyles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Image source={require("../assets/icons/back.png")} />
-        </TouchableOpacity>
-        <Text style={painStyles.title}>Record History</Text>
-      </VStack>
-      {history === null && (
-        <Spinner
-          style={{ flex: 1, marginBottom: 150 }}
-          size="lg"
-          color={Colors.primary}
-        />
-      )}
-      {(history === undefined || (history && history?.length === 0)) && (
-        <View style={styles.container}>
-          <Image
-            source={require("../assets/images/male-lifesaver-using-computer.png")}
-            style={styles.image}
+    return (
+      <View style={painStyles.container}>
+        <HStack style={styles.header}>
+          <Text style={painStyles.title}>Record History</Text>
+          <Button style={styles.shareButton}>
+            <Text style={styles.shareText}>Share</Text>
+          </Button>
+        </HStack>
+        {history === null && (
+          <Spinner
+            style={{ flex: 1, marginBottom: 150 }}
+            size="lg"
+            color={Colors.primary}
           />
-          <Text
-            style={{
-              fontFamily: "Poppins-Regular",
-              fontStyle: "normal",
-              fontWeight: "600",
-              fontSize: 20,
-              lineHeight: 26,
-              letterSpacing: -0.5,
-              color: "#432C81",
-            }}
-          >
-            {history === undefined
-              ? "We can't load any records at this time."
-              : "You don't have any records."}
-          </Text>
-        </View>
-      )}
-      {history && history?.length > 0 && (
-        <View style={[{ flex: 1 }, painStyles.form]}>
-          <FlatList
-            data={history}
-            keyExtractor={(entry: TDiaryEntry) => entry.id!}
-            renderItem={({ item }: ListRenderItemInfo<TDiaryEntry>) => (
-              <EntryView entry={item} />
-            )}
-            contentContainerStyle={{
-              paddingBottom: 125,
-            }}
-          />
-        </View>
-      )}
-    </View>
-  );
-}
+        )}
+        {(history === undefined || (history && history?.length === 0)) && (
+          <View style={styles.container}>
+            <Image
+              source={require("../assets/images/male-lifesaver-using-computer.png")}
+              style={styles.image}
+            />
+            <Text
+              style={{
+                fontFamily: "Poppins-Regular",
+                fontStyle: "normal",
+                fontWeight: "600",
+                fontSize: 20,
+                lineHeight: 26,
+                letterSpacing: -0.5,
+                color: "#432C81",
+              }}
+            >
+              {history === undefined
+                ? "We can't load any records at this time."
+                : "You don't have any records."}
+            </Text>
+          </View>
+        )}
+        {history && history?.length > 0 && (
+          <View style={[{ flex: 1 }, painStyles.form]}>
+            <FlatList
+              data={history}
+              keyExtractor={(entry: TDiaryEntry) => entry.id!}
+              renderItem={({ item }: ListRenderItemInfo<TDiaryEntry>) => (
+                <EntryView entry={item} />
+              )}
+              contentContainerStyle={{
+                paddingBottom: 125,
+              }}
+            />
+          </View>
+        )}
+      </View>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -278,6 +287,24 @@ const styles = StyleSheet.create({
     width: "80%",
     height: undefined,
     aspectRatio: 1,
+  },
+  header: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 25,
+    marginBottom: 15,
+  },
+  shareButton: {
+    backgroundColor: "#545D69",
+    borderRadius: 6,
+    marginRight: 14,
+  },
+  shareText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "600",
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#FFFFFF",
   },
   entryContainer: {
     shadowOffset: { width: 0, height: 4 },
@@ -308,7 +335,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 30 / 2,
-    backgroundColor: "#DEC353",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -318,3 +344,5 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
 });
+
+export default HistoryScreen;
