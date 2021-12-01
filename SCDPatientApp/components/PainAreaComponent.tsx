@@ -2,25 +2,25 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { VStack, HStack, Center, Box } from "native-base";
 import Colors from "../constants/Colors";
-import Body from "react-native-body-highlighter";
+import Body from "./Body";
 import ToggleButton from "react-native-toggle-element";
+import { Muscle } from "../models/Body";
 
-type TMuscle = {
-  slug: string;
-  intensity: number;
-};
-type TPainIntensityProps = {
-  muscles: TMuscle[];
+interface PainIntensityProps {
+  muscles: Muscle[];
   updateMuscles: any;
-};
+}
 
-const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
+const PainAreaComponent: React.FC<PainIntensityProps> = ({
+  muscles,
+  updateMuscles,
+}) => {
   const [bodySide, setbodySide] = useState(false); // true for front; false for back
   const toggleBodySide = (newvalue: any) => {
     setbodySide(newvalue);
   };
 
-  const handleMusclePress = (muscle: TMuscle) => {
+  const handleMusclePress = (muscle: Muscle) => {
     const id = muscles.findIndex((m) => m.slug === muscle.slug);
     if (id !== -1) {
       updateMuscles([
@@ -52,8 +52,18 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             activeBackgroundColor: "#ffffff",
             inActiveBackgroundColor: "#ffffff",
           }}
-          leftComponent={<Text>Front</Text>}
-          rightComponent={<Text>Back</Text>}
+          leftComponent={
+            <VStack style={styles.painAreaToggleText}>
+              <Text>Front</Text>
+              {!bodySide && <Text>(right-left)</Text>}
+            </VStack>
+          }
+          rightComponent={
+            <VStack style={styles.painAreaToggleText}>
+              <Text>Back</Text>
+              {bodySide && <Text>(left-right)</Text>}
+            </VStack>
+          }
         />
       </Center>
       <Center style={styles.painAreaBody}>
@@ -62,7 +72,7 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             scale={2}
             frontOnly={true}
             data={muscles}
-            onMusclePress={(muscle: TMuscle) => {
+            onMusclePress={(muscle: Muscle) => {
               handleMusclePress(muscle);
             }}
           />
@@ -71,7 +81,7 @@ const PainAreaComponent = ({ muscles, updateMuscles }: TPainIntensityProps) => {
             scale={2}
             backOnly={true}
             data={muscles}
-            onMusclePress={(muscle: TMuscle) => {
+            onMusclePress={(muscle: Muscle) => {
               handleMusclePress(muscle);
             }}
           />
@@ -89,6 +99,11 @@ const styles = StyleSheet.create({
   painAreaToggle: {
     marginTop: 10,
     marginBottom: 10,
+  },
+
+  painAreaToggleText: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   painAreaBody: {
