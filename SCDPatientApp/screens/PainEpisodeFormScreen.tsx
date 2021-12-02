@@ -82,10 +82,12 @@ const reliefMethodTypes = [
 ];
 
 export default function PainEpisodeFormScreen({
-  navigation,
+  route, navigation,
 }: RootTabScreenProps<"PainEpisodeFormScreen">) {
   const authStore = React.useContext(AuthContext);
   const painEntryStore = PainEntryStore();
+
+  const { painEpisodeTime, painEpisodeDay, prevScreen } = route.params;
 
   const [scrollEnabled, setScrollEnabled] = React.useState(true);
   const [selectedPainIntensity, setSelectedPainIntensity] = React.useState(-1);
@@ -93,7 +95,7 @@ export default function PainEpisodeFormScreen({
   const navigateBack = () => {
     // Only pop up modal if form data changed
     if (isFormChanged()) {
-      navigation.goBack();
+      navigation.navigate(prevScreen);
     } else {
       setShowBackModal(true);
     }
@@ -211,7 +213,7 @@ export default function PainEpisodeFormScreen({
       authStore.setStale(true);
       setErrorMsg("");
       setShowErrorModal(false);
-      navigation.goBack();
+      navigation.navigate(prevScreen);
     } else {
       setErrorMsg(
         "Oops, something went wrong on our end! Please click the 'Save' button again."
@@ -488,7 +490,7 @@ export default function PainEpisodeFormScreen({
                 </Button>
                 <Button
                   style={styles.okButton}
-                  onPress={() => navigation.goBack()}
+                  onPress={() => {closeBackModal(); navigation.navigate(prevScreen);}}
                 >
                   <Text style={styles.modalButtonText}>OK</Text>
                 </Button>
