@@ -104,6 +104,34 @@ const styles = StyleSheet.create({
     marginLeft: 17,
     marginRight: 17,
   },
+
+  cancelButton: {
+    width: 80,
+    borderRadius: 8,
+    backgroundColor: Colors.backButton,
+  },
+
+  okButton: {
+    width: 80,
+    borderRadius: 8,
+    backgroundColor: Colors.primary,
+  },
+
+  modalButtonText: {
+    fontFamily: "Poppins-Regular",
+    fontStyle: "normal",
+    fontWeight: "600",
+    fontSize: 14,
+    textAlign: "center",
+    color: Colors.white,
+  },
+
+  backModalText: {
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: 14,
+    marginBottom: 10,
+  },
 });
 
 export default styles;
