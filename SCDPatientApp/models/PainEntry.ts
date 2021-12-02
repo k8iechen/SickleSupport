@@ -1,6 +1,7 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
 
 export type TPainEntry = {
+  id?: string;
   uid?: string;
   created_at: Timestamp | FieldValue;
   updated_at: Timestamp | FieldValue;

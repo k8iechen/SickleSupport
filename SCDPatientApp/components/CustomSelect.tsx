@@ -3,24 +3,26 @@ import { View } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 import Colors from "../constants/Colors";
 
-interface TCustomSelectOption {
+type TCustomSelectOption = {
   id: string;
   name: string;
-}
+};
 
-// TODO: investigate how to handle nesting of lists
-const CustomSelect = ({
-  single = false,
-  selectText,
-  choices,
-  selections,
-  onSelectedItemsChange,
-}: {
+interface ICustomSelectProps {
   single: boolean;
   selectText: string;
   choices: TCustomSelectOption[];
   selections: TCustomSelectOption[];
   onSelectedItemsChange: (items: TCustomSelectOption[]) => void;
+}
+
+// TODO: investigate how to handle nesting of lists
+const CustomSelect: React.FC<ICustomSelectProps> = ({
+  single = false,
+  selectText,
+  choices,
+  selections,
+  onSelectedItemsChange,
 }) => {
   return (
     <View style={{ flex: 1 }}>

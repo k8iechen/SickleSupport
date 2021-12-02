@@ -4,7 +4,7 @@ import * as React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styles from "../styles/CounterWithButtons.styles";
 
-interface CounterWithButtonsProps {
+interface ICounterWithButtonsProps {
   value: number;
   setValue: (newvalue: number) => void;
 }
@@ -12,7 +12,7 @@ interface CounterWithButtonsProps {
 export default function CounterWithButtons({
   value,
   setValue,
-}: CounterWithButtonsProps) {
+}: ICounterWithButtonsProps) {
   return (
     <HStack style={styles.container}>
       <TouchableOpacity onPress={() => setValue(value - 1)}>

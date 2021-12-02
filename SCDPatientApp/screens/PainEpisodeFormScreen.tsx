@@ -71,9 +71,9 @@ const reliefMethodTypes = [
   "Heat pad",
 ];
 
-export default function HomeScreen({
+export default function PainEpisodeFormScreen({
   navigation,
-}: RootTabScreenProps<"HomeScreen">) {
+}: RootTabScreenProps<"PainEpisodeFormScreen">) {
   const authStore = React.useContext(AuthContext);
   const painEntryStore = PainEntryStore();
 
@@ -176,6 +176,7 @@ export default function HomeScreen({
 
     const result = await painEntryStore.addEntry(authStore.patient, entry);
     if (result) {
+      authStore.setStale(true);
       setErrorMsg("");
       setShowErrorModal(false);
       navigation.goBack();

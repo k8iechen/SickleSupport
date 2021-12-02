@@ -184,6 +184,7 @@ const DailyDiaryFormScreen = observer(
         );
         setShowErrorModal(true);
       } else {
+        authStore.setStale(true);
         navigation.goBack();
       }
     };

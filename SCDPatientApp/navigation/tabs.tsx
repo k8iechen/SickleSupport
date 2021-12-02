@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Image } from "react-native";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
@@ -18,11 +18,7 @@ import TabBarItem from "../components/TabBarItem";
 import CustomTabBarButton from "../components/CustomTabBarComponent";
 import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
 import PainTypeModal from "../components/PainTypeModal";
-import {
-  PainWhenModal,
-  TODAY_START_DAY,
-  TODAY_START_TIME,
-} from "../components/PainWhenModal";
+import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
 
 const NewPainEpisodePlaceholder = () => <View />;
@@ -102,11 +98,10 @@ const Tabs = () => {
           tabBarShowLabel: false,
           tabBarStyle: {
             position: "absolute",
-            bottom: 20,
             paddingLeft: 20,
             paddingRight: 20,
             backgroundColor: "#ffffff",
-            height: 90,
+            height: 110,
             borderTopWidth: 0,
             elevation: 0,
           },
