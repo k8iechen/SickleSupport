@@ -8,7 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { getHours } from "../common/DateUtils";
 
-interface DayObj {
+interface IDayObj {
   dateString: string;
   day: number;
   month: number;
@@ -16,25 +16,25 @@ interface DayObj {
   year: number;
 }
 
-interface TimeObj {
+interface ITimeObj {
   hours: number;
   minutes: number;
 }
 
-interface PainWhenModalProps {
+interface IPainWhenModalProps {
   showModal: boolean;
-  setShowModal;
-  setShowTypeModal;
-  startDay: DayObj;
-  setStartDay;
-  startTime: TimeObj;
-  setStartTime;
-  initialStartDay: DayObj;
-  initialStartTime: TimeObj;
-  navigation;
+  setShowModal: any;
+  setShowTypeModal: any;
+  startDay: IDayObj;
+  setStartDay: any;
+  startTime: ITimeObj;
+  setStartTime: any;
+  initialStartDay: IDayObj;
+  initialStartTime: ITimeObj;
+  navigation: any;
 }
 
-export const PainWhenModal: React.FC<PainWhenModalProps> = ({
+export const PainWhenModal: React.FC<IPainWhenModalProps> = ({
   showModal,
   setShowModal,
   setShowTypeModal,

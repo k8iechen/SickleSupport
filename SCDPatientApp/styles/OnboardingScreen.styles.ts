@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: 23,
     alignItems: "flex-start",
     justifyContent: "center",
+    marginVertical: 5
   },
 
   questionText: {

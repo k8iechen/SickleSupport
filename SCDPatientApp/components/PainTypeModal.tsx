@@ -6,14 +6,14 @@ import { Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import Colors from "../constants/Colors";
 
-interface PainTypeModalProps {
+interface IPainTypeModalProps {
   showModal: boolean;
-  setShowModal;
-  setShowWhenModal;
-  navigation;
+  setShowModal: any;
+  setShowWhenModal: any;
+  navigation: any;
 }
 
-const PainTypeModal: React.FC<PainTypeModalProps> = ({
+const PainTypeModal: React.FC<IPainTypeModalProps> = ({
   showModal,
   setShowModal,
   setShowWhenModal,
