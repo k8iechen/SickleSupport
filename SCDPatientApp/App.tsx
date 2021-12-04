@@ -8,6 +8,7 @@ import Navigation from "./navigation";
 
 import { AuthProvider } from "./providers/AuthProvider";
 
+
 const App = observer(() => {
   const isLoadingComplete = useCachedResources();
 

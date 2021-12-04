@@ -104,6 +104,7 @@ const EntryView: React.FC<IEntryViewProps> = ({ entry }) => {
   const isPainEntry: boolean = !!(entry as TPainEntry).pain_intensity;
 
   return (
+    <TouchableOpacity>
     <Box
       rounded="lg"
       style={[
@@ -144,6 +145,7 @@ const EntryView: React.FC<IEntryViewProps> = ({ entry }) => {
         <Entypo name="chevron-small-right" size={24} color="black" />
       </HStack>
     </Box>
+    </TouchableOpacity>
   );
 };
 
@@ -224,9 +226,9 @@ const HistoryScreen: React.FC<RootTabScreenProps<"HistoryScreen">> = observer(
       <View style={painStyles.container}>
         <HStack style={styles.header}>
           <Text style={painStyles.title}>Record History</Text>
-          <Button style={styles.shareButton}>
+          <TouchableOpacity style={styles.shareButton}>
             <Text style={styles.shareText}>Share</Text>
-          </Button>
+          </TouchableOpacity>
         </HStack>
         {history === null && (
           <Spinner
@@ -298,6 +300,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#545D69",
     borderRadius: 6,
     marginRight: 14,
+    paddingRight: 12,
+    paddingLeft: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
   },
   shareText: {
     fontFamily: "Poppins-Medium",

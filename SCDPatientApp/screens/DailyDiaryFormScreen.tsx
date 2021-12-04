@@ -526,6 +526,7 @@ const DailyDiaryFormScreen = observer(
                 height: 100,
                 marginTop: 13,
                 backgroundColor: Colors.white,
+                marginBottom: 20,
               }}
             >
               <Center>

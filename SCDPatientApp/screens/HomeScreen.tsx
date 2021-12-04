@@ -19,8 +19,8 @@ export default function HomeScreen({
         <Text style={styles.nameText}>{authStore.patient?.name}</Text>
 
         <SummaryCard
-          medicationStreak={8}
-          totalPainEpisodes={8}
+          medicationStreak={4}
+          totalPainEpisodes={3}
           numHospitalEpisodes={1}
         />
 
