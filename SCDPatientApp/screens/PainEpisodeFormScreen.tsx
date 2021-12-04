@@ -74,11 +74,13 @@ const painTriggerTypes = [
 
 const reliefMethodTypes = [
   "Cannabis",
+  "Sleep",
   "Hot shower",
   "Meditation",
   "Staying indoors",
   "Drink water",
   "Heat pad",
+  "Other",
 ];
 
 export default function PainEpisodeFormScreen({
@@ -553,6 +555,7 @@ export default function PainEpisodeFormScreen({
               height: 100,
               marginTop: 13,
               backgroundColor: Colors.white,
+              marginBottom: 20,
             }}
           >
             <Center>
