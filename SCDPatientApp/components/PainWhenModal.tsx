@@ -48,7 +48,6 @@ export const PainWhenModal: React.FC<IPainWhenModalProps> = ({
 }) => {
   const [showTimePicker, setShowTimePicker] = React.useState(false);
   const [selectedEpisodeDates, setSelectedEpisodeDates] = React.useState(null);
-  const TODAYS_DATE = new Date();
 
   useEffect(() => {
     var newDates = {};
@@ -182,7 +181,7 @@ export const PainWhenModal: React.FC<IPainWhenModalProps> = ({
                     />
                   );
                 }}
-                maxDate={TODAYS_DATE}
+                maxDate={startDay.dateString}
                 onDayPress={(day) => {
                   setStartDay(day);
                 }}

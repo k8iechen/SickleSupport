@@ -1,6 +1,10 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 function CustomTabBarButton({
   children,
@@ -24,14 +28,15 @@ function CustomTabBarButton({
         elevation: 5,
         marginLeft: 15,
         marginRight: 15,
+        marginBottom: hp("3"),
       }}
       onPress={onPress}
     >
       <View
         style={{
-          width: 56,
-          height: 56,
-          borderRadius: 18,
+          width: wp("13"),
+          height: wp("13"),
+          borderRadius: wp("3.86"),
           backgroundColor: Colors.primary,
         }}
       >

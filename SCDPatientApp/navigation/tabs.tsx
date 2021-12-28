@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Dimensions, Image } from "react-native";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import { createStackNavigator } from "@react-navigation/stack";
@@ -20,6 +20,10 @@ import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
 import PainTypeModal from "../components/PainTypeModal";
 import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const NewPainEpisodePlaceholder = () => <View />;
 
@@ -51,6 +55,8 @@ const Tabs = () => {
   const [startDay, setStartDay] = React.useState(TODAY_START_DAY);
   const [startTime, setStartTime] = React.useState(TODAY_START_TIME);
 
+  console.log(Dimensions.get("window"));
+
   function HomeNavigator() {
     return (
       <HomeStack.Navigator
@@ -68,6 +74,7 @@ const Tabs = () => {
         <HomeStack.Screen
           name="PainEpisodeFormScreen"
           component={PainEpisodeFormScreen}
+          options={{ gestureEnabled: false }} // Prevent user from swapping left to force exit form
         />
       </HomeStack.Navigator>
     );
@@ -98,10 +105,11 @@ const Tabs = () => {
           tabBarShowLabel: false,
           tabBarStyle: {
             position: "absolute",
-            paddingLeft: 20,
-            paddingRight: 20,
+            paddingLeft: wp("4"),
+            paddingRight: wp("4"),
+            paddingBottom: 20,
             backgroundColor: "#ffffff",
-            height: 110,
+            height: hp("12"),
             borderTopWidth: 0,
             elevation: 0,
           },
@@ -155,8 +163,8 @@ const Tabs = () => {
                   source={require("../assets/icons/plus.png")}
                   resizeMode="contain"
                   style={{
-                    width: 30,
-                    height: 30,
+                    width: wp("7"),
+                    height: wp("7"),
                   }}
                 />
               );

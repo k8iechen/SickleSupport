@@ -38,6 +38,8 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-modal-datetime-picker": "^13.0.0",
     "react-native-multiple-select": "^0.5.7",
+    "react-native-responsive-fontsize": "^0.5.1",
+    "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
     "react-native-svg": "^12.1.1",

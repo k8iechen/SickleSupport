@@ -1,6 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import Colors from "../constants/Colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 function TabBarItem({
   focused,
@@ -17,14 +22,15 @@ function TabBarItem({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        paddingTop: 20,
+        width: wp("20"),
       }}
     >
       <View
         style={{
-          height: 50,
           alignItems: "center",
           justifyContent: "center",
+          height: wp("12.07"),
+          width: wp("12.07"),
         }}
       >
         {focused && <View style={[styles.overlay]} />}
@@ -33,13 +39,21 @@ function TabBarItem({
           resizeMode="contain"
           style={{
             position: "absolute",
-            width: 20,
-            height: 20,
+            width: wp("5"),
+            height: wp("5"),
             tintColor: focused ? Colors.primary : Colors.text,
           }}
         />
       </View>
-      <Text style={{ color: Colors.text, fontSize: 12, top: 3 }}>{label}</Text>
+      <Text
+        style={{
+          color: Colors.text,
+          fontSize: RFValue(15, 896),
+          marginTop: 5,
+        }}
+      >
+        {label}
+      </Text>
     </View>
   );
 }
@@ -49,8 +63,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: Colors.primary,
     opacity: 0.07,
-    width: 50,
-    height: 50,
+    width: wp("12.07"),
+    height: wp("12.07"),
     borderRadius: 14,
   },
 });
