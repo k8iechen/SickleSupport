@@ -26,6 +26,12 @@ import { TDiaryEntry } from "../models/DiaryEntry";
 import { RootStackScreenProps } from "../models/navigation";
 import DiaryStore from "../stores/dairy.store";
 import styles from "../styles/DailyDiaryFormScreen.styles";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { Dimensions } from "react-native";
 
 const diaryMedicationTypes = [
   {
@@ -247,6 +253,8 @@ const DailyDiaryFormScreen = observer(
             style={{
               width: "75%",
               zIndex: 1,
+              marginLeft: 5,
+              marginRight: 5,
             }}
             value={sleepHours}
             onChange={(v) => {
@@ -343,7 +351,9 @@ const DailyDiaryFormScreen = observer(
           },
         ]}
       >
-        <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
+        <HStack space={2} style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Medicine</Text>
+        </HStack>
         <Text style={[styles.questionText, styles.firstQuestion]}>
           Have you taken your medicine for today?
         </Text>
@@ -386,7 +396,9 @@ const DailyDiaryFormScreen = observer(
           },
         ]}
       >
-        <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
+        <HStack space={2} style={styles.cardHeader}>
+          <Text style={[styles.cardText, styles.cardTitle]}>Pain</Text>
+        </HStack>
         <Text style={[styles.questionText, styles.firstQuestion]}>
           Did you feel pain today?
         </Text>
@@ -431,7 +443,9 @@ const DailyDiaryFormScreen = observer(
             },
           ]}
         >
-          <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
+          <HStack space={2} style={styles.cardHeader}>
+            <Text style={[styles.cardText, styles.cardTitle]}>Other</Text>
+          </HStack>
           <Text style={[styles.questionText, styles.firstQuestion]}>
             Have you had trouble with vision today?
           </Text>
@@ -471,7 +485,7 @@ const DailyDiaryFormScreen = observer(
           description={errorMsg}
         />
         <Modal isOpen={showBackModal} onClose={closeBackModal} size="md">
-          <Modal.Content maxWidth="350">
+          <Modal.Content maxWidth={wp("90")}>
             <Modal.CloseButton />
             <Modal.Header>
               <HStack>
@@ -510,7 +524,7 @@ const DailyDiaryFormScreen = observer(
               style={styles.backButton}
               onPress={() => navigateBack()}
             >
-              <Image source={require("../assets/icons/back.png")} />
+              <Ionicons name="arrow-back" size={wp("6")} color="grey" />
             </TouchableOpacity>
             <Text style={styles.title}>Daily Diary Entry</Text>
           </VStack>
@@ -523,7 +537,7 @@ const DailyDiaryFormScreen = observer(
             {OtherQuestionsComponent({})}
             <Box
               style={{
-                height: 100,
+                height: hp("11"),
                 marginTop: 13,
                 backgroundColor: Colors.white,
                 marginBottom: 20,

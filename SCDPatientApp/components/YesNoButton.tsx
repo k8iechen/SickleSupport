@@ -2,6 +2,11 @@ import * as React from "react";
 import { Text, View } from "native-base";
 import Colors from "../constants/Colors";
 import ToggleButton from "react-native-toggle-element";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 type YesNoButtonProps = {
   value: boolean;
@@ -19,25 +24,28 @@ export default function YesNoButton({ value, onPress }: YesNoButtonProps) {
         borderActiveColor: "#E8E8E8",
         borderInActiveColor: "#E8E8E8",
         borderWidth: 1,
-        width: 250,
+        width: wp("64"),
+        height: hp("6"),
       }}
       thumbButton={{
-        width: 125,
+        width: wp("32"),
+        height: hp("6"),
         activeBackgroundColor: "#ffffff",
         inActiveBackgroundColor: "#ffffff",
       }}
       leftComponent={
         <View
           style={{
-            width: 125,
+            width: wp("32"),
             alignItems: "center",
           }}
         >
           <Text
             style={{
               fontFamily: "Poppins-Medium",
-              fontSize: 16,
+              fontSize: RFValue(19, 896),
               color: value ? "#BDBDBD" : Colors.selection,
+              lineHeight: 0,
             }}
           >
             No
@@ -54,8 +62,9 @@ export default function YesNoButton({ value, onPress }: YesNoButtonProps) {
           <Text
             style={{
               fontFamily: "Poppins-Medium",
-              fontSize: 16,
+              fontSize: RFValue(19, 896),
               color: value ? Colors.success : "#BDBDBD",
+              lineHeight: 0,
             }}
           >
             Yes

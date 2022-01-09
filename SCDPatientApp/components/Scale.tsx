@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 function Scale({
   data,
@@ -125,6 +130,8 @@ function ScaleButton({
           borderWidth: isSelected ? 1 : 0,
           borderStyle: "solid",
           opacity: siblingSelected ? 0.5 : 1,
+          height: "100%",
+          width: "100%",
         }}
       >
         <Text
@@ -153,8 +160,8 @@ const styles = StyleSheet.create({
   },
 
   scaleButton: {
-    width: 57,
-    height: 57,
+    width: wp("15"),
+    height: wp("15"),
   },
 
   scaleButtonHeader: {
@@ -162,7 +169,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 6,
-    fontSize: 20,
+    fontSize: RFValue(23, 896),
     textAlign: "center",
   },
 
@@ -173,7 +180,7 @@ const styles = StyleSheet.create({
     color: "#1D335A",
     marginTop: -3,
     marginBottom: 10,
-    fontSize: 12,
+    fontSize: RFValue(14, 896),
   },
 });
 

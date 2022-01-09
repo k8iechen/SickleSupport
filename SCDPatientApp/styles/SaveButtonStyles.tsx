@@ -1,9 +1,15 @@
 import { StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 const styles = StyleSheet.create({
   saveButton: {
     width: "80%",
+    height: hp("4"),
     backgroundColor: Colors.success,
     borderRadius: 8,
     marginVertical: 16,
@@ -13,7 +19,8 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: 14,
+    fontSize: RFValue(16, 896),
+    lineHeight: 0,
     textAlign: "center",
     color: "#FFFFFF",
   },

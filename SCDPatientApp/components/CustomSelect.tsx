@@ -2,6 +2,11 @@ import React from "react";
 import { View } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 import Colors from "../constants/Colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 type TCustomSelectOption = {
   id: string;
@@ -36,9 +41,9 @@ const CustomSelect: React.FC<ICustomSelectProps> = ({
         displayKey="name"
         submitButtonText="Submit"
         fontFamily="Poppins-Medium"
-        fontSize={14}
+        fontSize={RFValue(16, 896)}
         itemFontFamily="Poppins-Medium"
-        itemFontSize={14}
+        itemFontSize={RFValue(16, 896)}
         itemTextColor={Colors.text}
         tagBorderColor={Colors.darkGrey}
         selectedItemTextColor={Colors.darkGrey}
@@ -52,7 +57,7 @@ const CustomSelect: React.FC<ICustomSelectProps> = ({
         searchInputStyle={{
           color: Colors.darkGrey,
           fontFamily: "Poppins-Regular",
-          fontSize: 14,
+          fontSize: RFValue(16, 896),
         }}
         submitButtonColor={Colors.darkColor}
         styleDropdownMenuSubsection={{
@@ -78,11 +83,18 @@ const CustomSelect: React.FC<ICustomSelectProps> = ({
           backgroundColor: Colors.unselected,
           borderColor: Colors.backButton,
         }}
+        styleTextDropdown={{
+          height: "100%",
+        }}
         styleTextDropdownSelected={{
           backgroundColor: Colors.unselected,
           borderColor: Colors.backButton,
+          height: "100%",
         }}
         tagTextColor={Colors.darkGrey}
+        tagContainerStyle={{
+          width: wp("38"),
+        }}
       />
     </View>
   );

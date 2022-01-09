@@ -1,6 +1,11 @@
 import { StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 import { styles as sharedStyles } from "./Shared.styles";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 const styles = StyleSheet.create({
   container: {
@@ -9,25 +14,24 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    width: 233,
-    height: 38,
+    width: wp("60"),
+    height: hp("4.5"),
     marginLeft: 28,
     marginTop: 18,
     fontFamily: "Poppins-SemiBold",
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: 28,
-    lineHeight: 38,
+    fontSize: RFValue(30, 896),
     color: Colors.title,
   },
 
   backButton: {
-    width: 48,
-    height: 48,
+    width: wp("12.3"),
+    height: wp("12.3"),
     marginLeft: 28,
     marginTop: 49,
     backgroundColor: Colors.backButtonBackground,
-    borderRadius: 14,
+    borderRadius: wp("2"),
     justifyContent: "center",
     alignItems: "center",
   },
@@ -52,7 +56,7 @@ const styles = StyleSheet.create({
   questionText: {
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: RFValue(16, 896),
     color: Colors.cardText,
     marginLeft: 17,
     marginBottom: 15,
@@ -62,14 +66,14 @@ const styles = StyleSheet.create({
   errorModalText: {
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: RFValue(16, 896),
     marginBottom: 30,
   },
 
   backModalText: {
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: RFValue(16, 896),
     marginBottom: 10,
   },
 
@@ -102,13 +106,13 @@ const styles = StyleSheet.create({
   },
 
   cancelButton: {
-    width: 80,
+    width: wp("20.5"),
     borderRadius: 8,
     backgroundColor: Colors.backButton,
   },
 
   okButton: {
-    width: 80,
+    width: wp("20.5"),
     borderRadius: 8,
     backgroundColor: Colors.primary,
   },
@@ -117,7 +121,8 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: 14,
+    fontSize: RFValue(16, 896),
+    width: "100%",
     textAlign: "center",
     color: Colors.white,
   },
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   },
 
   sleepText: {
-    fontSize: 18,
+    fontSize: RFValue(20, 896),
     marginTop: 5,
     color: Colors.selection,
   },

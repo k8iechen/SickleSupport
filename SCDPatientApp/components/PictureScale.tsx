@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { Slider, VStack, ScrollView, Box, HStack, Center } from "native-base";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 function PictureScale({
   pictureData,
@@ -95,16 +100,16 @@ const styles = StyleSheet.create({
   },
 
   scaleButton: {
-    width: 60,
-    height: 57,
+    width: wp("15.3"),
+    height: wp("15"),
   },
 
   scaleButtonHeader: {
     marginLeft: 10,
     marginRight: 10,
     marginTop: 15,
-    width: 35,
-    height: 35,
+    width: wp("8.9"),
+    height: wp("8.9"),
   },
 
   scaleButtonText: {
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     color: "#1D335A",
     marginTop: 4,
     marginBottom: 10,
-    fontSize: 12,
+    fontSize: RFValue(14, 896),
   },
 });
 
