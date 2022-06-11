@@ -101,7 +101,7 @@ const DailyDiaryFormScreen = observer(
     });
 
     const [showErrorModal, setShowErrorModal] = React.useState(false);
-    const [errorMsg, setErrorMsg] = React.useState("");
+    const [errorMsg, setErrorMsg] = React.useState("unknown error");
     const [showBackModal, setShowBackModal] = React.useState(false);
 
     const authStore = useContext(AuthContext);
