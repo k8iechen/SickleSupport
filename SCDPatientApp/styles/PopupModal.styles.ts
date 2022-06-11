@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
     fontFamily: "Poppins-Medium",
     fontWeight: "500",
     fontSize: RFValue(16, 896),
-    lineHeight: 0,
     marginBottom: 30,
   },
 });
