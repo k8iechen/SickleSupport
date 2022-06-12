@@ -5,12 +5,6 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-declare global {
-  namespace ReactNavigation {
-    interface IRootParamList extends RootStackParamList {}
-  }
-}
-
 export type RootStackParamList = {
   Welcome: undefined;
   Login: undefined;
