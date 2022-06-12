@@ -104,17 +104,17 @@ const EntryView: React.FC<IEntryViewProps> = ({ entry }) => {
   const isPainEntry: boolean = !!(entry as TPainEntry).pain_intensity;
 
   return (
-    <TouchableOpacity>
-    <Box
-      rounded="lg"
-      style={[
-        painStyles.card,
-        styles.entryContainer,
-        {
-          marginTop: 16,
-        },
-      ]}
-    >
+    <TouchableOpacity onPress={onPress}>
+      <Box
+        rounded="lg"
+        style={[
+          painStyles.card,
+          styles.entryContainer,
+          {
+            marginTop: 16,
+          },
+        ]}
+      >
       <HStack alignItems="center">
         <VStack space={3}>
           <Text style={styles.entryDateText}>
