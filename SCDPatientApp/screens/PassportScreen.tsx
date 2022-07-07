@@ -33,9 +33,9 @@ export default function PassportScreen({
         marginLeft: 0,
         marginRight: 24,
         marginTop: 5,
-      }}>
+      }} onPress={() => navigation.navigate("Settings")}>
         <Ionicons name="settings-sharp" size={24} color="#2E3A59" />
-        </TouchableOpacity>
+      </TouchableOpacity>
     </HStack>
     <VStack>
       <Box style={{

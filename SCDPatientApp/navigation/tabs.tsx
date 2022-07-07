@@ -14,6 +14,7 @@ import HistoryScreen from "../screens/HistoryScreen";
 import PainEpisodeFormScreen from "../screens/PainEpisodeFormScreen";
 import ResourcesScreen from "../screens/ResourcesScreen";
 import PassportScreen from "../screens/PassportScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import TabBarItem from "../components/TabBarItem";
 import CustomTabBarButton from "../components/CustomTabBarComponent";
 import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
@@ -212,6 +213,14 @@ const Tabs = () => {
               />
             ),
             headerShown: false,
+          }}
+        />
+        <Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarShowLabel: false,
+            tabBarButton: (props) => <></>
           }}
         />
       </Navigator>
