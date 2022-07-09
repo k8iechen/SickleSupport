@@ -220,7 +220,8 @@ const Tabs = () => {
           component={SettingsScreen}
           options={{
             tabBarShowLabel: false,
-            tabBarButton: (props) => <></>
+            tabBarButton: (props) => <></>,
+            headerShown: false,
           }}
         />
       </Navigator>

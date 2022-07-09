@@ -28,20 +28,16 @@ export default function SettingsScreen({
   navigation,
 }) {
   return (
-    <View style={painStyles.container}>
+    <View style={styles.container}>
       <TouchableOpacity
+        accessibilityLabel="go-back"
         activeOpacity={0.5}
-        style={styles.backButton}
+        style={painStyles.backButton}
         onPress={() => navigation.goBack()}
       >
         <Ionicons name="arrow-back" size={wp("6")} color="grey" />
       </TouchableOpacity>
-      <Text style={{
-        fontFamily: "Poppins-Bold",
-        fontSize: 16,
-        color: "#ffffff",
-        textDecorationLine: 'underline',
-      }}>Some Text 4 you</Text>
+      <Text style={styles.title}>Settings</Text>
     </View>
   );
 }
@@ -49,8 +45,7 @@ export default function SettingsScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-start",
   },
   header: {
     alignItems: "center",
@@ -59,7 +54,7 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
 
-  // TODO: copied from DailDiaryFormScreen
+  // TODO: copied from DailyDiaryFormScreen
   title: {
     width: wp("60"),
     height: hp("4.5"),
