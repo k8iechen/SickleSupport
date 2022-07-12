@@ -67,3 +67,5 @@ const styles = StyleSheet.create({
     color: Colors.title,
   },
 });
+
+SettingsScreen.displayName = "SettingsScreen";
