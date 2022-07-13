@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,6 +16,7 @@ import {
 } from "react-native-responsive-screen";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 import Colors from "../constants/Colors";
 
@@ -22,11 +24,31 @@ import Colors from "../constants/Colors";
 // some kind of shared 'tab' styles.
 import painStyles from "../styles/PainEpisodeFormScreen.styles";
 
+const SettingsItem = ({icon, label, route, navigation}) => {
+  navigation = navigation || useNavigation();
+  iconPath = `../assets/icons/${icon}`;
+  console.log('iconPath:', iconPath);
+  return (
+    <TouchableOpacity accesibilityLabel={label} onPress={navigation.navigate(route)}>
+      <HStack>
+        <Image
+          source={require(iconPath)}
+          resizeMode="contain"
+          style={{width: wp("7"), height: wp("7"),}}
+        />
+        <Text>{label}</Text>
+        <Ionicons name="arrow-forward" size={wp("4")} color="grey" />
+      </HStack>
+    </TouchableOpacity>
+  );
+};
+
 // TODO: This back button is the same as what's used on
 // DailyDiaryFormScreen. Refactor to a reusable back button.
 export default function SettingsScreen({
   navigation,
 }) {
+  navigation = navigation || useNavigation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -38,6 +60,11 @@ export default function SettingsScreen({
         <Ionicons name="arrow-back" size={wp("6")} color="grey" />
       </TouchableOpacity>
       <Text style={styles.title}>Settings</Text>
+      <VStack>
+        <SettingsItem label="Account" route="settings-account" navigation={navigation} icon="person.png" />
+        <SettingsItem label="Notifications" route="settings-notifications" navigation={navigation} icon="bell.png"/>
+        <SettingsItem label="Privacy & Security" route="settings-security" navigation={navigation} icon="security.png" />
+      </VStack>
     </View>
   );
 }

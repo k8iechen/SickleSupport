@@ -22,16 +22,18 @@ const render = (comp, options) => {
 };
 
 test('can render', () => {
+  const navMock = {'navigate': jest.fn()};
   const root = render(
-    <SettingsScreen/>
+    <SettingsScreen navigation={navMock} />
   );
   expect(root).toBeTruthy();
 });
 
 
 test('expected elements are rendered', () => {
+  const navMock = {'navigate': jest.fn()};
   render(
-    <SettingsScreen/>
+    <SettingsScreen navigation={navMock} />
   );
   const backButton = screen.getByLabelText("go-back");
   expect(backButton).toBeTruthy();
