@@ -31,7 +31,7 @@ interface IPainWhenModalProps {
   setStartTime: any;
   initialStartDay: IDayObj;
   initialStartTime: ITimeObj;
-  navigation: any;
+  onSuccess;
 }
 
 export const PainWhenModal: React.FC<IPainWhenModalProps> = ({
@@ -44,7 +44,7 @@ export const PainWhenModal: React.FC<IPainWhenModalProps> = ({
   setStartTime,
   initialStartDay,
   initialStartTime,
-  navigation,
+  onSuccess,
 }) => {
   const [showTimePicker, setShowTimePicker] = React.useState(false);
   const [selectedEpisodeDates, setSelectedEpisodeDates] = React.useState(null);
@@ -211,7 +211,7 @@ export const PainWhenModal: React.FC<IPainWhenModalProps> = ({
                   onPress={() => {
                     setShowModal(false);
                     setShowTypeModal(false);
-                    navigation.navigate("PainEpisodeFormScreen");
+                    onSuccess();
                   }}
                 >
                   <Text style={styles.modalBtnText}>Continue</Text>
