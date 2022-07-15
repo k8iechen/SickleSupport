@@ -35,9 +35,10 @@ test('expected elements are rendered', () => {
   render(
     <SettingsScreen navigation={navMock} />
   );
-  const backButton = screen.getByLabelText("go-back");
-  expect(backButton).toBeTruthy();
 
-  const settingsHeader = screen.getByText("Settings");
-  expect(settingsHeader).toBeTruthy();
+  expect(screen.getByLabelText("go-back")).toBeTruthy();
+  expect(screen.getByText("Settings")).toBeTruthy();
+  expect(screen.getByText("Account")).toBeTruthy();
+  expect(screen.getByText("Notifications")).toBeTruthy();
+  expect(screen.getByText("Privacy & Security")).toBeTruthy();
 });
