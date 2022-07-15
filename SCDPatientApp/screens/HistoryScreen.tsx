@@ -104,7 +104,7 @@ const EntryView: React.FC<IEntryViewProps> = ({ entry }) => {
   const isPainEntry: boolean = !!(entry as TPainEntry).pain_intensity;
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity>
       <Box
         rounded="lg"
         style={[
