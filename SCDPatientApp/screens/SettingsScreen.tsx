@@ -24,15 +24,13 @@ import Colors from "../constants/Colors";
 // some kind of shared 'tab' styles.
 import painStyles from "../styles/PainEpisodeFormScreen.styles";
 
-const SettingsItem = ({icon, label, route, navigation}) => {
+const SettingsItem = ({iconSource, label, route, navigation}) => {
   navigation = navigation || useNavigation();
-  iconPath = `../assets/icons/${icon}`;
-  console.log('iconPath:', iconPath);
   return (
     <TouchableOpacity accesibilityLabel={label} onPress={navigation.navigate(route)}>
       <HStack>
         <Image
-          source={require(iconPath)}
+          source={iconSource}
           resizeMode="contain"
           style={{width: wp("7"), height: wp("7"),}}
         />
@@ -61,9 +59,12 @@ export default function SettingsScreen({
       </TouchableOpacity>
       <Text style={styles.title}>Settings</Text>
       <VStack>
-        <SettingsItem label="Account" route="settings-account" navigation={navigation} icon="person.png" />
-        <SettingsItem label="Notifications" route="settings-notifications" navigation={navigation} icon="bell.png"/>
-        <SettingsItem label="Privacy & Security" route="settings-security" navigation={navigation} icon="security.png" />
+        <SettingsItem label="Account" route="settings-account" navigation={navigation}
+            iconSource={require("../assets/icons/person.png")} />
+        <SettingsItem label="Notifications" route="settings-notifications" navigation={navigation}
+            iconSource={require("../assets/icons/bell.png")}/>
+        <SettingsItem label="Privacy & Security" route="settings-security" navigation={navigation}
+            iconSource={require("../assets/icons/security.png")} />
       </VStack>
     </View>
   );
