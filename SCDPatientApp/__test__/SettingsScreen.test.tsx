@@ -3,6 +3,7 @@ import {
   NativeBaseProvider
 } from 'native-base';
 import {
+  fireEvent,
   render as native_render,
   screen,
 } from '@testing-library/react-native';
@@ -41,4 +42,33 @@ test('expected elements are rendered', () => {
   expect(screen.getByText("Account")).toBeTruthy();
   expect(screen.getByText("Notifications")).toBeTruthy();
   expect(screen.getByText("Privacy & Security")).toBeTruthy();
+});
+
+describe('navigation to sub-settings screens', () => {
+  test('Go Back', () => {
+    const navMock = {'navigate': jest.fn(), 'goBack': jest.fn()};
+    render(
+      <SettingsScreen navigation={navMock} />
+    );
+    const button = screen.getByLabelText("go-back");
+    fireEvent.press(button);
+
+    expect(navMock.goBack).toHaveBeenCalled();
+  });
+
+  for(const [subscreen, route] of Object.entries({
+      "Account": "settings-account",
+      "Notifications": "settings-notifications",
+      "Privacy & Security": "settings-security"})) {
+    test(subscreen, () => {
+      const navMock = {'navigate': jest.fn()};
+      const {getByText} = render(
+        <SettingsScreen navigation={navMock} />
+      );
+      const button = getByText(subscreen);
+      fireEvent.press(button);
+
+      expect(navMock.navigate).toHaveBeenCalledWith(route);
+    });
+  }
 });
