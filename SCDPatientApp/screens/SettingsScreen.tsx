@@ -24,18 +24,46 @@ import Colors from "../constants/Colors";
 // some kind of shared 'tab' styles.
 import painStyles from "../styles/PainEpisodeFormScreen.styles";
 
-const SettingsItem = ({iconSource, label, route, navigation}) => {
+const settingsItemStyle = StyleSheet.create({
+  row: {
+    display: "flex",
+    padding: 8,
+  },
+  icon: {
+  },
+  label: {
+    flexGrow: 1,
+    fontFamily: "Poppins-Medium",
+    fontWeight: "500",
+    fontSize: RFValue(16),
+    lineHeight: RFValue(26),
+    paddingLeft: 8,
+  },
+  arrow: {
+    height: RFValue(24),
+  },
+});
+
+interface SettingsItemProps {
+  iconSource: any,
+  label: String,
+  route: String,
+  navigation: any,
+};
+
+const SettingsItem = ({iconSource, label, route, navigation}):SettingsItemProps => {
   navigation = navigation || useNavigation();
   return (
     <TouchableOpacity accesibilityLabel={label} onPress={navigation.navigate(route)}>
-      <HStack>
+      <HStack style={settingsItemStyle.row}>
         <Image
-          source={iconSource}
+          alt={label}
           resizeMode="contain"
-          style={{width: wp("7"), height: wp("7"),}}
+          source={iconSource}
+          style={settingsItemStyle.icon}
         />
-        <Text>{label}</Text>
-        <Ionicons name="arrow-forward" size={wp("4")} color="grey" />
+        <Text style={settingsItemStyle.label}>{label}</Text>
+        <Ionicons style={settingsItemStyle.arrow} name="chevron-forward-outline" size={wp("4")} color="grey" />
       </HStack>
     </TouchableOpacity>
   );
@@ -58,7 +86,7 @@ export default function SettingsScreen({
         <Ionicons name="arrow-back" size={wp("6")} color="grey" />
       </TouchableOpacity>
       <Text style={styles.title}>Settings</Text>
-      <VStack>
+      <VStack style={styles.optionsList}>
         <SettingsItem label="Account" route="settings-account" navigation={navigation}
             iconSource={require("../assets/icons/person.png")} />
         <SettingsItem label="Notifications" route="settings-notifications" navigation={navigation}
@@ -72,8 +100,9 @@ export default function SettingsScreen({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
+    height: hp("24"),
   },
   header: {
     alignItems: "center",
@@ -81,17 +110,22 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 3,
   },
-
+  optionsList: {
+    display: "flex",
+    flexDirection: "column",
+    paddingLeft: 16,
+  },
   // TODO: copied from DailyDiaryFormScreen
   title: {
     width: wp("60"),
-    height: hp("4.5"),
+    height: hp("5.5"),
     marginLeft: 28,
     marginTop: 18,
     fontFamily: "Poppins-SemiBold",
     fontStyle: "normal",
     fontWeight: "600",
-    fontSize: RFValue(30, 896),
+    fontSize: RFValue(28),
+    lineHeight: RFValue(38),
     color: Colors.title,
   },
 });
