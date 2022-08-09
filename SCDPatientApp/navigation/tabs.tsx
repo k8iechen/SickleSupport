@@ -8,6 +8,10 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import { View } from "native-base";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 import HomeScreen from "../screens/HomeScreen";
 import HistoryScreen from "../screens/HistoryScreen";
@@ -21,10 +25,6 @@ import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
 import PainTypeModal from "../components/PainTypeModal";
 import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
 
 const NewPainEpisodePlaceholder = () => <View />;
 
@@ -55,8 +55,6 @@ const Tabs = () => {
   const [navigationObj, setNavigationObj] = React.useState(null);
   const [startDay, setStartDay] = React.useState(TODAY_START_DAY);
   const [startTime, setStartTime] = React.useState(TODAY_START_TIME);
-
-  console.log(Dimensions.get("window"));
 
   function HomeNavigator() {
     return (
