@@ -25,16 +25,7 @@ const styles = StyleSheet.create({
     color: Colors.title,
   },
 
-  backButton: {
-    width: wp("12.3"),
-    height: wp("12.3"),
-    marginLeft: 28,
-    marginTop: 49,
-    backgroundColor: Colors.backButtonBackground,
-    borderRadius: wp("2"),
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  backButton: sharedStyles.backButton,
 
   form: {
     marginTop: 10,

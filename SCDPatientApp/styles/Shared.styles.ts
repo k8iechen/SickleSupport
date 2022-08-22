@@ -1,8 +1,24 @@
 import { StyleSheet } from "react-native";
+import { RFValue } from "react-native-responsive-fontsize";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 import Colors from "../constants/Colors";
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 export const styles = StyleSheet.create({
+  backButton: {
+    width: wp("12.3"),
+    height: wp("12.3"),
+    marginLeft: 28,
+    marginTop: 49,
+    backgroundColor: Colors.backButtonBackground,
+    borderRadius: wp("2"),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   cardTitleText: {
     fontFamily: "Poppins-Medium",
     fontWeight: "500",

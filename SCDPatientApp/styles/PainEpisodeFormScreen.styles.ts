@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
+import { styles as sharedStyles } from "./Shared.styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -22,16 +23,7 @@ const styles = StyleSheet.create({
     color: Colors.title,
   },
 
-  backButton: {
-    width: 48,
-    height: 48,
-    marginLeft: 28,
-    marginTop: 49,
-    backgroundColor: Colors.backButtonBackground,
-    borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  backButton: sharedStyles.backButton,
 
   form: {
     marginTop: 10,

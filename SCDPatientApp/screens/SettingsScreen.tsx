@@ -22,7 +22,7 @@ import Colors from "../constants/Colors";
 
 // TODO: painStyles is used here and in PassportScreen. Need to refactor it to
 // some kind of shared 'tab' styles.
-import painStyles from "../styles/PainEpisodeFormScreen.styles";
+import {styles as sharedStyles } from "../styles/Shared.styles";
 
 const settingsItemStyle = StyleSheet.create({
   row: {
@@ -80,7 +80,7 @@ export default function SettingsScreen({
       <TouchableOpacity
         accessibilityLabel="go-back"
         activeOpacity={0.5}
-        style={painStyles.backButton}
+        style={sharedStyles.backButton}
         onPress={() => navigation.goBack()}
       >
         <Ionicons name="arrow-back" size={wp("6")} color="grey" />
