@@ -19,9 +19,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
 import Colors from "../constants/Colors";
-
-// TODO: painStyles is used here and in PassportScreen. Need to refactor it to
-// some kind of shared 'tab' styles.
 import {styles as sharedStyles } from "../styles/Shared.styles";
 
 const settingsItemStyle = StyleSheet.create({
@@ -44,14 +41,7 @@ const settingsItemStyle = StyleSheet.create({
   },
 });
 
-interface SettingsItemProps {
-  iconSource: any,
-  label: String,
-  route: String,
-  navigation: any,
-};
-
-const SettingsItem = ({iconSource, label, route, navigation}):SettingsItemProps => {
+const SettingsItem = ({iconSource, label, route, navigation})=> {
   navigation = navigation || useNavigation();
   return (
     <TouchableOpacity accesibilityLabel={label} onPress={navigation.navigate(route)}>
