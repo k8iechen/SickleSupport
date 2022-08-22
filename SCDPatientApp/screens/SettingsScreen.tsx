@@ -75,7 +75,7 @@ export default function SettingsScreen({
       >
         <Ionicons name="arrow-back" size={wp("6")} color="grey" />
       </TouchableOpacity>
-      <Text style={styles.title}>Settings</Text>
+      <Text style={sharedStyles.title}>Settings</Text>
       <VStack style={styles.optionsList}>
         <SettingsItem label="Account" route="settings-account" navigation={navigation}
             iconSource={require("../assets/icons/person.png")} />
@@ -104,19 +104,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     paddingLeft: 16,
-  },
-  // TODO: copied from DailyDiaryFormScreen
-  title: {
-    width: wp("60"),
-    height: hp("5.5"),
-    marginLeft: 28,
-    marginTop: 18,
-    fontFamily: "Poppins-SemiBold",
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: RFValue(28),
-    lineHeight: RFValue(38),
-    color: Colors.title,
   },
 });
 

@@ -9,21 +9,12 @@ const styles = StyleSheet.create({
     paddingTop: 36,
   },
 
-  title: {
-    width: 260,
-    height: 38,
-    marginLeft: 28,
-    marginTop: 18,
-    marginBottom: 10,
-    fontFamily: "Poppins-SemiBold",
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: 28,
-    lineHeight: 38,
-    color: Colors.title,
-  },
-
   backButton: sharedStyles.backButton,
+  title: {
+    ...sharedStyles.title,
+    marginBottom: 10,
+    lineHeight: 38,
+  },
 
   form: {
     marginTop: 10,

@@ -13,17 +13,7 @@ const styles = StyleSheet.create({
     paddingTop: 36,
   },
 
-  title: {
-    width: wp("60"),
-    height: hp("4.5"),
-    marginLeft: 28,
-    marginTop: 18,
-    fontFamily: "Poppins-SemiBold",
-    fontStyle: "normal",
-    fontWeight: "600",
-    fontSize: RFValue(30, 896),
-    color: Colors.title,
-  },
+  title: sharedStyles.title,
 
   backButton: sharedStyles.backButton,
 
