@@ -9,7 +9,6 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 const styles = StyleSheet.create({
   saveButton: {
     width: "80%",
-    height: hp("4"),
     backgroundColor: Colors.success,
     borderRadius: 8,
     marginVertical: 16,
