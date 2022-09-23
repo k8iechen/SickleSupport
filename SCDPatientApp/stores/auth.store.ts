@@ -14,8 +14,7 @@ import { TPatient } from "../models/Patient";
 export interface IAuthStore {
   // TPatient: patient is signed in
   // null: patient is not signed in
-  // undefined: we don't know if the patient is signed in or not
-  patient: TPatient | null | undefined;
+  patient: TPatient | null;
   stale: boolean;
   setStale: (stale: boolean) => void;
   onAuthStateChange: (firUser: FirAuthUser | null) => void;
@@ -25,7 +24,7 @@ export interface IAuthStore {
 
 const AuthStore = (): IAuthStore => {
   const store: IAuthStore = observable({
-    patient: undefined,
+    patient: null,
     stale: false,
     setStale: action(async (stale: boolean) => {
       store.stale = stale;
