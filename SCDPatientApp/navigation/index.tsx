@@ -31,10 +31,8 @@ const Navigation = observer(() => {
         },
       }}
     >
-      {authStore.patient?.name ? (
+      {authStore.isAuthenticated() ? (
         <Tabs />
-      ) : authStore.patient === undefined ? (
-        <></>
       ) : (
         <OnboardingNavigator />
       )}
