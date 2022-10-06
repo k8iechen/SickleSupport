@@ -13,16 +13,17 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-import HomeScreen from "../screens/HomeScreen";
-import HistoryScreen from "../screens/HistoryScreen";
-import PainEpisodeFormScreen from "../screens/PainEpisodeFormScreen";
-import ResourcesScreen from "../screens/ResourcesScreen";
-import PassportScreen from "../screens/PassportScreen";
-import SettingsScreen from "../screens/SettingsScreen";
-import TabBarItem from "../components/TabBarItem";
 import CustomTabBarButton from "../components/CustomTabBarComponent";
 import DailyDiaryFormScreen from "../screens/DailyDiaryFormScreen";
+import HistoryScreen from "../screens/HistoryScreen";
+import HomeScreen from "../screens/HomeScreen";
+import PainEpisodeFormScreen from "../screens/PainEpisodeFormScreen";
 import PainTypeModal from "../components/PainTypeModal";
+import PassportScreen from "../screens/PassportScreen";
+import ResourcesScreen from "../screens/ResourcesScreen";
+import SettingsAccountScreen from "../screens/SettingsScreen";
+import SettingsScreen from "../screens/SettingsScreen";
+import TabBarItem from "../components/TabBarItem";
 import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
 
@@ -217,6 +218,15 @@ const Tabs = () => {
           name="Settings"
           component={SettingsScreen}
           options={{
+            tabBarShowLabel: false,
+            tabBarButton: (props) => <></>,
+            headerShown: false,
+          }}
+        />
+        <Screen
+          name="Settings.Account"
+          component={SettingsAccountScreen}
+          option={{
             tabBarShowLabel: false,
             tabBarButton: (props) => <></>,
             headerShown: false,

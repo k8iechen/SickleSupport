@@ -77,11 +77,11 @@ export default function SettingsScreen({
       </TouchableOpacity>
       <Text style={sharedStyles.title}>Settings</Text>
       <VStack style={styles.optionsList}>
-        <SettingsItem label="Account" route="settings-account" navigation={navigation}
+        <SettingsItem label="Account" route="Settings.Account" navigation={navigation}
             iconSource={require("../assets/icons/person.png")} />
-        <SettingsItem label="Notifications" route="settings-notifications" navigation={navigation}
+        <SettingsItem label="Notifications" route="Settings.Notifications" navigation={navigation}
             iconSource={require("../assets/icons/bell.png")}/>
-        <SettingsItem label="Privacy & Security" route="settings-security" navigation={navigation}
+        <SettingsItem label="Privacy & Security" route="Settings.Security" navigation={navigation}
             iconSource={require("../assets/icons/security.png")} />
       </VStack>
     </View>

@@ -57,9 +57,9 @@ describe('navigation to sub-settings screens', () => {
   });
 
   for(const [subscreen, route] of Object.entries({
-      "Account": "settings-account",
-      "Notifications": "settings-notifications",
-      "Privacy & Security": "settings-security"})) {
+      "Account": "Settings.Account",
+      "Notifications": "Settings.Notifications",
+      "Privacy & Security": "Settings.Security"})) {
     test(subscreen, () => {
       const navMock = {'navigate': jest.fn()};
       const {getByText} = render(
