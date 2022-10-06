@@ -8,7 +8,7 @@ import {
   screen,
 } from '@testing-library/react-native';
 
-import SettingsScreen from '../screens/SettingsScreen';
+import SettingsScreen from './SettingsScreen';
 
 const render = (comp) => {
   const inset = {
