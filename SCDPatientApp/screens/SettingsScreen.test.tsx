@@ -4,9 +4,7 @@ import {
   screen,
 } from '@testing-library/react-native';
 
-import {
-  render,
-} from '../testing/UITesting';
+import render from '../test/UITesting';
 
 import SettingsScreen from './SettingsScreen';
 

@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-import {
-  render,
-} from '../testing/UITesting';
+import render from '../test/UITesting';
 
 import SettingsAccountScreen from './SettingsAccountScreen';
 
