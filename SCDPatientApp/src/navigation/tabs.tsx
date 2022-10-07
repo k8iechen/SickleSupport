@@ -27,6 +27,10 @@ import TabBarItem from "../components/TabBarItem";
 import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
 
+const DebugContext = {
+  "initialRouteName": "Settings",
+};
+
 const NewPainEpisodePlaceholder = () => <View />;
 
 const Tab = createBottomTabNavigator();
@@ -114,6 +118,7 @@ const Tabs = () => {
             elevation: 0,
           },
         }}
+        initialRouteName={DebugContext?.initialRouteName || "Home"}
         backBehavior="history"
       >
         <Screen
@@ -124,7 +129,7 @@ const Tabs = () => {
               tabBarIcon: ({ focused }) => (
                 <TabBarItem
                   focused={focused}
-                  icon={require("../assets/icons/home.png")}
+                  icon={require("../../assets/icons/home.png")}
                   label="Home"
                 />
               ),
@@ -146,7 +151,7 @@ const Tabs = () => {
             tabBarIcon: ({ focused }) => (
               <TabBarItem
                 focused={focused}
-                icon={require("../assets/icons/history.png")}
+                icon={require("../../assets/icons/history.png")}
                 label="History"
               />
             ),
@@ -160,7 +165,7 @@ const Tabs = () => {
             tabBarIcon: ({ focused }) => {
               return (
                 <Image
-                  source={require("../assets/icons/plus.png")}
+                  source={require("../../assets/icons/plus.png")}
                   resizeMode="contain"
                   style={{
                     width: wp("7"),
@@ -193,7 +198,7 @@ const Tabs = () => {
             tabBarIcon: ({ focused }) => (
               <TabBarItem
                 focused={focused}
-                icon={require("../assets/icons/resources.png")}
+                icon={require("../../assets/icons/resources.png")}
                 label="Resources"
               />
             ),
@@ -207,7 +212,7 @@ const Tabs = () => {
             tabBarIcon: ({ focused }) => (
               <TabBarItem
                 focused={focused}
-                icon={require("../assets/icons/passport.png")}
+                icon={require("../../assets/icons/passport.png")}
                 label="Passport"
               />
             ),

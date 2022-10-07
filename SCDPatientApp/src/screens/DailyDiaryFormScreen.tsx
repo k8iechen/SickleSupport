@@ -329,11 +329,11 @@ const DailyDiaryFormScreen = observer(
         <PictureScale
           data={["Stressed", "Sad", "Calm", "Happy", "Excited"]}
           pictureData={[
-            require("../assets/images/stress_face.png"),
-            require("../assets/images/sad_face.png"),
-            require("../assets/images/calm_face.png"),
-            require("../assets/images/happy_face.png"),
-            require("../assets/images/excited_face.png"),
+            require("../../assets/images/stress_face.png"),
+            require("../../assets/images/sad_face.png"),
+            require("../../assets/images/calm_face.png"),
+            require("../../assets/images/happy_face.png"),
+            require("../../assets/images/excited_face.png"),
           ]}
           selectedButton={selectedMoodRating}
           setSelectedButton={setSelectedMoodRating}

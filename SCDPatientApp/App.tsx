@@ -3,10 +3,10 @@ import React from "react";
 import { NativeBaseProvider } from "native-base";
 import { observer } from "mobx-react-lite";
 
-import useCachedResources from "./hooks/useCachedResources";
-import Navigation from "./navigation";
+import useCachedResources from "./src/hooks/useCachedResources";
+import Navigation from "./src/navigation";
 
-import { AuthProvider } from "./providers/AuthProvider";
+import { AuthProvider } from "./src/providers/AuthProvider";
 
 
 const App = observer(() => {

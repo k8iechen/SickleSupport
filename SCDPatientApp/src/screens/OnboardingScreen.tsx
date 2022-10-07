@@ -54,7 +54,7 @@ const OnboardingScreen = observer(
 
           <Image
             style={styles.image}
-            source={require("../assets/images/lifesaver-standing.png")}
+            source={require("../../assets/images/lifesaver-standing.png")}
           />
 
           <Stack style={styles.questionContainer}>

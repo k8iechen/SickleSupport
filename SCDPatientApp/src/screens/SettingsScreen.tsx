@@ -78,11 +78,11 @@ export default function SettingsScreen({
       <Text style={sharedStyles.title}>Settings</Text>
       <VStack style={styles.optionsList}>
         <SettingsItem label="Account" route="Settings.Account" navigation={navigation}
-            iconSource={require("../assets/icons/person.png")} />
+            iconSource={require("../../assets/icons/person.png")} />
         <SettingsItem label="Notifications" route="Settings.Notifications" navigation={navigation}
-            iconSource={require("../assets/icons/bell.png")}/>
+            iconSource={require("../../assets/icons/bell.png")}/>
         <SettingsItem label="Privacy & Security" route="Settings.Security" navigation={navigation}
-            iconSource={require("../assets/icons/security.png")} />
+            iconSource={require("../../assets/icons/security.png")} />
       </VStack>
     </View>
   );

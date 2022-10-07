@@ -35,7 +35,7 @@ const WelcomeAuthScreen = observer(
 
         <Image
           style={styles.image}
-          source={require("../assets/images/female-lifesaver-using-computer.png")}
+          source={require("../../assets/images/female-lifesaver-using-computer.png")}
         />
 
         <Button

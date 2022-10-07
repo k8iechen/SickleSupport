@@ -506,7 +506,7 @@ export default function PainEpisodeFormScreen({
             style={styles.backButton}
             onPress={() => navigateBack()}
           >
-            <Image source={require("../assets/icons/back.png")} />
+            <Image source={require("../../assets/icons/back.png")} />
           </TouchableOpacity>
           <Text style={styles.title}>Pain Episode Entry</Text>
         </VStack>
