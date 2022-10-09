@@ -44,7 +44,7 @@ const settingsItemStyle = StyleSheet.create({
 const SettingsItem = ({iconSource, label, route, navigation})=> {
   navigation = navigation || useNavigation();
   return (
-    <TouchableOpacity accesibilityLabel={label} onPress={navigation.navigate(route)}>
+    <TouchableOpacity accesibilityLabel={label} onPress={() => navigation.navigate(route)}>
       <HStack style={settingsItemStyle.row}>
         <Image
           alt={label}
