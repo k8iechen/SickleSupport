@@ -29,9 +29,7 @@ import TabBarItem from "../components/TabBarItem";
 import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
 
-const DebugContext = {
-  "initialRouteName": "Settings",
-};
+import DebugSettings from "../common/DebugSettings";
 
 const NewPainEpisodePlaceholder = () => <View />;
 
@@ -120,7 +118,7 @@ const Tabs = () => {
             elevation: 0,
           },
         }}
-        initialRouteName={DebugContext?.initialRouteName || "Home"}
+        initialRouteName={DebugSettings?.initialRouteName || "Home"}
         backBehavior="history"
       >
         <Screen
