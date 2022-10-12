@@ -41,10 +41,9 @@ const settingsItemStyle = StyleSheet.create({
   },
 });
 
-const SettingsItem = ({iconSource, label, route, navigation})=> {
-  navigation = navigation || useNavigation();
+const SettingsItem = ({iconSource, label})=> {
   return (
-    <TouchableOpacity accesibilityLabel={label} onPress={() => navigation.navigate(route)}>
+    <TouchableOpacity accesibilityLabel={label}>
       <HStack style={settingsItemStyle.row}>
         <Image
           alt={label}
@@ -77,11 +76,11 @@ export default function SettingsScreen({
       </TouchableOpacity>
       <Text style={sharedStyles.title}>Settings</Text>
       <VStack style={styles.optionsList}>
-        <SettingsItem label="Account" route="Settings.Account" navigation={navigation}
+        <SettingsItem label="Account"
             iconSource={require("../../assets/icons/person.png")} />
-        <SettingsItem label="Notifications" route="Settings.Notifications" navigation={navigation}
+        <SettingsItem label="Notifications"
             iconSource={require("../../assets/icons/bell.png")}/>
-        <SettingsItem label="Privacy & Security" route="Settings.Security" navigation={navigation}
+        <SettingsItem label="Privacy & Security"
             iconSource={require("../../assets/icons/security.png")} />
       </VStack>
     </View>

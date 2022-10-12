@@ -21,10 +21,7 @@ import PainEpisodeFormScreen from "../screens/PainEpisodeFormScreen";
 import PainTypeModal from "../components/PainTypeModal";
 import PassportScreen from "../screens/PassportScreen";
 import ResourcesScreen from "../screens/ResourcesScreen";
-import SettingsAccountScreen from "../screens/SettingsAccountScreen";
-import SettingsNotificationsScreen from "../screens/SettingsNotificationsScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-import SettingsSecurityScreen from "../screens/SettingsSecurityScreen";
 import TabBarItem from "../components/TabBarItem";
 import { PainWhenModal } from "../components/PainWhenModal";
 import { getDateString } from "../common/DateUtils";
@@ -223,33 +220,6 @@ const Tabs = () => {
           name="Settings"
           component={SettingsScreen}
           options={{
-            tabBarShowLabel: false,
-            tabBarButton: (props) => <></>,
-            headerShown: false,
-          }}
-        />
-        <Screen
-          name="Settings.Account"
-          component={SettingsAccountScreen}
-          option={{
-            tabBarShowLabel: false,
-            tabBarButton: (props) => <></>,
-            headerShown: false,
-          }}
-        />
-        <Screen
-          name="Settings.Notifications"
-          component={SettingsNotificationsScreen}
-          option={{
-            tabBarShowLabel: false,
-            tabBarButton: (props) => <></>,
-            headerShown: false,
-          }}
-        />
-        <Screen
-          name="Settings.Security"
-          component={SettingsSecurityScreen}
-          option={{
             tabBarShowLabel: false,
             tabBarButton: (props) => <></>,
             headerShown: false,

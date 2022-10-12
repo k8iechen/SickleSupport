@@ -29,32 +29,3 @@ test('expected elements are rendered', () => {
   expect(screen.getByText("Notifications")).toBeTruthy();
   expect(screen.getByText("Privacy & Security")).toBeTruthy();
 });
-
-describe('navigation to sub-settings screens', () => {
-  test('Go Back', () => {
-    const navMock = {'navigate': jest.fn(), 'goBack': jest.fn()};
-    render(
-      <SettingsScreen navigation={navMock} />
-    );
-    const button = screen.getByLabelText("go-back");
-    fireEvent.press(button);
-
-    expect(navMock.goBack).toHaveBeenCalled();
-  });
-
-  for(const [subscreen, route] of Object.entries({
-      "Account": "Settings.Account",
-      "Notifications": "Settings.Notifications",
-      "Privacy & Security": "Settings.Security"})) {
-    test(subscreen, () => {
-      const navMock = {'navigate': jest.fn()};
-      const {getByText} = render(
-        <SettingsScreen navigation={navMock} />
-      );
-      const button = getByText(subscreen);
-      fireEvent.press(button);
-
-      expect(navMock.navigate).toHaveBeenCalledWith(route);
-    });
-  }
-});
