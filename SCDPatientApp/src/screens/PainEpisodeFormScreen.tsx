@@ -22,7 +22,7 @@ import Colors from "../constants/Colors";
 import { RootTabScreenProps } from "../models/navigation";
 import { TPainEntry } from "../models/PainEntry";
 import styles from "../styles/PainEpisodeFormScreen.styles";
-import PainEntryStore from "../stores/painEntry.store";
+import PainEntryStore from "../stores/PainEntry";
 import { AuthContext } from "../contexts/AuthContext";
 import ErrorModal from "../components/ErrorModal";
 import PainAreaComponent from "../components/PainAreaComponent";
