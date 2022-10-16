@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { auth } from "../firebase";
 import { User as FirAuthUser } from "firebase/auth";
-import AuthStore from "../stores/auth.store";
+import AuthStore from "../stores/Auth";
 
 export const AuthProvider: React.FC = ({ children }) => {
   const authStore = AuthStore();
