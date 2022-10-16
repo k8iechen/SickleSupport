@@ -19,7 +19,8 @@ export interface IAuthStore {
   stale: boolean;
   setStale: (stale: boolean) => void;
   onAuthStateChange: (firUser: FirAuthUser | null) => void;
-  signInAnonymously: (auth: Auth) => Promise<UserCredential>;
+  signInAnonymously: () => Promise<UserCredential>;
+  signOut: () => Promise<void>;
   setPatient: (patient: TPatient) => Promise<void>;
 }
 
@@ -47,6 +48,9 @@ const AuthStore = (): IAuthStore => {
       }
     }),
     signInAnonymously: action(async () => await signInAnonymously(auth)),
+    signOut: action(async () => {
+      await auth.signOut();
+    }),
     setPatient: action(async (patient: TPatient) => {
       try {
         const { uid, ...data } = patient;
