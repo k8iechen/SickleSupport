@@ -24,7 +24,7 @@ import Colors from "../constants/Colors";
 import { AuthContext } from "../contexts/AuthContext";
 import { TDiaryEntry } from "../models/DiaryEntry";
 import { RootStackScreenProps } from "../models/navigation";
-import DiaryStore from "../stores/dairy.store";
+import DiaryStore from "../stores/Diary";
 import styles from "../styles/DailyDiaryFormScreen.styles";
 import { Ionicons } from "@expo/vector-icons";
 import {
