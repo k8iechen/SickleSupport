@@ -2,11 +2,11 @@ import { observable, action } from 'mobx';
 
 import type {
   User as FirAuthUser,
+  UserCredential,
 } from 'firebase/auth';
 
 import {
-  signInAnonymously,
-  UserCredential,
+  signInAnonymously as firebaseSignInAnonymously,
 } from 'firebase/auth';
 import {
   doc, getDoc, setDoc,
@@ -46,7 +46,7 @@ const AuthStore = (): IAuthStore => {
       store.patient = { uid: firUser.uid, ...data } as TPatient;
       console.log("onAuthStateChange: patient:", store.patient);
     }),
-    signInAnonymously: action(async () => signInAnonymously(auth)),
+    signInAnonymously: action(async () => firebaseSignInAnonymously(auth)),
     signOut: action(async () => {
       await auth.signOut();
     }),
