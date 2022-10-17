@@ -183,7 +183,7 @@ const DailyDiaryFormScreen = observer(
         priapism_episode: priapism,
         fever: fever,
       };
-      const saved = await diaryStore.addEntry(authStore.patient, entry);
+      const saved = await diaryStore.addEntry(authStore.getPatient(), entry);
       if (!saved) {
         setErrorMsg(
           "Oops, something went wrong on our end! Please click the 'Save' button again."

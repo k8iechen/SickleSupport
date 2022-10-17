@@ -195,7 +195,7 @@ const HistoryScreen: React.FC<RootTabScreenProps<"HistoryScreen">> = observer(
     const loadHistory = async (): Promise<void> => {
       console.log("loading");
       try {
-        const patientId = authStore.patient!.uid!;
+        const patientId = authStore.getPatient()!.uid!;
 
         // TODO: dangerous call - pulls all diaries entries
         const diariesQuery = query(

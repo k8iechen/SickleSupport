@@ -16,7 +16,7 @@ export default function HomeScreen({
     <View style={styles.container}>
       <VStack style={styles.content}>
         <Text style={styles.helloText}>Hello,</Text>
-        <Text style={styles.nameText}>{authStore.patient?.name}</Text>
+        <Text style={styles.nameText}>{authStore.getPatient()?.name}</Text>
 
         <SummaryCard
           medicationStreak={4}

@@ -208,7 +208,7 @@ export default function PainEpisodeFormScreen({
       notes: notes,
     };
 
-    const result = await painEntryStore.addEntry(authStore.patient, entry);
+    const result = await painEntryStore.addEntry(authStore.getPatient(), entry);
     if (result) {
       authStore.setStale(true);
       setErrorMsg("");

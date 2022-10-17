@@ -52,7 +52,7 @@ function OnboardingNavigator() {
 
   return (
     <Stack.Navigator
-      initialRouteName={authStore.patient === null ? "Welcome" : "Onboarding"}
+      initialRouteName={authStore.getPatient() === null ? "Welcome" : "Onboarding"}
       screenOptions={{
         headerShown: false,
       }}
