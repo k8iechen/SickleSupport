@@ -13,7 +13,7 @@ export enum Gender {
 }
 
 export type TPatient = {
-  uid?: string;
+  uid: string;
   name: string;
   age?: Age;
   gender?: Gender;

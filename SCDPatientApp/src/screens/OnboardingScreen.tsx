@@ -34,7 +34,7 @@ const OnboardingScreen = observer(
           setNameIsInvalid(true);
         } else {
           authStore.setPatient({
-            uid: authStore.patient!.uid!,
+            uid: authStore.patient!.uid,
             name,
             age,
             gender,
