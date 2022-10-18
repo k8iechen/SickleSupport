@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 
 import type {
   User as FirAuthUser,
@@ -34,31 +34,35 @@ const AuthStore = (): IAuthStore => {
     setStale: action((stale: boolean) => {
       store.stale = stale;
     }),
-    onAuthStateChange: action(async (firUser: FirAuthUser | null) => {
+    onAuthStateChange: async (firUser: FirAuthUser | null) => {
       if (!firUser) {
-        store.patient = null;
+        runInAction(() => {
+          store.patient = null;
+        });
         return;
       }
 
       const docRef = doc(db, 'patients', firUser.uid);
       const docSnap = await getDoc(docRef);
-      const data = docSnap.exists() ? docSnap.data() : {};
-      store.patient = { uid: firUser.uid, ...data } as TPatient;
-      console.log("onAuthStateChange: patient:", store.patient);
-    }),
-    signInAnonymously: action(async () => firebaseSignInAnonymously(auth)),
-    signOut: action(async () => {
-      await auth.signOut();
-    }),
+      runInAction(() => {
+        const data = docSnap.exists() ? docSnap.data() : {};
+        store.patient = { uid: firUser.uid, ...data } as TPatient;
+      });
+    },
+    signInAnonymously: async () => firebaseSignInAnonymously(auth),
+    signOut: () => {
+      return auth.signOut();
+    },
     getPatient: () => {
       return store.patient;
     },
-    setPatient: action(async (patient: TPatient) => {
-      console.log("setPatient: patient:", patient);
+    setPatient: async (patient: TPatient) => {
       const { uid, ...data } = patient;
       await setDoc(doc(db, 'patients', uid), data);
-      store.patient = patient;
-    }),
+      runInAction(() => {
+        store.patient = patient;
+      });
+    },
   });
   return store;
 };
