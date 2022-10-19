@@ -1,4 +1,6 @@
 import React from "react";
+import { action } from 'mobx';
+import { observer } from "mobx-react-lite";
 import {
   Image,
   StyleSheet,
@@ -18,8 +20,9 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
-import { AuthContext } from "../contexts/AuthContext";
+import ButtonRadio from "../components/ButtonRadio";
 import Colors from "../constants/Colors";
+import { AuthContext } from "../contexts/AuthContext";
 import {styles as sharedStyles } from "../styles/Shared.styles";
 
 const settingsItemStyle = StyleSheet.create({
@@ -40,6 +43,13 @@ const settingsItemStyle = StyleSheet.create({
   arrow: {
     height: RFValue(24),
   },
+});
+
+const setNotificationTime = action((store: IAuthStore, notifyTime: number|null) => {
+  store.updatePatient(patient => {
+    patient.notification = notifyTime;
+    return patient;
+  });
 });
 
 const SettingsItem = ({iconSource, label, children}) => {
@@ -70,39 +80,45 @@ const SettingsItem = ({iconSource, label, children}) => {
 // TODO: use `navigation.addEventListener('blur', ...);` to reset each
 // SettingsItem to a 'closed' state. Or, preferably, pass an opened/closed prop
 // to SettingsItem.
-export default function SettingsScreen({ navigation }) {
-  navigation = navigation || useNavigation();
+const SettingsScreen = observer(
+  ({ navigation }) => {
+    navigation = navigation || useNavigation();
+    const authStore = React.useContext(AuthContext);
+    const currentValue = authStore.getPatient().notification;
 
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        accessibilityLabel="go-back"
-        activeOpacity={0.5}
-        style={sharedStyles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back" size={wp("6")} color="grey" />
-      </TouchableOpacity>
-      <Text style={sharedStyles.title}>Settings</Text>
-      <VStack style={styles.optionsList}>
-        <SettingsItem label="Account"
-            iconSource={require("../../assets/icons/person.png")}>
-          <AuthContext.Consumer>
-            {authStore => (
-              <TouchableOpacity style={styles.optionsListSubItem} onPress={()=>{authStore.signOut()}}>
-                <Text>Logout</Text>
-              </TouchableOpacity>
-            )}
-          </AuthContext.Consumer>
-        </SettingsItem>
-        <SettingsItem label="Notifications"
-            iconSource={require("../../assets/icons/bell.png")}/>
-        <SettingsItem label="Privacy & Security"
-            iconSource={require("../../assets/icons/security.png")} />
-      </VStack>
-    </View>
-  );
-}
+    return (<View style={styles.container}>
+        <TouchableOpacity
+          accessibilityLabel="go-back"
+          activeOpacity={0.5}
+          style={sharedStyles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={wp("6")} color="grey" />
+        </TouchableOpacity>
+        <Text style={sharedStyles.title}>Settings</Text>
+          <VStack style={styles.optionsList}>
+            <SettingsItem label="Account"
+                iconSource={require("../../assets/icons/person.png")}>
+                <TouchableOpacity style={styles.optionsListSubItem} onPress={()=>{authStore.signOut()}}>
+                  <Text>Logout</Text>
+                </TouchableOpacity>
+            </SettingsItem>
+            <SettingsItem label="Notifications"
+                iconSource={require("../../assets/icons/bell.png")}>
+                <ButtonRadio.Group>
+                  <ButtonRadio default={currentValue === 10*3600} onPress={() => setNotificationTime(authStore, 10*3600)}>10:00 am</ButtonRadio>
+                  <ButtonRadio default={currentValue === 12*3600 + 20*60} onPress={() => setNotificationTime(authStore, 12*3600 + 20*60)}>12:20 pm</ButtonRadio>
+                  <ButtonRadio default={currentValue === (12+8)*3600} onPress={() => setNotificationTime(authStore, (12+8)*3600)}>08:00 pm</ButtonRadio>
+                  <ButtonRadio default={currentValue === null} onPress={() => setNotificationTime(authStore, null)}>Never</ButtonRadio>
+                </ButtonRadio.Group>
+            </SettingsItem>
+            <SettingsItem label="Privacy & Security"
+                iconSource={require("../../assets/icons/security.png")}>
+            </SettingsItem>
+          </VStack>
+      </View>);
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -128,3 +144,4 @@ const styles = StyleSheet.create({
 });
 
 SettingsScreen.displayName = "SettingsScreen";
+export default SettingsScreen;

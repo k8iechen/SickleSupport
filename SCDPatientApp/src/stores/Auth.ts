@@ -23,8 +23,15 @@ export interface IAuthStore {
   signInAnonymously: () => Promise<UserCredential>;
   signOut: () => Promise<void>;
   getPatient: () => TPatient | null;
-  setPatient: (patient: TPatient) => Promise<void>;
+  setPatient: (TPatient) => Promise<void>;
+  updatePatient: (fn: (TPatient) => TPatient) => Promise<void>;
 }
+
+const syncPatientToBackend = async (store, patient) => {
+  const { uid, ...data } = patient;
+  await setDoc(doc(db, 'patients', uid), data);
+  store.setStale(false);
+};
 
 const AuthStore = (): IAuthStore => {
   const store: IAuthStore = observable({
@@ -57,11 +64,19 @@ const AuthStore = (): IAuthStore => {
       return store.patient;
     },
     setPatient: async (patient: TPatient) => {
-      const { uid, ...data } = patient;
-      await setDoc(doc(db, 'patients', uid), data);
       runInAction(() => {
-        store.patient = patient;
+        if (store.patient != patient) {
+          store.patient = patient;
+          store.setStale(true);
+        }
       });
+      await syncPatientToBackend(store, store.patient);
+    },
+    updatePatient: async (updateFn: (TPatient) => TPatient) => {
+      runInAction(() => {
+        store.setPatient(updateFn(store.getPatient()!));
+      });
+      await syncPatientToBackend(store, store.patient);
     },
   });
   return store;
