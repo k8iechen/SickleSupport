@@ -21,10 +21,13 @@ import {
 import { RootTabScreenProps } from "../models/navigation";
 import painStyles from "../styles/PainEpisodeFormScreen.styles";
 import { Ionicons } from '@expo/vector-icons';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function PassportScreen({
   navigation,
 }: RootTabScreenProps<"PassportScreen">) {
+  const authStore = React.useContext(AuthContext);
+  const patient = authStore.getPatient();
   return (
     <View style={painStyles.container}>
     <HStack style={styles.header}>
@@ -114,7 +117,7 @@ export default function PassportScreen({
               fontSize: 14,
               marginTop: -2,
               color: "#000000",
-            }}>Dhvani Patel</Text>
+            }}>{patient.name}</Text>
           </VStack>
         </HStack>
         <HStack style={{
