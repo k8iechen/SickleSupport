@@ -6,6 +6,21 @@ import {
   render as NativeRender,
 } from '@testing-library/react-native';
 
+import type IAuthStore from '../stores/Auth';
+import { AuthContext } from '../contexts/AuthContext';
+
+const FakeAuthStore: IAuthStore = {
+  getPatient: () => {
+    return {};
+  },
+};
+
+const FakeAuthProvider: React.FC = ({children}) => {
+  return (
+    <AuthContext.Provider value={FakeAuthStore}>{children}</AuthContext.Provider>
+  );
+};
+
 export default function render(comp) {
   const inset = {
     frame: {
@@ -23,7 +38,9 @@ export default function render(comp) {
   };
   return NativeRender(
     <NativeBaseProvider initialWindowMetrics={inset}>
-      {comp}
+      <FakeAuthProvider>
+        {comp}
+      </FakeAuthProvider>
     </NativeBaseProvider>,
   );
 }
