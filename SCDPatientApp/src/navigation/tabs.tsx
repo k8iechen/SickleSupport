@@ -105,7 +105,7 @@ const Tabs = () => {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            position: "absolute",
+            // position: "absolute",
             paddingLeft: wp("4"),
             paddingRight: wp("4"),
             paddingBottom: 20,
