@@ -108,6 +108,7 @@ const Tabs = () => {
             // position: "absolute",
             paddingLeft: wp("4"),
             paddingRight: wp("4"),
+            paddingTop: 20,
             paddingBottom: 20,
             backgroundColor: "#ffffff",
             height: hp("12"),
