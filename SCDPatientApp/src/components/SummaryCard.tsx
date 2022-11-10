@@ -45,7 +45,7 @@ const SummaryCard: React.FC<TSummaryCardProps> = ({
                   alignItems="center"
                 >
                   <Image
-                    source={require("../../assets/images/thunder.png")}
+                    source={require("../../assets/images/lightning.png")}
                     resizeMode="contain"
                     style={{
                       width: 27,
