@@ -6,9 +6,9 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 import {
+  Box,
   HStack,
   VStack,
 } from "native-base";
@@ -29,6 +29,9 @@ const settingsItemStyle = StyleSheet.create({
   row: {
     display: "flex",
     padding: 8,
+  },
+  item: {
+    paddingLeft: 24,
   },
   icon: {
   },
@@ -54,6 +57,13 @@ const setNotificationTime = action((store: IAuthStore, notifyTime: number|null) 
 
 const SettingsItem = ({iconSource, label, children}) => {
   const [isOpen, setOpen] = React.useState(false);
+
+  const childview = () => {
+    return (<Box style={settingsItemStyle.item}>
+      { children }
+    </Box>);
+  };
+
   return (
     <TouchableOpacity accesibilityLabel={label}
       onPress={() => setOpen(!isOpen)}>
@@ -70,7 +80,7 @@ const SettingsItem = ({iconSource, label, children}) => {
             : <Ionicons style={settingsItemStyle.arrow} name="chevron-forward-outline" size={wp("4")} color="grey" />
         }
       </HStack>
-      { isOpen && children }
+      { isOpen && childview() }
     </TouchableOpacity>
   );
 };
@@ -86,7 +96,7 @@ const SettingsScreen = observer(
     const authStore = React.useContext(AuthContext);
     const currentValue = authStore.getPatient().notification;
 
-    return (<View style={styles.container}>
+    return (<Box style={styles.container}>
         <TouchableOpacity
           accessibilityLabel="go-back"
           activeOpacity={0.5}
@@ -99,7 +109,7 @@ const SettingsScreen = observer(
           <VStack style={styles.optionsList}>
             <SettingsItem label="Account"
                 iconSource={require("../../assets/icons/person.png")}>
-                <TouchableOpacity style={styles.optionsListSubItem} onPress={()=>{authStore.signOut()}}>
+                <TouchableOpacity onPress={()=>{authStore.signOut()}}>
                   <Text>Logout</Text>
                 </TouchableOpacity>
             </SettingsItem>
@@ -116,7 +126,7 @@ const SettingsScreen = observer(
                 iconSource={require("../../assets/icons/security.png")}>
             </SettingsItem>
           </VStack>
-      </View>);
+      </Box>);
   }
 );
 
@@ -137,9 +147,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginLeft: 16,
     paddingLeft: 16,
-  },
-  optionsListSubItem: {
-    marginLeft: 24,
   },
 });
 
