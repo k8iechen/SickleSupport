@@ -124,6 +124,9 @@ const SettingsScreen = observer(
             </SettingsItem>
             <SettingsItem label="Privacy & Security"
                 iconSource={require("../../assets/icons/security.png")}>
+                <TouchableOpacity onPress={()=>{authStore.wipeOut()}}>
+                  <Text>Wipeout</Text>
+                </TouchableOpacity>
             </SettingsItem>
           </VStack>
       </Box>);

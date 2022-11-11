@@ -22,6 +22,7 @@ export interface IAuthStore {
   onAuthStateChange: (firUser: FirAuthUser | null) => void;
   signInAnonymously: () => Promise<UserCredential>;
   signOut: () => Promise<void>;
+  wipeOut: () => Promise<void>;
   getPatient: () => TPatient | null;
   setPatient: (TPatient) => Promise<void>;
   updatePatient: (fn: (TPatient) => TPatient) => Promise<void>;
@@ -59,6 +60,12 @@ const AuthStore = (): IAuthStore => {
     signInAnonymously: async () => firebaseSignInAnonymously(auth),
     signOut: () => {
       return auth.signOut();
+    },
+    wipeOut: async () => {
+      await auth.currentUser?.delete();
+      runInAction(() => {
+        store.patient = null;
+      });
     },
     getPatient: () => {
       return store.patient;
