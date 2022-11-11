@@ -93,6 +93,7 @@ export default function PassportScreen({
             alignItems: "center",
           }}>
           <Image
+            alt="name"
             source={require("../../assets/icons/name.png")}
             resizeMode="contain"
             style={{
@@ -122,6 +123,7 @@ export default function PassportScreen({
             alignItems: "center",
           }}>
           <Image
+            alt="drop"
             source={require("../../assets/icons/drop.png")}
             resizeMode="contain"
             style={{
@@ -151,6 +153,7 @@ export default function PassportScreen({
             alignItems: "center",
           }}>
           <Image
+            alt="medication"
             source={require("../../assets/icons/medication.png")}
             resizeMode="contain"
             style={{
@@ -180,6 +183,7 @@ export default function PassportScreen({
             alignItems: "center",
           }}>
           <Image
+            alt="fever"
             source={require("../../assets/icons/fever.png")}
             resizeMode="contain"
             style={{

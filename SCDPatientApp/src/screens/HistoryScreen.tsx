@@ -240,6 +240,7 @@ const HistoryScreen: React.FC<RootTabScreenProps<"HistoryScreen">> = observer(
         {(history === undefined || (history && history?.length === 0)) && (
           <View style={styles.container}>
             <Image
+              alt="doctor using computer"
               source={require("../../assets/images/male-lifesaver-using-computer.png")}
               style={styles.image}
             />
