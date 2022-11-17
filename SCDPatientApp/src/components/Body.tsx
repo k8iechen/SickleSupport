@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Svg, { Polygon, Path } from "react-native-svg";
-import differenceWith from "ramda/src/differenceWith";
+import { differenceWith } from "ramda";
 
 import bodyFront from "../constants/BodyFront";
 import bodyBack from "../constants/BodyBack";
