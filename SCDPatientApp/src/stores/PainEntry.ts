@@ -10,7 +10,11 @@ export interface IPainEntryStore {
   ) => Promise<boolean>;
 };
 
-const PainEntryStore = (): IPainEntryStore => {
+const PainEntryStore = (backend): IPainEntryStore => {
+  if (!backend) {
+    backend = firestore;
+  }
+
   const store: IPainEntryStore = {
     addEntry: async (
       patient: TPatient | null | undefined,
@@ -19,18 +23,18 @@ const PainEntryStore = (): IPainEntryStore => {
       try {
         const patientId = patient?.uid?.toString();
         if (patientId) {
-          await firestore.addDoc(
-            firestore.collection(db, "patients", patientId, "pain_entries"),
+          await backend.addDoc(
+            backend.collection(db, "patients", patientId, "pain_entries"),
             entry
           );
 
-          const patientRef = firestore.doc(db, "patients", patientId);
-          await firestore.updateDoc(patientRef, {
-            pain_episodes: firestore.increment(1),
+          const patientRef = backend.doc(db, "patients", patientId);
+          await backend.updateDoc(patientRef, {
+            pain_episodes: backend.increment(1),
           });
           if (entry.hospital_visit) {
-            await firestore.updateDoc(patientRef, {
-              hospital_visit: firestore.increment(1),
+            await backend.updateDoc(patientRef, {
+              hospital_visit: backend.increment(1),
             });
           }
           return true;
