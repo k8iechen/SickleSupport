@@ -11,14 +11,30 @@ export interface IPainEntryStore {
 }
 
 export interface IBackend {
-  collection: typeof firestore.collection,
-  addDoc: typeof firestore.addDoc,
-  doc: typeof firestore.doc,
-  updateDoc: typeof firestore.updateDoc,
-  increment: typeof firestore.increment,
+  addEntry: (patientId: string, entry: TPainEntry) => Promise<void>,
 }
 
-const PainEntryStore = (backend:IBackend = {...firestore}): IPainEntryStore => {
+const firestoreBackend = {
+  ...firestore,
+  addEntry: async (patientId, entry) => {
+    await firestore.addDoc(
+      firestore.collection(db, 'patients', patientId, 'pain_entries'),
+      entry,
+    );
+
+    const patientRef = firestore.doc(db, 'patients', patientId);
+    await firestore.updateDoc(patientRef, {
+      pain_episodes: firestore.increment(1),
+    });
+    if (entry.hospital_visit) {
+      await firestore.updateDoc(patientRef, {
+        hospital_visit: firestore.increment(1),
+      });
+    }
+  },
+} as IBackend;
+
+const PainEntryStore = (backend:IBackend = firestoreBackend): IPainEntryStore => {
   const store: IPainEntryStore = {
     addEntry: async (
       patient: TPatient | null | undefined,
@@ -31,20 +47,8 @@ const PainEntryStore = (backend:IBackend = {...firestore}): IPainEntryStore => {
           return false;
         }
 
-        await backend.addDoc(
-          backend.collection(db, 'patients', patientId, 'pain_entries'),
-          entry,
-        );
+        await backend.addEntry(patientId, entry);
 
-        const patientRef = backend.doc(db, 'patients', patientId);
-        await backend.updateDoc(patientRef, {
-          pain_episodes: backend.increment(1),
-        });
-        if (entry.hospital_visit) {
-          await backend.updateDoc(patientRef, {
-            hospital_visit: backend.increment(1),
-          });
-        }
         return true;
       } catch (error) {
         console.log(error);

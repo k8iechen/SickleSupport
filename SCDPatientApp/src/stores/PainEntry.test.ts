@@ -27,11 +27,7 @@ const fakePainEntry = (): TPainEntry => ({
 
 test('addEntry will forward to backend', async () => {
   const backend = {
-    collection: jest.fn(),
-    addDoc: jest.fn(),
-    doc: jest.fn(),
-    updateDoc: jest.fn(),
-    increment: jest.fn(),
+    addEntry: jest.fn(),
   } as IBackend;
 
   const store = PainEntryStore(backend);
@@ -42,5 +38,5 @@ test('addEntry will forward to backend', async () => {
   const success = await store.addEntry(patient, data);
   expect(success).toBeTruthy();
 
-  expect(backend.addDoc).toHaveBeenCalledWith(undefined, data);
+  expect(backend.addEntry).toHaveBeenCalledWith(expect.anything(), data);
 });
