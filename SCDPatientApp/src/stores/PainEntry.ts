@@ -19,7 +19,7 @@ export interface IBackend {
 }
 
 const PainEntryStore = (backend?: IBackend): IPainEntryStore => {
-  backend = backend || firestore;
+  backend = backend || {...firestore};
 
   const store: IPainEntryStore = {
     addEntry: async (
@@ -28,24 +28,26 @@ const PainEntryStore = (backend?: IBackend): IPainEntryStore => {
     ): Promise<boolean> => {
       try {
         const patientId = patient?.uid?.toString();
-        if (patientId) {
-          await backend.addDoc(
-            backend.collection(db, 'patients', patientId, 'pain_entries'),
-            entry,
-          );
-
-          const patientRef = backend.doc(db, 'patients', patientId);
-          await backend.updateDoc(patientRef, {
-            pain_episodes: backend.increment(1),
-          });
-          if (entry.hospital_visit) {
-            await backend.updateDoc(patientRef, {
-              hospital_visit: backend.increment(1),
-            });
-          }
-          return true;
+        if (!patientId) {
+          console.log('there is no patient in the auth context');
+          return false;
         }
-        throw 'Error: there is no patient in the auth context';
+
+        await backend.addDoc(
+          backend.collection(db, 'patients', patientId, 'pain_entries'),
+          entry,
+        );
+
+        const patientRef = backend.doc(db, 'patients', patientId);
+        await backend.updateDoc(patientRef, {
+          pain_episodes: backend.increment(1),
+        });
+        if (entry.hospital_visit) {
+          await backend.updateDoc(patientRef, {
+            hospital_visit: backend.increment(1),
+          });
+        }
+        return true;
       } catch (error) {
         console.log(error);
         return false;
