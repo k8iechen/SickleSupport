@@ -1,6 +1,6 @@
 import { db } from "../firebase";
-import { TPatient } from "../models/Patient";
-import { TPainEntry } from "../models/PainEntry";
+import type { TPatient } from "../models/Patient";
+import type { TPainEntry } from "../models/PainEntry";
 import * as firestore from "firebase/firestore";
 
 export interface IPainEntryStore {
@@ -10,10 +10,16 @@ export interface IPainEntryStore {
   ) => Promise<boolean>;
 };
 
-const PainEntryStore = (backend): IPainEntryStore => {
-  if (!backend) {
-    backend = firestore;
-  }
+export interface IBackend {
+  collection: typeof firestore.collection,
+  addDoc: typeof firestore.addDoc,
+  doc: typeof firestore.doc,
+  updateDoc: typeof firestore.updateDoc,
+  increment: typeof firestore.increment,
+};
+
+const PainEntryStore = (backend?: IBackend): IPainEntryStore => {
+  backend = backend || firestore!;
 
   const store: IPainEntryStore = {
     addEntry: async (
