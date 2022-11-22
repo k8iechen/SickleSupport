@@ -6,14 +6,12 @@ import {
   render as NativeRender,
 } from '@testing-library/react-native';
 
-import type IAuthStore from '../stores/Auth';
+import type { IAuthStore } from '../stores/Auth';
 import { AuthContext } from '../contexts/AuthContext';
 
-const FakeAuthStore: IAuthStore = {
-  getPatient: () => {
-    return {};
-  },
-};
+const FakeAuthStore = {
+  getPatient: () => ({}),
+} as IAuthStore;
 
 const FakeAuthProvider: React.FC = ({children}) => {
   return (
@@ -21,7 +19,7 @@ const FakeAuthProvider: React.FC = ({children}) => {
   );
 };
 
-export default function render(comp) {
+export default function render(comp: React.ReactNode) {
   const inset = {
     frame: {
       x: 0,
