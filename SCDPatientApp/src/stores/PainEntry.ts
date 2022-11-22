@@ -18,9 +18,7 @@ export interface IBackend {
   increment: typeof firestore.increment,
 }
 
-const PainEntryStore = (backend?: IBackend): IPainEntryStore => {
-  backend = backend || {...firestore};
-
+const PainEntryStore = (backend:IBackend = {...firestore}): IPainEntryStore => {
   const store: IPainEntryStore = {
     addEntry: async (
       patient: TPatient | null | undefined,
