@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
-import { TPatient } from '../models/Patient';
+import type { TPatient } from '../models/Patient';
 
 export interface IAuthStore {
   isAuthenticated: () => boolean;
@@ -24,19 +24,19 @@ export interface IAuthStore {
   signOut: () => Promise<void>;
   wipeOut: () => Promise<void>;
   getPatient: () => TPatient | null;
-  setPatient: (TPatient) => Promise<void>;
-  updatePatient: (fn: (TPatient) => TPatient) => Promise<void>;
+  setPatient: (_: TPatient) => Promise<void>;
+  updatePatient: (fn: (_: TPatient) => TPatient) => Promise<void>;
 }
 
-const syncPatientToBackend = async (store, patient) => {
+const syncPatientToBackend = async (store: IAuthStore, patient: TPatient) => {
   const { uid, ...data } = patient;
   await setDoc(doc(db, 'patients', uid), data);
   store.setStale(false);
 };
 
 const AuthStore = (): IAuthStore => {
-  const store: IAuthStore = observable({
-    patient: null,
+  const store = observable({
+    patient: null as TPatient | null,
     isAuthenticated: () => store.patient != null,
     stale: false,
     setStale: action((stale: boolean) => {
@@ -77,13 +77,15 @@ const AuthStore = (): IAuthStore => {
           store.setStale(true);
         }
       });
-      await syncPatientToBackend(store, store.patient);
+      await syncPatientToBackend(store, store.patient!);
     },
-    updatePatient: async (updateFn: (TPatient) => TPatient) => {
-      runInAction(() => {
+    updatePatient: async (updateFn: (_: TPatient) => TPatient) => {
+      await runInAction(() => {
+        if (store.patient === null) {
+          throw new Error("No known patient to update");
+        }
         store.setPatient(updateFn(store.getPatient()!));
       });
-      await syncPatientToBackend(store, store.patient);
     },
   });
   return store;
