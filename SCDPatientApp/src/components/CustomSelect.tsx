@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import MultiSelect from "react-native-multiple-select";
 import Colors from "../constants/Colors";
 import {
@@ -20,6 +20,12 @@ interface ICustomSelectProps {
   selections: TCustomSelectOption[];
   onSelectedItemsChange: (items: TCustomSelectOption[]) => void;
 }
+
+const styles = StyleSheet.create({
+  tagContainerStyle: {
+    width: wp("38"),
+  },
+});
 
 // TODO: investigate how to handle nesting of lists
 const CustomSelect: React.FC<ICustomSelectProps> = ({
@@ -92,9 +98,7 @@ const CustomSelect: React.FC<ICustomSelectProps> = ({
           height: "100%",
         }}
         tagTextColor={Colors.darkGrey}
-        tagContainerStyle={{
-          width: wp("38"),
-        }}
+        tagContainerStyle={styles.tagContainerStyle}
       />
     </View>
   );
