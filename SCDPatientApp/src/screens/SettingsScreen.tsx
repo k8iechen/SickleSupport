@@ -24,6 +24,8 @@ import ButtonRadio from "../components/ButtonRadio";
 import Colors from "../constants/Colors";
 import { AuthContext } from "../contexts/AuthContext";
 import {styles as sharedStyles } from "../styles/Shared.styles";
+import type { IAuthStore } from "../stores/Auth";
+import type { TPatient } from '../models/Patient';
 
 const settingsItemStyle = StyleSheet.create({
   row: {
@@ -48,14 +50,20 @@ const settingsItemStyle = StyleSheet.create({
   },
 });
 
-const setNotificationTime = action((store: IAuthStore, notifyTime: number|null) => {
-  store.updatePatient(patient => {
+const setNotificationTime = action((store: IAuthStore, notifyTime?: number) => {
+  store.updatePatient((patient: TPatient) => {
     patient.notification = notifyTime;
     return patient;
   });
 });
 
-const SettingsItem = ({iconSource, label, children}) => {
+type SettingsItemProps = {
+  iconSource: number,
+  label: string,
+  children: React.ReactNode,
+}
+
+const SettingsItem: React.FC<SettingsItemProps> = ({iconSource, label, children}) => {
   const [isOpen, setOpen] = React.useState(false);
 
   const childview = () => {
@@ -65,11 +73,10 @@ const SettingsItem = ({iconSource, label, children}) => {
   };
 
   return (
-    <TouchableOpacity accesibilityLabel={label}
+    <TouchableOpacity accessibilityLabel={label}
       onPress={() => setOpen(!isOpen)}>
       <HStack style={settingsItemStyle.row}>
         <Image
-          alt={label}
           resizeMode="contain"
           source={iconSource}
           style={settingsItemStyle.icon}
@@ -119,7 +126,7 @@ const SettingsScreen = observer(
                   <ButtonRadio default={currentValue === 10*3600} onPress={() => setNotificationTime(authStore, 10*3600)}>10:00 am</ButtonRadio>
                   <ButtonRadio default={currentValue === 12*3600 + 20*60} onPress={() => setNotificationTime(authStore, 12*3600 + 20*60)}>12:20 pm</ButtonRadio>
                   <ButtonRadio default={currentValue === (12+8)*3600} onPress={() => setNotificationTime(authStore, (12+8)*3600)}>08:00 pm</ButtonRadio>
-                  <ButtonRadio default={currentValue === null} onPress={() => setNotificationTime(authStore, null)}>Never</ButtonRadio>
+                  <ButtonRadio default={currentValue === null} onPress={() => setNotificationTime(authStore, undefined)}>Never</ButtonRadio>
                 </ButtonRadio.Group>
             </SettingsItem>
             <SettingsItem label="Privacy & Security"
