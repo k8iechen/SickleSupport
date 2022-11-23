@@ -3,7 +3,6 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import { Button } from "native-base";
 import { observer } from "mobx-react-lite";
 
-import { auth } from "../firebase";
 import { FirestoreError } from "firebase/firestore";
 import { RootStackScreenProps } from "../models/navigation";
 import styles from "../styles/WelcomeAuthScreen.styles";
@@ -15,7 +14,7 @@ const WelcomeAuthScreen = observer(
 
     const handleLoginGuest = async () => {
       try {
-        await authStore.signInAnonymously(auth);
+        await authStore.signInAnonymously();
         navigation.navigate("Onboarding");
       } catch (error: unknown) {
         if (error instanceof FirestoreError) {
