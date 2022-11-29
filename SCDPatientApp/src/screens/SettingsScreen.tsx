@@ -92,16 +92,20 @@ const SettingsItem: React.FC<SettingsItemProps> = ({iconSource, label, children}
   );
 };
 
+interface ISettingsScreenProps {
+  navigation: {goBack: () => void}
+}
+
 // TODO: This back button is the same as what's used on
 // DailyDiaryFormScreen. Refactor to a reusable back button.
 // TODO: use `navigation.addEventListener('blur', ...);` to reset each
 // SettingsItem to a 'closed' state. Or, preferably, pass an opened/closed prop
 // to SettingsItem.
 const SettingsScreen = observer(
-  ({ navigation }) => {
+  ({ navigation }: ISettingsScreenProps) => {
     navigation = navigation || useNavigation();
     const authStore = React.useContext(AuthContext);
-    const currentValue = authStore.getPatient().notification;
+    const currentValue = authStore.getPatient()!.notification;
 
     return (<Box style={styles.container}>
         <TouchableOpacity

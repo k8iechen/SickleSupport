@@ -9,7 +9,7 @@ import render from '../test/UITesting';
 import SettingsScreen from './SettingsScreen';
 
 test('can render', () => {
-  const navMock = {'navigate': jest.fn()};
+  const navMock = {'goBack': jest.fn()};
   const root = render(
     <SettingsScreen navigation={navMock} />
   );
@@ -18,7 +18,7 @@ test('can render', () => {
 
 
 test('expected elements are rendered', () => {
-  const navMock = {'navigate': jest.fn()};
+  const navMock = {'goBack': jest.fn()};
   render(
     <SettingsScreen navigation={navMock} />
   );
