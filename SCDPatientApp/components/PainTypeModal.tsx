@@ -10,14 +10,14 @@ interface IPainTypeModalProps {
   showModal: boolean;
   setShowModal: any;
   setShowWhenModal: any;
-  navigation: any;
+  onSuccess: any;
 }
 
 const PainTypeModal: React.FC<IPainTypeModalProps> = ({
   showModal,
   setShowModal,
   setShowWhenModal,
-  navigation,
+  onSuccess,
 }) => {
   return (
     <Modal isOpen={showModal} onClose={setShowModal} size="lg">
@@ -35,7 +35,7 @@ const PainTypeModal: React.FC<IPainTypeModalProps> = ({
               style={styles.ongoingBtn}
               onPress={() => {
                 setShowModal(false);
-                navigation.navigate("PainEpisodeFormScreen");
+                onSuccess();
               }}
             >
               <HStack>

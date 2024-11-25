@@ -51,6 +51,15 @@ const Tabs = () => {
     minutes: TODAYS_DATE.getMinutes(),
   };
 
+  const navigateToPainEpisode = () => {
+    const state = navigationObj.getState();
+    navigationObj.navigate("PainEpisodeFormScreen", {
+      painEpisodeTime: startTime,
+      painEpisodeDay: startDay,
+      prevScreen: state.routeNames[state.index],
+    });
+  }
+
   const [navigationObj, setNavigationObj] = React.useState(null);
   const [startDay, setStartDay] = React.useState(TODAY_START_DAY);
   const [startTime, setStartTime] = React.useState(TODAY_START_TIME);
@@ -92,13 +101,13 @@ const Tabs = () => {
         setStartTime={setStartTime}
         initialStartDay={TODAY_START_DAY}
         initialStartTime={TODAY_START_TIME}
-        navigation={navigationObj}
+        onSuccess={navigateToPainEpisode}
       />
       <PainTypeModal
         showModal={showTypePainEpisodeModal}
         setShowModal={setShowTypePainEpisodeModal}
         setShowWhenModal={setShowWhenPainEpisodeModal}
-        navigation={navigationObj}
+        onSuccess={navigateToPainEpisode}
       />
       <Navigator
         screenOptions={{
